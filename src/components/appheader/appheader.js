@@ -30,7 +30,7 @@ function AppHeader() {
     
 
     return(
-      <div className={AppheaderStyles.navpane}>
+      <nav className={AppheaderStyles.navpane}>
           <div className={AppheaderStyles.content}>
           {
             <>
@@ -40,7 +40,7 @@ function AppHeader() {
             </>
           }
         </div>
-      </div>
+      </nav>
     );
   
 }

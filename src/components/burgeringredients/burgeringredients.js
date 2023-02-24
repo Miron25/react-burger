@@ -45,7 +45,7 @@ function BurgerIngredients() {
     return(
         <>
         <div className={BurgerIngStyles.mainbox}>
-            <p className="text text_type_main-large" style={{paddingTop: '40px', paddingBottom: '20px'}}>Соберите бургер</p>
+            <header className="text text_type_main-large" style={{paddingTop: '40px', paddingBottom: '20px'}}>Соберите бургер</header>
             <div className={BurgerIngStyles.tabs}>
                 <Tab value="one" active={current === 'one'} onClick={setCurrent}>
                 Булки
