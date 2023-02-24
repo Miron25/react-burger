@@ -1,0 +1,63 @@
+.main {
+position: absolute;
+width: 600px;
+height: 912px;
+left: 1020px;
+top: 128px;
+}
+
+.constr_block {
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+gap: 16px;
+padding: 0px 16px;
+
+position: absolute;
+width: 568px;
+height: 656px;
+top: 100px;
+overflow-y: scroll;
+}
+
+.grid_block {
+display: grid;
+grid-template-columns: 1fr;
+grid-auto-rows: 80px;
+row-gap: 16px;
+}
+
+.icon {
+position: absolute;
+width: 24px;
+height: 24px;
+left: 0px;
+top: calc(50% - 24px/2);
+}
+
+.info_block {
+display: flex;
+flex-direction: row;
+justify-content: flex-end;
+align-items: center;
+padding: 0px;
+gap: 40px;
+    
+position: absolute;
+width: 568px;
+height: 64px;
+left: 16px;
+top: 796px;
+}
+
+.total_price {
+display: flex;
+flex-direction: row;
+justify-content: flex-end;
+align-items: center;
+padding: 0px;
+gap: 8px;
+    
+width: 119px;
+height: 64px;
+}
