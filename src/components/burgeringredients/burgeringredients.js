@@ -1,79 +1,138 @@
-import React, {useState, useEffect, useRef, useCallback} from 'react';
-import BurgerIngStyles from './burgering.module.css';
-import BurgerConstructor from './../burgerconstructor/burgerconstructor';
-import { Tab, CurrencyIcon, Counter, Typography, Box } from '@ya.praktikum/react-developer-burger-ui-components';
-
+import React, { useState, useRef } from 'react'
+import BurgerIngStyles from './burgering.module.css'
+import PropTypes from 'prop-types'
+import {
+  Tab,
+  CurrencyIcon,
+  Counter,
+} from '@ya.praktikum/react-developer-burger-ui-components'
 
 function BurgerIngredients(props) {
-    const [current, setCurrent] = useState('one');
-    const [count, setCount] = useState(0);
-    const initial_array = props.mainArray;
-    const ref = useRef(null);
-    
-    const handleAddIngredient = useCallback(
-        (obj) => () => {
-        setCount(count + 1);
-        return count;
-    }, []);
+  const [current, setCurrent] = useState('one')
+  // const [count, setCount] = useState(0)
+  const initial_array = props.mainArray
+  const oneRef = useRef(null) //represents tab "one"
+  const twoRef = useRef(null) //represents tab "two"
+  const threeRef = useRef(null) //represents tab "three"
 
-    /*const handleTabClick = () => {
-        ref.current?.scrollIntoView({behavior: 'smooth'});
-        return setCurrent;
-    }*/
+  /*const handleAddIngredient = useCallback(
+    (obj) => () => {
+      setCount(count + 1)
+      return count
+    },
+    []
+  )*/
 
-    const FilterItems = ({type}) => {
-            
-        const filtered_array = initial_array.filter(ingr => ingr.type === type).map(filteredIngr => (
-            <React.Fragment key={filteredIngr._id}>
-            <div className={BurgerIngStyles.column1} onClick={handleAddIngredient(filteredIngr)}>  
-            <Counter count={1} size="default" extraClass="m-1"/> 
-            
-            <img src={filteredIngr.image}></img>
+  const handleTabClick = (ref) => {
+    ref.current?.scrollIntoView({ behavior: 'smooth' })
+    //setCurrent({param});
+    console.log(ref)
+  }
+
+  const FilterItems = ({ type }) => {
+    const filtered_array = initial_array
+      .filter((ingr) => ingr.type === type)
+      .map((filteredIngr) => (
+        <React.Fragment key={filteredIngr._id}>
+          <div
+            className={BurgerIngStyles.column1}
+            //onClick={handleAddIngredient(filteredIngr)}
+          >
+            <Counter count={1} size="default" extraClass="m-1" />
+
+            <img src={filteredIngr.image} alt=""></img>
             <div className={BurgerIngStyles.pricebox}>
-                <span className="text text_type_digits-default">{filteredIngr.price}</span>    
-                <CurrencyIcon />
+              <span className="text text_type_digits-default">
+                {filteredIngr.price}
+              </span>
+              <CurrencyIcon />
             </div>
-            <p className="text text_type_main-default" style={{textAlign: 'center'}}>{filteredIngr.name}</p>
-            </div>
-            </React.Fragment>
-            
-          ))
-          return filtered_array;
-    }
+            <p
+              className="text text_type_main-default"
+              style={{ textAlign: 'center' }}
+            >
+              {filteredIngr.name}
+            </p>
+          </div>
+        </React.Fragment>
+      ))
+    return filtered_array
+  }
 
-    return(
-        <>
-        <div className={BurgerIngStyles.mainbox}>
-            <header className="text text_type_main-large" style={{paddingTop: '40px', paddingBottom: '20px'}}>Соберите бургер</header>
-            <div className={BurgerIngStyles.tabs}>
-                <Tab value="one" active={current === 'one'} onClick={setCurrent}>
-                Булки
-                </Tab>
-                <Tab value="two" active={current === 'two'} onClick={setCurrent}>
-                Соусы
-                </Tab>
-                <Tab value="three" active={current === 'three'} onClick={setCurrent}>
-                Начинки
-                </Tab>
-            </div>
-            <div className={BurgerIngStyles.ing_block}>
-                <p className="text text_type_main-medium" style={{paddingTop: '40px', paddingBottom: '24px'}}>Булки</p>
-                <div className={BurgerIngStyles.grid_block}>              
-                    <FilterItems type="bun"/>
-                </div>
-                <p className="text text_type_main-medium" style={{paddingTop: '40px', paddingBottom: '24px'}}>Соусы</p>
-                <div className={BurgerIngStyles.grid_block}>                                      
-                    <FilterItems type="sauce"/>
-                </div>
-                <p className="text text_type_main-medium" style={{paddingTop: '40px', paddingBottom: '24px'}}>Начинки</p>
-                <div className={BurgerIngStyles.grid_block}>
-                    <FilterItems type="main"/>
-                </div>
-            </div>
+  return (
+    <>
+      <div className={BurgerIngStyles.mainbox}>
+        <header
+          className="text text_type_main-large"
+          style={{ paddingTop: '40px', paddingBottom: '20px' }}
+        >
+          Соберите бургер
+        </header>
+        <div className={BurgerIngStyles.tabs}>
+          <Tab
+            value="one"
+            active={current === 'one'}
+            onClick={() => handleTabClick(oneRef)}
+          >
+            Булки
+          </Tab>
+          <Tab
+            value="two"
+            active={current === 'two'}
+            onClick={() => handleTabClick(twoRef)}
+          >
+            Соусы
+          </Tab>
+          <Tab
+            value="three"
+            active={current === 'three'}
+            onClick={() => {
+              handleTabClick(threeRef)
+              setCurrent(current)
+            }}
+          >
+            Начинки
+          </Tab>
         </div>
-        </>
-    );
-    
+        <div className={BurgerIngStyles.ing_block}>
+          <p
+            className="text text_type_main-medium"
+            ref={oneRef}
+            style={{ paddingTop: '40px', paddingBottom: '24px' }}
+          >
+            Булки
+          </p>
+          <div className={BurgerIngStyles.grid_block}>
+            <FilterItems type="bun" />
+          </div>
+          <p
+            className="text text_type_main-medium"
+            ref={twoRef}
+            style={{ paddingTop: '40px', paddingBottom: '24px' }}
+          >
+            Соусы
+          </p>
+          <div className={BurgerIngStyles.grid_block}>
+            <FilterItems type="sauce" />
+          </div>
+          <p
+            className="text text_type_main-medium"
+            ref={threeRef}
+            style={{ paddingTop: '40px', paddingBottom: '24px' }}
+          >
+            Начинки
+          </p>
+          <div className={BurgerIngStyles.grid_block}>
+            <FilterItems type="main" />
+          </div>
+        </div>
+      </div>
+    </>
+  )
 }
 
-export default BurgerIngredients;
+BurgerIngredients.propTypes = {
+  mainArray: PropTypes.array,
+}
+
+export default BurgerIngredients
