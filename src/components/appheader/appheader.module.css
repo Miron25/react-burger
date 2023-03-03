@@ -73,3 +73,8 @@
   left: 0px;
   top: calc(50% - 56px / 2);
 }
+
+div a {
+  color: #f2f2f3;
+  text-decoration: none;
+}

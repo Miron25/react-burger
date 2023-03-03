@@ -11,9 +11,14 @@ const AccountLink = () => {
   return (
     <div className={AppheaderStyles.accbox}>
       <ProfileIcon type="secondary" />
-      <p className="text text_type_main-default text_color_inactive">
+      <a
+        href="https://"
+        className="text text_type_main-default text_color_inactive"
+        target={'_blank'}
+        rel="noopener, noreferrer"
+      >
         Личный кабинет
-      </p>
+      </a>
     </div>
   )
 }
@@ -22,11 +27,23 @@ const NavMenu = () => {
   return (
     <div className={AppheaderStyles.navmenu}>
       <BurgerIcon type="primary" />
-      <span className="text text_type_main-default">Конструктор</span>
+      <a
+        href="https://"
+        className="text text_type_main-default"
+        target={'_blank'}
+        rel="noopener, noreferrer"
+      >
+        Конструктор
+      </a>
       <ListIcon type="secondary" />
-      <span className="text text_type_main-default text_color_inactive">
+      <a
+        href="https://"
+        className="text text_type_main-default text_color_inactive"
+        target={'_blank'}
+        rel="noopener, noreferrer"
+      >
         Лента заказов
-      </span>
+      </a>
     </div>
   )
 }

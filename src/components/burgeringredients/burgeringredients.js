@@ -25,8 +25,6 @@ function BurgerIngredients(props) {
 
   const handleTabClick = (ref) => {
     ref.current?.scrollIntoView({ behavior: 'smooth' })
-    //setCurrent({param});
-    console.log(ref)
   }
 
   const FilterItems = ({ type }) => {
@@ -72,14 +70,20 @@ function BurgerIngredients(props) {
           <Tab
             value="one"
             active={current === 'one'}
-            onClick={() => handleTabClick(oneRef)}
+            onClick={() => {
+              setCurrent('one')
+              handleTabClick(oneRef)
+            }}
           >
             Булки
           </Tab>
           <Tab
             value="two"
             active={current === 'two'}
-            onClick={() => handleTabClick(twoRef)}
+            onClick={() => {
+              setCurrent('two')
+              handleTabClick(twoRef)
+            }}
           >
             Соусы
           </Tab>
@@ -87,8 +91,8 @@ function BurgerIngredients(props) {
             value="three"
             active={current === 'three'}
             onClick={() => {
+              setCurrent('three')
               handleTabClick(threeRef)
-              setCurrent(current)
             }}
           >
             Начинки
