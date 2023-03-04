@@ -8,10 +8,6 @@ function App() {
   const [state, setState] = useState({
     isLoading: false,
     hasError: false,
-    strOne: [
-      { type: 'bulka', name: 'testo' },
-      { type: 'fruct', name: 'ovosch' },
-    ],
     mainArray: [],
   })
 

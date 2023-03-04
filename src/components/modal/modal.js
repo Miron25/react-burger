@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react'
-//import ReactDOM from 'react-dom/client'
+import ReactDOM from 'react-dom'
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import ModalStyles from './modal.module.css'
+//import ModalOverlay from '../modaloverlay/modaloverlay'
 import PropTypes from 'prop-types'
 
 const Modal = ({ children, show, onClose }) => {
@@ -13,21 +14,14 @@ const Modal = ({ children, show, onClose }) => {
       modalRef.current.classList.remove(ModalStyles.visible)
     }
   }, [show])
-  //const modalRoot = document.getElementById('react-modals')
 
-  const handleKeyDown = () => {
-    // check keys if you want
-    //if (e.keyCode == 13) {
-    //  focus()
-    // }
-  }
+  const modalRoot = document.getElementById('react-modals')
 
-  return (
+  return ReactDOM.createPortal(
     <>
       <div ref={modalRef} className={`${ModalStyles.modal__wrap}`}>
         <button
           onClick={onClose}
-          onKeyDown={handleKeyDown}
           style={{
             width: 60,
             height: 40,
@@ -41,7 +35,8 @@ const Modal = ({ children, show, onClose }) => {
         </button>
         <div className={ModalStyles.modal}>{children}</div>
       </div>
-    </>
+    </>,
+    modalRoot
   )
 }
 
