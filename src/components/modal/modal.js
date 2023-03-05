@@ -7,6 +7,8 @@ import PropTypes from 'prop-types'
 
 const Modal = ({ children, show, onClose }) => {
   const modalRef = useRef(null)
+  const modalRoot = document.getElementById('react-modals')
+
   useEffect(() => {
     if (show) {
       modalRef.current.classList.add(ModalStyles.visible)
@@ -15,7 +17,15 @@ const Modal = ({ children, show, onClose }) => {
     }
   }, [show])
 
-  const modalRoot = document.getElementById('react-modals')
+  useEffect(() => {
+    const close = (e) => {
+      if (e.keyCode === 27) {
+        onClose()
+      }
+    }
+    window.addEventListener('keydown', close)
+    return () => window.removeEventListener('keydown', close)
+  }, [])
 
   return ReactDOM.createPortal(
     <>
@@ -29,9 +39,12 @@ const Modal = ({ children, show, onClose }) => {
             top: 0,
             right: 0,
             margin: '1rem',
+            background: '#1f2029',
+            opacity: 0.7,
+            border: 'none',
           }}
         >
-          <CloseIcon />
+          <CloseIcon type="secondary" onClick={onClose} />
         </button>
         <div className={ModalStyles.modal}>{children}</div>
       </div>

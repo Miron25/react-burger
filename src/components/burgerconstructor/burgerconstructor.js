@@ -105,7 +105,7 @@ function BurgerConstructor() {
                 >
                   Детали игредиента
                 </h1>
-                <CloseIcon />
+                <CloseIcon onClick={() => setShow1(false)} />
               </div>
               <img
                 src={init_array[5].image}
@@ -179,7 +179,7 @@ function BurgerConstructor() {
             className={BurgerConsStyles.popup_title}
             style={{ justifyContent: 'flex-end' }}
           >
-            <CloseIcon />
+            <CloseIcon onClick={() => setShow2(false)} />
           </div>
           <p
             className="text text_type_digits-large"
