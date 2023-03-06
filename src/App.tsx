@@ -39,7 +39,6 @@ function App() {
         )}
         <BurgerConstructor />
       </div>
-      <div id="react-modals"></div>
     </>
   )
 }

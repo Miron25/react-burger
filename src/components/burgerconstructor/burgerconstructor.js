@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import BurgerConsStyles from './burgercons.module.css'
 //import BurgerIngredients from './../burgeringredients/burgeringredients'
-import InitialData from '../../utils/data'
 import Modal from './../modal/modal'
+import InitialData from '../../utils/data'
+import PropTypes from 'prop-types'
 import graphics from '../../images/graphics.png'
 import {
   ConstructorElement,
@@ -16,30 +17,62 @@ function BurgerConstructor() {
   const init_array = InitialData()
   const [show1, setShow1] = useState(false)
   const [show2, setShow2] = useState(false)
+  const [index, setIndex] = useState(0)
+
+  const handleKeyDown = () => {}
+  const handleClick = (value) => {
+    setIndex(value)
+    return index
+  }
 
   return (
     <div className={BurgerConsStyles.main}>
       <div className={BurgerConsStyles.constr_block}>
         {
           <React.Fragment>
-            <span style={{ marginLeft: 'auto' }}>
+            <span
+              style={{ marginLeft: 'auto' }}
+              onClick={() => {
+                setShow1(true)
+                handleClick('0')
+              }}
+              role="button"
+              tabIndex={0}
+              onKeyDown={handleKeyDown}
+            >
               <ConstructorElement
                 type="top"
                 isLocked={true}
                 text={init_array[0].name + ' (верх)'}
-                price={init_array[0].price / 2}
+                price={init_array[0].price}
                 thumbnail={init_array[0].image}
               />
             </span>
-            <button onClick={() => setShow1(true)}>
+            <span
+              onClick={() => {
+                setShow1(true)
+                handleClick('5')
+              }}
+              role="button"
+              tabIndex={0}
+              onKeyDown={handleKeyDown}
+            >
               <DragIcon />
               <ConstructorElement
                 text={init_array[5].name}
                 price={init_array[5].price}
                 thumbnail={init_array[5].image}
               />
-            </button>
-            <span>
+            </span>
+            <span
+              onClick={() => {
+                setShow1(true)
+                handleClick('4')
+              }}
+              role="button"
+              tabIndex={0}
+              onKeyDown={handleKeyDown}
+            >
               <DragIcon />
               <ConstructorElement
                 text={init_array[4].name}
@@ -47,23 +80,15 @@ function BurgerConstructor() {
                 thumbnail={init_array[4].image}
               />
             </span>
-            <span>
-              <DragIcon />
-              <ConstructorElement
-                text={init_array[7].name}
-                price={init_array[7].price}
-                thumbnail={init_array[7].image}
-              />
-            </span>
-            <span>
-              <DragIcon />
-              <ConstructorElement
-                text={init_array[8].name}
-                price={init_array[8].price}
-                thumbnail={init_array[8].image}
-              />
-            </span>
-            <span>
+            <span
+              onClick={() => {
+                setShow1(true)
+                handleClick('8')
+              }}
+              role="button"
+              tabIndex={0}
+              onKeyDown={handleKeyDown}
+            >
               <DragIcon />
               <ConstructorElement
                 text={init_array[8].name}
@@ -71,7 +96,31 @@ function BurgerConstructor() {
                 thumbnail={init_array[8].image}
               />
             </span>
-            <span>
+            <span
+              onClick={() => {
+                setShow1(true)
+                handleClick('8')
+              }}
+              role="button"
+              tabIndex={0}
+              onKeyDown={handleKeyDown}
+            >
+              <DragIcon />
+              <ConstructorElement
+                text={init_array[8].name}
+                price={init_array[8].price}
+                thumbnail={init_array[8].image}
+              />
+            </span>
+            <span
+              onClick={() => {
+                setShow1(true)
+                handleClick('10')
+              }}
+              role="button"
+              tabIndex={0}
+              onKeyDown={handleKeyDown}
+            >
               <DragIcon />
               <ConstructorElement
                 text={init_array[10].name}
@@ -79,7 +128,15 @@ function BurgerConstructor() {
                 thumbnail={init_array[10].image}
               />
             </span>
-            <span>
+            <span
+              onClick={() => {
+                setShow1(true)
+                handleClick('11')
+              }}
+              role="button"
+              tabIndex={0}
+              onKeyDown={handleKeyDown}
+            >
               <DragIcon />
               <ConstructorElement
                 text={init_array[11].name}
@@ -87,12 +144,21 @@ function BurgerConstructor() {
                 thumbnail={init_array[11].image}
               />
             </span>
-            <span style={{ marginLeft: 'auto' }}>
+            <span
+              style={{ marginLeft: 'auto' }}
+              onClick={() => {
+                setShow1(true)
+                handleClick('0')
+              }}
+              role="button"
+              tabIndex={0}
+              onKeyDown={handleKeyDown}
+            >
               <ConstructorElement
                 type="bottom"
                 isLocked={true}
                 text={init_array[0].name + ' (низ)'}
-                price={init_array[0].price / 2}
+                price={init_array[0].price}
                 thumbnail={init_array[0].image}
               />
             </span>
@@ -108,12 +174,12 @@ function BurgerConstructor() {
                 <CloseIcon onClick={() => setShow1(false)} />
               </div>
               <img
-                src={init_array[5].image}
+                src={init_array[index].image}
                 alt=""
                 className={BurgerConsStyles.popup_img}
               ></img>
               <h2 className={BurgerConsStyles.popup_name}>
-                {init_array[5].name}
+                {init_array[index].name}
               </h2>
               <ul className={BurgerConsStyles.popup_nutrition}>
                 <div className={BurgerConsStyles.popup_nutrition_value}>
@@ -121,7 +187,7 @@ function BurgerConstructor() {
                     Калории,ккал
                   </span>
                   <span className="text text_type_digits-default">
-                    {init_array[5].calories}
+                    {init_array[index].calories}
                   </span>
                 </div>
                 <div className={BurgerConsStyles.popup_nutrition_value}>
@@ -129,7 +195,7 @@ function BurgerConstructor() {
                     Белки, г
                   </span>
                   <span className="text text_type_digits-default">
-                    {init_array[5].proteins}
+                    {init_array[index].proteins}
                   </span>
                 </div>
                 <div className={BurgerConsStyles.popup_nutrition_value}>
@@ -137,7 +203,7 @@ function BurgerConstructor() {
                     Жиры, г
                   </span>
                   <span className="text text_type_digits-default">
-                    {init_array[5].fat}
+                    {init_array[index].fat}
                   </span>
                 </div>
                 <div className={BurgerConsStyles.popup_nutrition_value}>
@@ -145,7 +211,7 @@ function BurgerConstructor() {
                     Углеводы, г
                   </span>
                   <span className="text text_type_digits-default">
-                    {init_array[5].carbohydrates}
+                    {init_array[index].carbohydrates}
                   </span>
                 </div>
               </ul>
@@ -161,7 +227,7 @@ function BurgerConstructor() {
                 BurgerConsStyles.total_price + 'text text_type_digits-medium'
               }
             >
-              4081
+              9624
               <CurrencyIcon />
             </span>
             <Button
@@ -242,6 +308,10 @@ function BurgerConstructor() {
       </div>
     </div>
   )
+}
+
+BurgerConstructor.propTypes = {
+  mainArray: PropTypes.array,
 }
 
 export default BurgerConstructor
