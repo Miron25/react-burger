@@ -1,10 +1,12 @@
 import React, { useState, useRef } from 'react'
 import BurgerIngStyles from './burgering.module.css'
 import PropTypes from 'prop-types'
+import Modal from './../modal/modal'
 import {
   Tab,
   CurrencyIcon,
   Counter,
+  CloseIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
 function BurgerIngredients(props) {
@@ -14,6 +16,9 @@ function BurgerIngredients(props) {
   const oneRef = useRef(null) //represents tab "one"
   const twoRef = useRef(null) //represents tab "two"
   const threeRef = useRef(null) //represents tab "three"
+  const [ind, setInd] = useState(0)
+  const [show1, setShow1] = useState(false)
+  //const [bunArray, setBunArray] = useState([])
 
   /*const handleAddIngredient = useCallback(
     (obj) => () => {
@@ -22,6 +27,12 @@ function BurgerIngredients(props) {
     },
     []
   )*/
+  const handleClick = (value) => {
+    setInd(value)
+    return ind
+  }
+
+  const handleKeyDown = () => {}
 
   const handleTabClick = (ref) => {
     ref.current?.scrollIntoView({ behavior: 'smooth' })
@@ -30,11 +41,18 @@ function BurgerIngredients(props) {
   const FilterItems = ({ type }) => {
     const filtered_array = initial_array
       .filter((ingr) => ingr.type === type)
-      .map((filteredIngr) => (
+      .map((filteredIngr, index) => (
         <React.Fragment key={filteredIngr._id}>
           <div
             className={BurgerIngStyles.column1}
             //onClick={handleAddIngredient(filteredIngr)}
+            onClick={() => {
+              setShow1(true)
+              handleClick(index)
+            }}
+            role="button"
+            tabIndex={0}
+            onKeyDown={handleKeyDown}
           >
             <Counter count={1} size="default" extraClass="m-1" />
 
@@ -54,6 +72,7 @@ function BurgerIngredients(props) {
           </div>
         </React.Fragment>
       ))
+
     return filtered_array
   }
 
@@ -131,12 +150,67 @@ function BurgerIngredients(props) {
           </div>
         </div>
       </div>
+      <Modal show={show1} onClose={() => setShow1(false)}>
+        <div className={BurgerIngStyles.popup_title}>
+          <h1
+            className={
+              BurgerIngStyles.popup_header + 'text text_type_main-large'
+            }
+          >
+            Детали игредиента
+          </h1>
+          <CloseIcon onClick={() => setShow1(false)} />
+        </div>
+        <img
+          src={initial_array[ind].image}
+          alt=""
+          className={BurgerIngStyles.popup_img}
+        ></img>
+        <h2 className={BurgerIngStyles.popup_name}>
+          {initial_array[ind].name}
+        </h2>
+        <ul className={BurgerIngStyles.popup_nutrition}>
+          <div className={BurgerIngStyles.popup_nutrition_value}>
+            <span className="text text_type_main-default text_color_inactive">
+              Калории,ккал
+            </span>
+            <span className="text text_type_digits-default">
+              {initial_array[ind].calories}
+            </span>
+          </div>
+          <div className={BurgerIngStyles.popup_nutrition_value}>
+            <span className="text text_type_main-default text_color_inactive">
+              Белки, г
+            </span>
+            <span className="text text_type_digits-default">
+              {initial_array[ind].proteins}
+            </span>
+          </div>
+          <div className={BurgerIngStyles.popup_nutrition_value}>
+            <span className="text text_type_main-default text_color_inactive">
+              Жиры, г
+            </span>
+            <span className="text text_type_digits-default">
+              {initial_array[ind].fat}
+            </span>
+          </div>
+          <div className={BurgerIngStyles.popup_nutrition_value}>
+            <span className="text text_type_main-default text_color_inactive">
+              Углеводы, г
+            </span>
+            <span className="text text_type_digits-default">
+              {initial_array[ind].carbohydrates}
+            </span>
+          </div>
+        </ul>
+      </Modal>
     </>
   )
 }
 
 BurgerIngredients.propTypes = {
   mainArray: PropTypes.array,
+  type: PropTypes.string,
 }
 
 export default BurgerIngredients
