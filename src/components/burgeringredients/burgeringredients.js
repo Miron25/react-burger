@@ -16,6 +16,8 @@ function BurgerIngredients(props) {
   const twoRef = useRef(null) //represents tab "two"
   const threeRef = useRef(null) //represents tab "three"
   const [ind, setInd] = useState(0)
+  const [ind2, setInd2] = useState(0)
+  const [ind3, setInd3] = useState(0)
   const [show1, setShow1] = useState(false)
   const [show2, setShow2] = useState(false)
   const [show3, setShow3] = useState(false)
@@ -32,18 +34,13 @@ function BurgerIngredients(props) {
     []
   )
 
-  const handleClick = (value) => {
-    setInd(value)
-    return ind
-  }
-
   const handleKeyDown = () => {}
 
   const handleTabClick = (ref) => {
     ref.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const ModalContent = ({ filtered_array, onClose }) => {
+  const ModalContent = ({ filtered_array, onClose, index }) => {
     return (
       <>
         <div className={BurgerIngStyles.popup_title}>
@@ -56,13 +53,15 @@ function BurgerIngredients(props) {
           </h1>
           <CloseIcon onClick={onClose} />
         </div>
+
         <img
-          src={filtered_array[ind].image}
+          src={filtered_array[index].image}
           alt=""
           className={BurgerIngStyles.popup_img}
         ></img>
+
         <h2 className={BurgerIngStyles.popup_name}>
-          {filtered_array[ind].name}
+          {filtered_array[index].name}
         </h2>
         <ul className={BurgerIngStyles.popup_nutrition}>
           <div className={BurgerIngStyles.popup_nutrition_value}>
@@ -70,7 +69,7 @@ function BurgerIngredients(props) {
               Калории,ккал
             </span>
             <span className="text text_type_digits-default">
-              {filtered_array[ind].calories}
+              {filtered_array[index].calories}
             </span>
           </div>
           <div className={BurgerIngStyles.popup_nutrition_value}>
@@ -78,7 +77,7 @@ function BurgerIngredients(props) {
               Белки, г
             </span>
             <span className="text text_type_digits-default">
-              {filtered_array[ind].proteins}
+              {filtered_array[index].proteins}
             </span>
           </div>
           <div className={BurgerIngStyles.popup_nutrition_value}>
@@ -86,7 +85,7 @@ function BurgerIngredients(props) {
               Жиры, г
             </span>
             <span className="text text_type_digits-default">
-              {filtered_array[ind].fat}
+              {filtered_array[index].fat}
             </span>
           </div>
           <div className={BurgerIngStyles.popup_nutrition_value}>
@@ -94,7 +93,7 @@ function BurgerIngredients(props) {
               Углеводы, г
             </span>
             <span className="text text_type_digits-default">
-              {filtered_array[ind].carbohydrates}
+              {filtered_array[index].carbohydrates}
             </span>
           </div>
         </ul>
@@ -156,10 +155,9 @@ function BurgerIngredients(props) {
               <React.Fragment key={filteredIngr._id}>
                 <div
                   className={BurgerIngStyles.column1}
-                  //onClick={handleAddIngredient(filteredIngr)}
                   onClick={() => {
                     setShow1(true)
-                    handleClick(index)
+                    setInd(index)
                   }}
                   role="button"
                   tabIndex={0}
@@ -187,6 +185,7 @@ function BurgerIngredients(props) {
               <ModalContent
                 filtered_array={bunArray}
                 onClose={() => setShow1(false)}
+                index={ind}
               />
             </Modal>
           </div>
@@ -202,10 +201,9 @@ function BurgerIngredients(props) {
               <React.Fragment key={filteredIngr._id}>
                 <div
                   className={BurgerIngStyles.column1}
-                  //onClick={handleAddIngredient(filteredIngr)}
                   onClick={() => {
                     setShow2(true)
-                    handleClick(index)
+                    setInd2(index)
                   }}
                   role="button"
                   tabIndex={0}
@@ -233,6 +231,7 @@ function BurgerIngredients(props) {
               <ModalContent
                 filtered_array={sauceArray}
                 onClose={() => setShow2(false)}
+                index={ind2}
               />
             </Modal>
           </div>
@@ -248,10 +247,9 @@ function BurgerIngredients(props) {
               <React.Fragment key={filteredIngr._id}>
                 <div
                   className={BurgerIngStyles.column1}
-                  //onClick={handleAddIngredient(filteredIngr)}
                   onClick={() => {
                     setShow3(true)
-                    handleClick(index)
+                    setInd3(index)
                   }}
                   role="button"
                   tabIndex={0}
@@ -279,6 +277,7 @@ function BurgerIngredients(props) {
               <ModalContent
                 filtered_array={mainArray}
                 onClose={() => setShow3(false)}
+                index={ind3}
               />
             </Modal>
           </div>
@@ -322,6 +321,7 @@ BurgerIngredients.propTypes = {
     })
   ),
   onClose: PropTypes.func,
+  index: PropTypes.number,
 }
 
 export default BurgerIngredients
