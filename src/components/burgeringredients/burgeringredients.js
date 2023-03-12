@@ -185,14 +185,14 @@ function BurgerIngredients(props) {
                 </div>
               </React.Fragment>
             ))}
-            <Modal show={show1} onClose={() => setShow1(false)}>
-              <ModalContent
-                filtered_array={bunArray}
-                onClose={() => setShow1(false)}
-                index={ind}
-              />
-            </Modal>
           </div>
+          <Modal show={show1} onClose={() => setShow1(false)}>
+            <ModalContent
+              filtered_array={bunArray}
+              onClose={() => setShow1(false)}
+              index={ind}
+            />
+          </Modal>
           <p
             className="text text_type_main-medium"
             ref={twoRef}

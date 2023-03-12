@@ -1,56 +1,42 @@
 .modal__wrap {
   position: fixed;
-  display: block;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin: 0 auto;
-  top: 0;
+  align-items: center;
+  z-index: 1000;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 100;
-  overflow-x: hidden;
+  top: 0;
+  width: 100%;
+  height: 100%;
   background-color: rgba(31, 32, 41, 0.75);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 250ms 700ms ease;
-}
-
-.visible {
-  pointer-events: auto;
-  opacity: 1;
-  transition: all 300ms ease-in-out;
 }
 
 .modal {
   overflow-y: hidden;
   overflow-x: hidden;
-  position: relative;
+  position: absolute;
+  top: 50%;
+  width: 30%;
   display: block;
   width: 720px;
   height: 718px;
-  min-height: 400px;
-  min-width: 400px;
-  margin: 0 auto;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  background-color: #1c1c21;
+  align-self: center;
+  text-align: center;
+  transform: translateY(-50%);
+  padding: 2rem;
   border: 1px solid rgba(76, 76, 255, 0.2);
   box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.04),
     0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04),
     0px 0px 1px rgba(0, 0, 0, 0.04);
   border-radius: 40px;
-  padding-bottom: 20px;
-  background-color: #1c1c21;
-  align-self: center;
-  opacity: 0;
-  transform: scale(0.6);
-  transition: opacity 250ms 250ms ease, transform 300ms 250ms ease;
-  transform: scale(0);
+  min-height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.visible .modal {
-  opacity: 1;
-  transform: scale(1);
-  transition: opacity 250ms 500ms ease, transform 350ms 500ms ease;
+.hide {
+  display: none;
 }
