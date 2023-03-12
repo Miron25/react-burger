@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import BurgerConsStyles from './burgercons.module.css'
-//import BurgerIngredients from './../burgeringredients/burgeringredients'
 import Modal from './../modal/modal'
-import InitialData from '../../utils/data'
-import PropTypes from 'prop-types'
+//import PropTypes from 'prop-types'
+import { arrayType } from '../../types/index'
 import graphics from '../../images/graphics.png'
 import {
   ConstructorElement,
@@ -13,8 +12,8 @@ import {
   CloseIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
-function BurgerConstructor() {
-  const init_array = InitialData()
+function BurgerConstructor(props) {
+  const init_array = props.mainArray
   const [show2, setShow2] = useState(false)
 
   return (
@@ -183,7 +182,7 @@ function BurgerConstructor() {
 }
 
 BurgerConstructor.propTypes = {
-  mainArray: PropTypes.array,
+  mainArray: arrayType.isRequired,
 }
 
 export default BurgerConstructor

@@ -2,12 +2,31 @@ import { useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import ModalStyles from './modal.module.css'
+//import useOnClickOutside from '../../useOnClickOutside'
 //import ModalOverlay from '../modaloverlay/modaloverlay'
 import PropTypes from 'prop-types'
 
 const Modal = ({ children, show, onClose }) => {
   const modalRef = useRef(null)
+  const modalRef2 = useRef(null)
   const modalRoot = document.getElementById('react-modals')
+  //useOnClickOutside(modalRef2, onClose())
+
+  useEffect(() => {
+    const checkIfClickedOutside = (e) => {
+      // If the modal is open and the clicked target is not within the modal,
+      // then close the modal
+      if (!modalRef2.current && modalRef2.current.contains(e.target)) {
+        console.log('Clicked')
+        onClose()
+      }
+    }
+    document.addEventListener('click', checkIfClickedOutside)
+    return () => {
+      // Cleanup the event listener
+      document.removeEventListener('click', checkIfClickedOutside)
+    }
+  }, [modalRef2])
 
   useEffect(() => {
     if (show) {
@@ -46,7 +65,9 @@ const Modal = ({ children, show, onClose }) => {
         >
           <CloseIcon type="secondary" onClick={onClose} />
         </button>
-        <div className={ModalStyles.modal}>{children}</div>
+        <div ref={modalRef2} className={ModalStyles.modal}>
+          {children}
+        </div>
       </div>
     </>,
     modalRoot

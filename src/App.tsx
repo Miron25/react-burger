@@ -35,9 +35,11 @@ function App() {
         {state.isLoading && 'Загрузка данных...'}
         {state.hasError && 'Произошла ошибка загрузки данных'}
         {!state.isLoading && !state.hasError && state.mainArray.length && (
-          <BurgerIngredients mainArray={state.mainArray} />
+          <>
+            <BurgerIngredients mainArray={state.mainArray} />
+            <BurgerConstructor mainArray={state.mainArray} />
+          </>
         )}
-        <BurgerConstructor />
       </div>
     </>
   )

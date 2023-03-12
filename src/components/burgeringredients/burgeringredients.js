@@ -2,6 +2,8 @@ import React, { useState, useRef, useMemo } from 'react'
 import BurgerIngStyles from './burgering.module.css'
 import PropTypes from 'prop-types'
 import Modal from './../modal/modal'
+//import useOnClickOutside from '../../useOnClickOutside'
+import { arrayType } from '../../types/index'
 import {
   Tab,
   CurrencyIcon,
@@ -10,28 +12,30 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
 function BurgerIngredients(props) {
-  const [current, setCurrent] = useState('one')
   const initial_array = props.mainArray
+  const [current, setCurrent] = useState('one')
   const oneRef = useRef(null) //represents tab "one"
   const twoRef = useRef(null) //represents tab "two"
   const threeRef = useRef(null) //represents tab "three"
+  //const modRef = useRef(null)
   const [ind, setInd] = useState(0)
   const [ind2, setInd2] = useState(0)
   const [ind3, setInd3] = useState(0)
   const [show1, setShow1] = useState(false)
   const [show2, setShow2] = useState(false)
   const [show3, setShow3] = useState(false)
+
   const bunArray = useMemo(
     () => initial_array.filter((ingr) => ingr.type === 'bun'),
-    []
+    [initial_array]
   )
   const sauceArray = useMemo(
     () => initial_array.filter((ingr) => ingr.type === 'sauce'),
-    []
+    [initial_array]
   )
   const mainArray = useMemo(
     () => initial_array.filter((ingr) => ingr.type === 'main'),
-    []
+    [initial_array]
   )
 
   const handleKeyDown = () => {}
@@ -288,38 +292,8 @@ function BurgerIngredients(props) {
 }
 
 BurgerIngredients.propTypes = {
-  mainArray: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-      proteins: PropTypes.number.isRequired,
-      fat: PropTypes.number.isRequired,
-      carbohydrates: PropTypes.number.isRequired,
-      calories: PropTypes.number.isRequired,
-      price: PropTypes.number.isRequired,
-      image: PropTypes.string.isRequired,
-      image_mobile: PropTypes.string.isRequired,
-      image_large: PropTypes.string.isRequired,
-      __v: PropTypes.number.isRequired,
-    })
-  ).isRequired,
-  filtered_array: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-      proteins: PropTypes.number.isRequired,
-      fat: PropTypes.number.isRequired,
-      carbohydrates: PropTypes.number.isRequired,
-      calories: PropTypes.number.isRequired,
-      price: PropTypes.number.isRequired,
-      image: PropTypes.string.isRequired,
-      image_mobile: PropTypes.string.isRequired,
-      image_large: PropTypes.string.isRequired,
-      __v: PropTypes.number.isRequired,
-    })
-  ),
+  mainArray: arrayType.isRequired,
+  filtered_array: arrayType,
   onClose: PropTypes.func,
   index: PropTypes.number,
 }
