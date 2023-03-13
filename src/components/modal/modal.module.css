@@ -20,7 +20,7 @@
   width: 30%;
   display: block;
   width: 720px;
-  height: 718px;
+
   background-color: #1c1c21;
   align-self: center;
   text-align: center;
@@ -31,7 +31,7 @@
     0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04),
     0px 0px 1px rgba(0, 0, 0, 0.04);
   border-radius: 40px;
-  min-height: 400px;
+  min-height: 539px;
   display: flex;
   justify-content: center;
   align-items: center;

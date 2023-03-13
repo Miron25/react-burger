@@ -11,14 +11,20 @@ function App() {
     mainArray: [],
   })
 
+  const checkReponse = (res: any) => {
+    return res.ok
+      ? res.json()
+      : res.json().then((err: any) => Promise.reject(err))
+  }
+
   useEffect(() => {
     const getIngredients = async () => {
       try {
         setState({ ...state, hasError: false, isLoading: true })
-        const res = await fetch(
+        const response = await fetch(
           'https://norma.nomoreparties.space/api/ingredients'
         )
-        const data = await res.json()
+        const data = await checkReponse(response)
         setState({ ...state, mainArray: data.data, isLoading: false })
       } catch (exception) {
         console.log(exception)

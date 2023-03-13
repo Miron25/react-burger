@@ -2,7 +2,6 @@ import React, { useState, useRef, useMemo } from 'react'
 import BurgerIngStyles from './burgering.module.css'
 import PropTypes from 'prop-types'
 import Modal from './../modal/modal'
-//import useOnClickOutside from '../../useOnClickOutside'
 import { arrayType } from '../../types/index'
 import {
   Tab,
@@ -17,7 +16,6 @@ function BurgerIngredients(props) {
   const oneRef = useRef(null) //represents tab "one"
   const twoRef = useRef(null) //represents tab "two"
   const threeRef = useRef(null) //represents tab "three"
-  //const modRef = useRef(null)
   const [ind, setInd] = useState(0)
   const [ind2, setInd2] = useState(0)
   const [ind3, setInd3] = useState(0)
@@ -63,10 +61,11 @@ function BurgerIngredients(props) {
           alt=""
           className={BurgerIngStyles.popup_img}
         ></img>
-
-        <h2 className={BurgerIngStyles.popup_name}>
-          {filtered_array[index].name}
-        </h2>
+        <div className={BurgerIngStyles.popup_name}>
+          <h2 className="text text_type_main-medium">
+            {filtered_array[index].name}
+          </h2>
+        </div>
         <ul className={BurgerIngStyles.popup_nutrition}>
           <div className={BurgerIngStyles.popup_nutrition_value}>
             <span className="text text_type_main-default text_color_inactive">
@@ -108,10 +107,7 @@ function BurgerIngredients(props) {
   return (
     <>
       <div className={BurgerIngStyles.mainbox}>
-        <header
-          className="text text_type_main-large"
-          style={{ paddingTop: '40px', paddingBottom: '20px' }}
-        >
+        <header className="text text_type_main-large pt-10 pb-5">
           Соберите бургер
         </header>
         <div className={BurgerIngStyles.tabs}>
@@ -147,11 +143,7 @@ function BurgerIngredients(props) {
           </Tab>
         </div>
         <div className={BurgerIngStyles.ing_block}>
-          <p
-            className="text text_type_main-medium"
-            ref={oneRef}
-            style={{ paddingTop: '40px', paddingBottom: '24px' }}
-          >
+          <p className="text text_type_main-medium pt-10 pb-6" ref={oneRef}>
             Булки
           </p>
           <div className={BurgerIngStyles.grid_block}>
@@ -193,11 +185,7 @@ function BurgerIngredients(props) {
               index={ind}
             />
           </Modal>
-          <p
-            className="text text_type_main-medium"
-            ref={twoRef}
-            style={{ paddingTop: '40px', paddingBottom: '24px' }}
-          >
+          <p className="text text_type_main-medium pt-10 pb-6" ref={twoRef}>
             Соусы
           </p>
           <div className={BurgerIngStyles.grid_block}>
@@ -239,11 +227,7 @@ function BurgerIngredients(props) {
               />
             </Modal>
           </div>
-          <p
-            className="text text_type_main-medium"
-            ref={threeRef}
-            style={{ paddingTop: '40px', paddingBottom: '24px' }}
-          >
+          <p className="text text_type_main-medium pt-10 pb-6" ref={threeRef}>
             Начинки
           </p>
           <div className={BurgerIngStyles.grid_block}>

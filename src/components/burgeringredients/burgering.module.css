@@ -115,14 +115,7 @@ padding-top: 40px;
   position: absolute;
   width: 520px;
   height: 30px;
-  left: 100px;
   top: 361px;
-  font-family: 'JetBrains Mono';
-  font-style: normal;
-  font-weight: 700;
-  font-size: 24px;
-  line-height: 30px;
-  text-align: center;
 }
 
 .popup_nutrition {
@@ -135,7 +128,6 @@ padding-top: 40px;
   position: absolute;
   width: 516px;
   height: 56px;
-  left: 102px;
   top: 423px;
   color: #8585ad;
 }

@@ -4,7 +4,7 @@ import ModalStyles from './modal.module.css'
 //import ModalOverlay from '../modaloverlay/modaloverlay'
 import PropTypes from 'prop-types'
 
-const Modal = ({ children, show, onClose }) => {
+const Modal = ({ children, show, onClose, modalStyle }) => {
   const modalRef = useRef(null)
   const modalRoot = document.getElementById('react-modals')
 
@@ -35,6 +35,7 @@ const Modal = ({ children, show, onClose }) => {
       <div className={show ? ModalStyles.modal__wrap : ModalStyles.hide}>
         <div
           ref={modalRef}
+          style={modalStyle}
           className={show ? ModalStyles.modal : ModalStyles.hide}
         >
           {children}
