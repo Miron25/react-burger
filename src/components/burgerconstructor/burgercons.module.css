@@ -1,0 +1,131 @@
+.main {
+  position: absolute;
+  width: 600px;
+  height: 912px;
+  left: 1020px;
+  top: 128px;
+}
+
+.constr_block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 0px;
+
+  position: absolute;
+  width: 568px;
+  height: 656px;
+  top: 100px;
+}
+
+.scroll_block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 0px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.grid_block {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: 80px;
+  row-gap: 16px;
+}
+
+.icon {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  left: 0px;
+  top: calc(50% - 24px / 2);
+}
+
+.info_block {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0px;
+  gap: 40px;
+
+  position: absolute;
+  width: 568px;
+  height: 64px;
+  left: 16px;
+  top: 796px;
+}
+
+.total_price {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0px;
+  gap: 8px;
+
+  width: 119px;
+  height: 64px;
+}
+
+.popup_title {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0px;
+  gap: 36px;
+
+  position: absolute;
+  height: 64px;
+  left: 40px;
+  right: 40px;
+  top: 40px;
+}
+
+.popup_order {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  position: absolute;
+  width: 520px;
+  height: 120px;
+  top: 120px;
+  text-shadow: 0px 0px 16px rgba(51, 51, 255, 0.25),
+    0px 0px 8px rgba(51, 51, 255, 0.25), 0px 4px 32px rgba(51, 51, 255, 0.5);
+}
+
+.popup_text1 {
+  position: absolute;
+  width: 520px;
+  height: 30px;
+  top: 272px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.popup_img {
+  position: absolute;
+  width: 107px;
+  height: 102px;
+  top: 372px;
+}
+
+.popup_text2 {
+  position: absolute;
+  width: 520px;
+  height: 24px;
+  top: 542px;
+}
+
+.popup_text3 {
+  position: absolute;
+  width: 520px;
+  height: 24px;
+  top: 574px;
+}
