@@ -3,6 +3,7 @@ import BurgerIngStyles from './burgering.module.css'
 import PropTypes from 'prop-types'
 import Modal from './../modal/modal'
 import { arrayType } from '../../types/index'
+import { useSelector } from 'react-redux'
 import {
   Tab,
   CurrencyIcon,
@@ -10,8 +11,8 @@ import {
   CloseIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
-function BurgerIngredients(props) {
-  const initial_array = props.mainArray
+function BurgerIngredients() {
+  const initial_array = useSelector((state) => state.feed.feed)
   const [current, setCurrent] = useState('one')
   const oneRef = useRef(null) //represents tab "one"
   const twoRef = useRef(null) //represents tab "two"
@@ -276,7 +277,7 @@ function BurgerIngredients(props) {
 }
 
 BurgerIngredients.propTypes = {
-  mainArray: arrayType.isRequired,
+  //mainArray: arrayType.isRequired,
   filtered_array: arrayType,
   onClose: PropTypes.func,
   index: PropTypes.number,
