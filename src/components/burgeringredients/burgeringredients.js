@@ -3,16 +3,19 @@ import BurgerIngStyles from './burgering.module.css'
 import PropTypes from 'prop-types'
 import Modal from './../modal/modal'
 import { arrayType } from '../../types/index'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import {
   Tab,
   CurrencyIcon,
   Counter,
   CloseIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
+import { ADD_ITEM } from '../../services/actions/burgerconst'
+import { v4 as uuidv4 } from 'uuid'
 
 function BurgerIngredients() {
   const initial_array = useSelector((state) => state.feed.feed)
+  //const { ingredients } = useSelector((state) => state.selectedIng.ingredients)
   const [current, setCurrent] = useState('one')
   const oneRef = useRef(null) //represents tab "one"
   const twoRef = useRef(null) //represents tab "two"
@@ -23,7 +26,9 @@ function BurgerIngredients() {
   const [show1, setShow1] = useState(false)
   const [show2, setShow2] = useState(false)
   const [show3, setShow3] = useState(false)
+  const dispatch = useDispatch()
 
+  //To filter initial data from API based on the type of the ingredients
   const bunArray = useMemo(
     () => initial_array.filter((ingr) => ingr.type === 'bun'),
     [initial_array]
@@ -43,6 +48,17 @@ function BurgerIngredients() {
     ref.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  // To handle onClick event and add an item to constructor
+  const addingItem = (obj) => {
+    const unique_id = uuidv4()
+    dispatch({
+      type: ADD_ITEM,
+      obj,
+      unique_id,
+    })
+  }
+
+  // The content of the modal popup - selected ingredient details
   const ModalContent = ({ filtered_array, onClose, index }) => {
     return (
       <>
@@ -197,6 +213,7 @@ function BurgerIngredients() {
                   onClick={() => {
                     setShow2(true)
                     setInd2(index)
+                    addingItem(filteredIngr)
                   }}
                   role="button"
                   tabIndex={0}
@@ -239,6 +256,7 @@ function BurgerIngredients() {
                   onClick={() => {
                     setShow3(true)
                     setInd3(index)
+                    addingItem(filteredIngr)
                   }}
                   role="button"
                   tabIndex={0}

@@ -11,8 +11,8 @@ function App() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getFeed())
-  }, [])
+    if (!feed.length) dispatch(getFeed())
+  }, [feed.length, dispatch])
 
   return (
     <>

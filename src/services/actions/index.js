@@ -13,7 +13,6 @@ export function getFeed() {
     // Проставим флаг в хранилище о том, что мы начали выполнять запрос
     // Это нужно, чтоб отрисовать в интерфейсе лоудер или заблокировать
     // ввод на время выполнения запроса
-    //console.log('Function is being executed!')
     dispatch({
       type: GET_FEED_REQUEST,
     })

@@ -4,6 +4,7 @@ import {
   GET_FEED_FAILED,
   GET_FEED_SUCCESS,
 } from './../actions'
+import { selectedIngredientsReducer } from './../reducers/burgerconst'
 
 const initialState = {
   feedRequest: false,
@@ -48,4 +49,5 @@ export const feedReducer = (state = initialState, action) => {
 
 export const rootReducer = combineReducers({
   feed: feedReducer,
+  selectedIng: selectedIngredientsReducer,
 })
