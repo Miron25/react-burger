@@ -1,4 +1,10 @@
-import { ADD_ITEM, DELETE_ITEM, CLEAR_ARRAY } from './../actions/burgerconst'
+import {
+  ADD_ITEM,
+  ADD_BUN,
+  DELETE_ITEM,
+  DELETE_BUN,
+  CLEAR_ARRAY,
+} from './../actions/burgerconst'
 
 const initialState = {
   bun: null,
@@ -16,12 +22,24 @@ export const selectedIngredientsReducer = (state = initialState, action) => {
         ],
       }
     }
+    case ADD_BUN: {
+      return {
+        ...state,
+        bun: action.bunobj,
+      }
+    }
     case DELETE_ITEM: {
       return {
         ...state,
         ingredients: [...state.ingredients].filter(
-          (item) => item.id !== action.id
+          (item) => item.UUID !== action.UUID
         ),
+      }
+    }
+    case DELETE_BUN: {
+      return {
+        ...state,
+        bun: null,
       }
     }
     case CLEAR_ARRAY: {

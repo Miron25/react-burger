@@ -5,6 +5,8 @@ import './App.css'
 import AppHeader from './components/appheader/appheader'
 import BurgerIngredients from './components/burgeringredients/burgeringredients'
 import BurgerConstructor from './components/burgerconstructor/burgerconstructor'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { DndProvider } from 'react-dnd'
 
 function App() {
   const { feed, feedRequest, feedFailed } = useSelector((state) => state.feed)
@@ -22,8 +24,10 @@ function App() {
         {feedFailed && 'Произошла ошибка при получении данных'}
         {!feedRequest && !feedFailed && feed.length && (
           <>
-            <BurgerIngredients />
-            <BurgerConstructor />
+            <DndProvider backend={HTML5Backend}>
+              <BurgerIngredients />
+              <BurgerConstructor />
+            </DndProvider>
           </>
         )}
       </div>

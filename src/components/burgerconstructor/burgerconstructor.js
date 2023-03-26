@@ -2,8 +2,6 @@ import React, { useState, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import BurgerConsStyles from './burgercons.module.css'
 import Modal from './../modal/modal'
-//import PropTypes from 'prop-types'
-//import { arrayType } from '../../types/index'
 import graphics from '../../images/graphics.png'
 import {
   ConstructorElement,
@@ -13,59 +11,116 @@ import {
   CloseIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { CLEAR_ARRAY } from '../../services/actions/burgerconst'
+import { useDrop } from 'react-dnd'
+import {
+  ADD_ITEM,
+  ADD_BUN,
+  DELETE_ITEM,
+  DELETE_BUN,
+} from '../../services/actions/burgerconst'
+import { v4 as uuidv4 } from 'uuid'
 
 function BurgerConstructor() {
-  const init_array = useSelector((state) => state.feed.feed)
   const ingredients = useSelector((state) => state.selectedIng.ingredients)
-  console.log(ingredients)
+  const bun = useSelector((state) => state.selectedIng.bun)
   const [show, setShow] = useState(false)
   const dispatch = useDispatch()
 
   const totalPrice = useMemo(() => {
-    return ingredients.reduce((sum, item) => sum + item.price, 0)
-  }, [ingredients])
+    if (bun)
+      return (
+        ingredients.reduce((sum, item) => sum + item.price, 0) + bun.price * 2
+      )
+    else return 0
+  }, [ingredients, bun])
+
+  const [, dropTarget] = useDrop({
+    accept: ['main_sauce', 'bun'],
+    drop(itemId) {
+      if (itemId.type === 'bun') {
+        addingBun(itemId)
+      } else if ((itemId.type === 'sauce' || itemId.type === 'main') && bun) {
+        addingItem(itemId)
+      }
+    },
+  })
+
+  // To handle onClick event and add an item to constructor
+  const addingItem = (obj) => {
+    const unique_id = uuidv4()
+    dispatch({
+      type: ADD_ITEM,
+      obj,
+      unique_id,
+    })
+  }
+
+  const addingBun = (bunobj) => {
+    bunobj = Object.assign({}, bunobj, { UUID: uuidv4(), UUID2: uuidv4() })
+    dispatch({
+      type: DELETE_BUN,
+    })
+    dispatch({
+      type: ADD_BUN,
+      bunobj,
+    })
+  }
 
   return (
     <div className={BurgerConsStyles.main}>
-      <div className={BurgerConsStyles.constr_block}>
+      <div className={BurgerConsStyles.constr_block} ref={dropTarget}>
         {
           <React.Fragment>
-            <span style={{ paddingLeft: '24px' }}>
-              <ConstructorElement
-                type="top"
-                isLocked={true}
-                text={init_array[0].name + ' (верх)'}
-                price={init_array[0].price}
-                thumbnail={init_array[0].image}
-              />
-            </span>
-            <div className={BurgerConsStyles.scroll_block}>
-              {/*<span>
-                <DragIcon />
+            {bun && (
+              <span
+                key={bun.UUID}
+                className={BurgerConsStyles.elem}
+                style={{ paddingLeft: '24px' }}
+              >
                 <ConstructorElement
-                  text={ingredients[0].name}
-                  price={ingredients[0].price}
-                  thumbnail={ingredients[0].image}
-                />
-        </span>*/}
-              <span>
-                <DragIcon />
-                <ConstructorElement
-                  text={init_array[5].name}
-                  price={init_array[5].price}
-                  thumbnail={init_array[5].image}
+                  type="top"
+                  isLocked={true}
+                  text={bun.name + ' (верх)'}
+                  price={bun.price}
+                  thumbnail={bun.image}
                 />
               </span>
+            )}
+            <div className={BurgerConsStyles.scroll_block}>
+              {ingredients.map((droppedIngr) => (
+                <React.Fragment key={droppedIngr.UUID}>
+                  <span className={BurgerConsStyles.elem}>
+                    <DragIcon />
+                    <ConstructorElement
+                      text={droppedIngr.name}
+                      price={droppedIngr.price}
+                      thumbnail={droppedIngr.image}
+                      handleClose={() =>
+                        dispatch({
+                          type: DELETE_ITEM,
+                          UUID: droppedIngr.UUID,
+                        })
+                      }
+                    />
+                  </span>
+                </React.Fragment>
+              ))}
             </div>
-            <span style={{ paddingLeft: '24px' }}>
-              <ConstructorElement
-                type="bottom"
-                isLocked={true}
-                text={init_array[0].name + ' (низ)'}
-                price={init_array[0].price}
-                thumbnail={init_array[0].image}
-              />
-            </span>
+            {bun && (
+              <span
+                key={bun.UUID2}
+                className={BurgerConsStyles.elem}
+                style={{ paddingLeft: '24px' }}
+              >
+                <ConstructorElement
+                  type="bottom"
+                  isLocked={true}
+                  text={bun.name + ' (низ)'}
+                  price={bun.price}
+                  thumbnail={bun.image}
+                />
+              </span>
+            )}
           </React.Fragment>
         }
       </div>
@@ -127,9 +182,5 @@ function BurgerConstructor() {
     </div>
   )
 }
-
-//BurgerConstructor.propTypes = {
-//  mainArray: arrayType.isRequired,
-//}
 
 export default BurgerConstructor
