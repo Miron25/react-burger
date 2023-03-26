@@ -9,6 +9,7 @@ import {
 const initialState = {
   bun: null,
   ingredients: [],
+  ing_ids: [],
 }
 
 export const selectedIngredientsReducer = (state = initialState, action) => {
@@ -20,12 +21,14 @@ export const selectedIngredientsReducer = (state = initialState, action) => {
           ...state.ingredients,
           Object.assign({}, action.obj, { UUID: action.unique_id }),
         ],
+        ing_ids: [...state.ing_ids, action._id],
       }
     }
     case ADD_BUN: {
       return {
         ...state,
         bun: action.bunobj,
+        ing_ids: [...state.ing_ids, action._id],
       }
     }
     case DELETE_ITEM: {
@@ -34,6 +37,7 @@ export const selectedIngredientsReducer = (state = initialState, action) => {
         ingredients: [...state.ingredients].filter(
           (item) => item.UUID !== action.UUID
         ),
+        ing_ids: [...state.ing_ids].filter((item) => item._id !== action._id),
       }
     }
     case DELETE_BUN: {

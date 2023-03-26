@@ -19,10 +19,14 @@ import {
   DELETE_BUN,
 } from '../../services/actions/burgerconst'
 import { v4 as uuidv4 } from 'uuid'
+import { getOrder } from '../../services/actions/orderdetails'
 
 function BurgerConstructor() {
   const ingredients = useSelector((state) => state.selectedIng.ingredients)
   const bun = useSelector((state) => state.selectedIng.bun)
+  const ing_ids = useSelector((state) => state.selectedIng.ing_ids)
+  const order = useSelector((state) => state.orderDetails.order)
+  const name = useSelector((state) => state.orderDetails.name)
   const [show, setShow] = useState(false)
   const dispatch = useDispatch()
 
@@ -52,6 +56,7 @@ function BurgerConstructor() {
       type: ADD_ITEM,
       obj,
       unique_id,
+      _id: obj._id,
     })
   }
 
@@ -63,7 +68,16 @@ function BurgerConstructor() {
     dispatch({
       type: ADD_BUN,
       bunobj,
+      _id: bunobj._id,
     })
+  }
+
+  const options = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      ingredients: ing_ids,
+    }),
   }
 
   return (
@@ -99,6 +113,7 @@ function BurgerConstructor() {
                         dispatch({
                           type: DELETE_ITEM,
                           UUID: droppedIngr.UUID,
+                          _id: droppedIngr._id,
                         })
                       }
                     />
@@ -142,6 +157,7 @@ function BurgerConstructor() {
               onClick={() => {
                 setShow(true)
                 dispatch({ type: CLEAR_ARRAY })
+                dispatch(getOrder({ options }))
               }}
             >
               Оформить заказ
@@ -157,10 +173,10 @@ function BurgerConstructor() {
             <CloseIcon onClick={() => setShow(false)} />
           </div>
           <div className={BurgerConsStyles.popup_order}>
-            <p className="text text_type_digits-large">034536</p>
+            <p className="text text_type_digits-large">{order}</p>
           </div>
           <div className={BurgerConsStyles.popup_text1}>
-            <p className="text text_type_main-medium">идентификатор заказа</p>
+            <p className="text text_type_main-medium">{name}</p>
           </div>
           <img
             src={graphics}

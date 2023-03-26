@@ -2,41 +2,42 @@ import {
   GET_ORDER_REQUEST,
   GET_ORDER_ERROR,
   GET_ORDER_SUCCESS,
-} from './../actions'
+} from './../actions/orderdetails'
 
 const initialState = {
-  feedRequest: false,
-  feedFailed: false,
-  feed: [],
+  orderRequest: false,
+  orderFailed: false,
+  order: null,
 }
 
-export const feedReducer = (state = initialState, action) => {
+export const orderDetailsReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_ORDER_REQUEST: {
       return {
         ...state,
         // Запрос начал выполняться
-        feedRequest: true,
+        orderRequest: true,
         // Сбрасываем статус наличия ошибок от предыдущего запроса на случай, если он был и завершился с ошибкой
-        feedFailed: false,
+        orderFailed: false,
       }
     }
     case GET_ORDER_SUCCESS: {
       return {
         ...state,
         // Запрос выполнился успешно, помещаем полученные данные в хранилище
-        feed: action.feed,
+        order: action.order,
+        name: action.name,
         // Запрос закончил своё выполнение
-        feedRequest: false,
+        orderRequest: false,
       }
     }
     case GET_ORDER_ERROR: {
       return {
         ...state,
         // Запрос выполнился с ошибкой, выставляем соответсвующие значения в хранилище
-        feedFailed: true,
+        orderFailed: true,
         // Запрос закончил своё выполнение
-        feedRequest: false,
+        orderRequest: false,
       }
     }
     default: {
