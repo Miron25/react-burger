@@ -10,13 +10,13 @@ import {
   Button,
   CloseIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import { CLEAR_ARRAY } from '../../services/actions/burgerconst'
 import { useDrop } from 'react-dnd'
 import {
   ADD_ITEM,
   ADD_BUN,
   DELETE_ITEM,
   DELETE_BUN,
+  CLEAR_ARRAY,
 } from '../../services/actions/burgerconst'
 import { v4 as uuidv4 } from 'uuid'
 import { getOrder } from '../../services/actions/orderdetails'

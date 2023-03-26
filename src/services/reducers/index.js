@@ -6,6 +6,7 @@ import {
 } from './../actions'
 import { selectedIngredientsReducer } from './../reducers/burgerconst'
 import { orderDetailsReducer } from './../reducers/orderdetails'
+import { ingredientDetailsReducer } from './../reducers/ingredientdetails'
 
 const initialState = {
   feedRequest: false,
@@ -52,4 +53,5 @@ export const rootReducer = combineReducers({
   feed: feedReducer,
   selectedIng: selectedIngredientsReducer,
   orderDetails: orderDetailsReducer,
+  ingDetails: ingredientDetailsReducer,
 })

@@ -3,27 +3,28 @@ import BurgerIngStyles from './burgering.module.css'
 import PropTypes from 'prop-types'
 import Modal from './../modal/modal'
 import { arrayType } from '../../types/index'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import {
   Tab,
   CurrencyIcon,
   Counter,
   CloseIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
+import {
+  GET_INGREDIENT_DETAILS,
+  CLEAR_INGREDIENT_DETAILS,
+} from '../../services/actions/ingredientdetails'
 import { useDrag } from 'react-dnd'
 
 function BurgerIngredients() {
   const initial_array = useSelector((state) => state.feed.feed)
+  const ingDetails = useSelector((state) => state.ingDetails.ingDetails)
   const [current, setCurrent] = useState('one')
   const oneRef = useRef(null) //represents tab "one"
   const twoRef = useRef(null) //represents tab "two"
   const threeRef = useRef(null) //represents tab "three"
-  const [ind, setInd] = useState(0)
-  const [ind2, setInd2] = useState(0)
-  const [ind3, setInd3] = useState(0)
-  const [show1, setShow1] = useState(false)
-  const [show2, setShow2] = useState(false)
-  const [show3, setShow3] = useState(false)
+  const [show, setShow] = useState(false)
+  const dispatch = useDispatch()
 
   //To filter initial data from API based on the type of the ingredients
   const bunArray = useMemo(
@@ -45,7 +46,7 @@ function BurgerIngredients() {
     ref.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const GridElement = ({ filteredIngr, setShow, setInd, index }) => {
+  const GridElement = ({ filteredIngr, setShow }) => {
     const ingredients = useSelector((state) => state.selectedIng.ingredients)
     const bun = useSelector((state) => state.selectedIng.bun)
 
@@ -71,7 +72,10 @@ function BurgerIngredients() {
           ref={dragRef}
           onClick={() => {
             setShow(true)
-            setInd(index)
+            dispatch({
+              type: GET_INGREDIENT_DETAILS,
+              ingr: filteredIngr,
+            })
           }}
           role="button"
           tabIndex={0}
@@ -105,7 +109,7 @@ function BurgerIngredients() {
   }
 
   // The content of the modal popup - selected ingredient details
-  const ModalContent = ({ filtered_array, onClose, index }) => {
+  const ModalContent = () => {
     return (
       <>
         <div className={BurgerIngStyles.popup_title}>
@@ -116,18 +120,23 @@ function BurgerIngredients() {
           >
             Детали игредиента
           </h1>
-          <CloseIcon onClick={onClose} />
+          <CloseIcon
+            onClick={() => {
+              setShow(false)
+              dispatch({
+                type: CLEAR_INGREDIENT_DETAILS,
+              })
+            }}
+          />
         </div>
 
         <img
-          src={filtered_array[index].image}
+          src={ingDetails.image}
           alt=""
           className={BurgerIngStyles.popup_img}
         ></img>
         <div className={BurgerIngStyles.popup_name}>
-          <h2 className="text text_type_main-medium">
-            {filtered_array[index].name}
-          </h2>
+          <h2 className="text text_type_main-medium">{ingDetails.name}</h2>
         </div>
         <ul className={BurgerIngStyles.popup_nutrition}>
           <div className={BurgerIngStyles.popup_nutrition_value}>
@@ -135,7 +144,7 @@ function BurgerIngredients() {
               Калории,ккал
             </span>
             <span className="text text_type_digits-default">
-              {filtered_array[index].calories}
+              {ingDetails.calories}
             </span>
           </div>
           <div className={BurgerIngStyles.popup_nutrition_value}>
@@ -143,7 +152,7 @@ function BurgerIngredients() {
               Белки, г
             </span>
             <span className="text text_type_digits-default">
-              {filtered_array[index].proteins}
+              {ingDetails.proteins}
             </span>
           </div>
           <div className={BurgerIngStyles.popup_nutrition_value}>
@@ -151,7 +160,7 @@ function BurgerIngredients() {
               Жиры, г
             </span>
             <span className="text text_type_digits-default">
-              {filtered_array[index].fat}
+              {ingDetails.fat}
             </span>
           </div>
           <div className={BurgerIngStyles.popup_nutrition_value}>
@@ -159,7 +168,7 @@ function BurgerIngredients() {
               Углеводы, г
             </span>
             <span className="text text_type_digits-default">
-              {filtered_array[index].carbohydrates}
+              {ingDetails.carbohydrates}
             </span>
           </div>
         </ul>
@@ -210,63 +219,69 @@ function BurgerIngredients() {
             Булки
           </p>
           <div className={BurgerIngStyles.grid_block}>
-            {bunArray.map((filteredIngr, index) => (
+            {bunArray.map((filteredIngr) => (
               <GridElement
                 key={filteredIngr._id}
                 filteredIngr={filteredIngr}
-                setShow={setShow1}
-                setInd={setInd}
-                index={index}
+                setShow={setShow}
               />
             ))}
           </div>
-          <Modal show={show1} onClose={() => setShow1(false)}>
-            <ModalContent
-              filtered_array={bunArray}
-              onClose={() => setShow1(false)}
-              index={ind}
-            />
+          <Modal
+            show={show}
+            onClose={() => {
+              setShow(false)
+              dispatch({
+                type: CLEAR_INGREDIENT_DETAILS,
+              })
+            }}
+          >
+            <ModalContent />
           </Modal>
           <p className="text text_type_main-medium pt-10 pb-6" ref={twoRef}>
             Соусы
           </p>
           <div className={BurgerIngStyles.grid_block}>
-            {sauceArray.map((filteredIngr, index) => (
+            {sauceArray.map((filteredIngr) => (
               <GridElement
                 key={filteredIngr._id}
                 filteredIngr={filteredIngr}
-                setShow={setShow2}
-                setInd={setInd2}
-                index={index}
+                setShow={setShow}
               />
             ))}
-            <Modal show={show2} onClose={() => setShow2(false)}>
-              <ModalContent
-                filtered_array={sauceArray}
-                onClose={() => setShow2(false)}
-                index={ind2}
-              />
+            <Modal
+              show={show}
+              onClose={() => {
+                setShow(false)
+                dispatch({
+                  type: CLEAR_INGREDIENT_DETAILS,
+                })
+              }}
+            >
+              <ModalContent />
             </Modal>
           </div>
           <p className="text text_type_main-medium pt-10 pb-6" ref={threeRef}>
             Начинки
           </p>
           <div className={BurgerIngStyles.grid_block}>
-            {mainArray.map((filteredIngr, index) => (
+            {mainArray.map((filteredIngr) => (
               <GridElement
                 key={filteredIngr._id}
                 filteredIngr={filteredIngr}
-                setShow={setShow3}
-                setInd={setInd3}
-                index={index}
+                setShow={setShow}
               />
             ))}
-            <Modal show={show3} onClose={() => setShow3(false)}>
-              <ModalContent
-                filtered_array={mainArray}
-                onClose={() => setShow3(false)}
-                index={ind3}
-              />
+            <Modal
+              show={show}
+              onClose={() => {
+                setShow(false)
+                dispatch({
+                  type: CLEAR_INGREDIENT_DETAILS,
+                })
+              }}
+            >
+              <ModalContent />
             </Modal>
           </div>
         </div>
