@@ -85,38 +85,40 @@ function BurgerConstructor() {
 
   const moveIngr = useCallback(
     (dragIndex, hoverIndex) => {
-      //console.log(hoverIndex)
-      //const ingredients = [...ingredients]
-
+      const dragItem = ingredients[dragIndex]
+      const hoverItem = ingredients[hoverIndex]
+      const updatedList = [...ingredients]
+      updatedList[dragIndex] = hoverItem
+      updatedList[hoverIndex] = dragItem
+      //const ing2 = [...ingredients].splice(hoverIndex, 0, [...ingredients].splice(dragIndex, 1)[0])
       dispatch({
         type: SAVE_STATE,
+        updatedList,
       })
-      ingredients.splice(hoverIndex, 0, ingredients.splice(dragIndex, 1)[0])
-      dispatch({
-        type: SAVE_STATE,
-      })
-      //console.log(ingredients.splice(dragIndex, 1)[0])
+      console.log(ingredients)
     },
-    [dispatch, ingredients]
+    [ingredients, dispatch]
   )
 
-  const renderList = useCallback((droppedIngr, index) => {
-    return (
-      <IngrList
-        key={droppedIngr.UUID}
-        droppedIngr={droppedIngr}
-        UUID={droppedIngr.UUID}
-        index={index}
-        moveIngr={moveIngr}
-      />
-    )
-  }, [])
+  const renderList = useCallback(
+    (droppedIngr, index) => {
+      return (
+        <IngrList
+          key={droppedIngr.UUID}
+          droppedIngr={droppedIngr}
+          UUID={droppedIngr.UUID}
+          index={index}
+          moveIngr={moveIngr}
+        />
+      )
+    },
+    [moveIngr]
+  )
 
   const IngrList = ({ droppedIngr, UUID, index, moveIngr }) => {
     const ref = useRef(null)
 
     const [{ handlerId }, drop] = useDrop({
-      //{ handlerId }
       accept: ['main_sauce'],
       collect(monitor) {
         return {
@@ -127,10 +129,10 @@ function BurgerConstructor() {
         if (!ref.current) {
           return
         }
-        const dragIndex = item.UUID //monitor.getItem().index
+        const dragIndex = item.index
         //console.log(dragIndex)
         const hoverIndex = index
-        // console.log(hoverIndex)
+        //console.log(dragIndex, hoverIndex)
         // Don't replace items with themselves
         if (dragIndex === hoverIndex) {
           return
@@ -175,7 +177,7 @@ function BurgerConstructor() {
         isDragging: monitor.isDragging(),
       }),
     })
-    const opacity = isDragging ? 0 : 1
+    const opacity = isDragging ? 0.1 : 1
     drag(drop(ref))
 
     return (
@@ -203,41 +205,10 @@ function BurgerConstructor() {
       </React.Fragment>
     )
   }
-  /* const moveIngr = useCallback((dragIndex, hoverIndex) => {
-    console.log('In moveIngr.')
-    // const ingredients = [...state.ingredients]
-    ingredients.splice(hoverIndex, 0, ingredients.splice(dragIndex, 1)[0])
-  }, [])
-  setCards((prevIngr) =>
-      update(prevIngr, {
-        $splice: [
-          [dragIndex, 1],
-          [hoverIndex, 0, prevCards[dragIndex]],
-        ],
-      }),
-    )
-  }, [])
-
-  console.log(moveIngr)
-  const renderCard = useCallback((card, index) => {
-    return (
-      <Card
-        key={card.id}
-        index={index}
-        id={card.id}
-        text={card.text}
-        moveCard={moveCard}
-      />
-    )
-  }, [])*/
 
   return (
     <div className={BurgerConsStyles.main}>
-      <div
-        className={BurgerConsStyles.constr_block}
-        ref={dropTarget}
-        //data-handler-id={handlerId}
-      >
+      <div className={BurgerConsStyles.constr_block} ref={dropTarget}>
         {
           <React.Fragment>
             {bun && (
@@ -255,12 +226,7 @@ function BurgerConstructor() {
                 />
               </span>
             )}
-            <div
-              className={BurgerConsStyles.scroll_block}
-              //ref={dragSource}
-              //style={{ opacity }}
-              //data-handler-id={handlerId}
-            >
+            <div className={BurgerConsStyles.scroll_block}>
               {ingredients.map((droppedIngr, index) =>
                 renderList(droppedIngr, index)
               )}

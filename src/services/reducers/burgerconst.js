@@ -53,9 +53,11 @@ export const selectedIngredientsReducer = (state = initialState, action) => {
       }
     }
     case SAVE_STATE: {
+      console.log(state.ingredients)
+      console.log(action.updatedList)
       return {
         ...state,
-        ingredients: [...state.ingredients],
+        ingredients: [...action.updatedList],
         ing_ids: [...state.ing_ids],
       }
     }
