@@ -4,6 +4,7 @@ import {
   DELETE_ITEM,
   DELETE_BUN,
   CLEAR_ARRAY,
+  SAVE_STATE,
 } from './../actions/burgerconst'
 
 const initialState = {
@@ -49,6 +50,13 @@ export const selectedIngredientsReducer = (state = initialState, action) => {
     case CLEAR_ARRAY: {
       return {
         ...initialState,
+      }
+    }
+    case SAVE_STATE: {
+      return {
+        ...state,
+        ingredients: [...state.ingredients],
+        ing_ids: [...state.ing_ids],
       }
     }
     default: {

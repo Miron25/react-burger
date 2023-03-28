@@ -19,6 +19,7 @@ import {
   DELETE_ITEM,
   DELETE_BUN,
   CLEAR_ARRAY,
+  SAVE_STATE,
 } from '../../services/actions/burgerconst'
 import { v4 as uuidv4 } from 'uuid'
 import { getOrder } from '../../services/actions/orderdetails'
@@ -30,7 +31,6 @@ function BurgerConstructor() {
   const order = useSelector((state) => state.orderDetails.order)
   const name = useSelector((state) => state.orderDetails.name)
   const [show, setShow] = useState(false)
-  //const ref = useRef(null)
   const dispatch = useDispatch()
 
   const totalPrice = useMemo(() => {
@@ -50,59 +50,7 @@ function BurgerConstructor() {
         addingItem(itemId)
       }
     },
-    /*collect(monitor) {
-      return {
-        handlerId: monitor.getHandlerId(),
-      }
-    },
-    hover(item, monitor) {
-      if (!dropTarget.current) {
-        return
-      }
-      const dragIndex = item.UUID //monitor.getItem().index
-      const hoverIndex = item.index
-      // Don't replace items with themselves
-      if (dragIndex === hoverIndex) {
-        return
-      }
-      // Determine rectangle on screen
-      const hoverBoundingRect = dropTarget.current?.getBoundingClientRect()
-      console.log(dropTarget.current)
-      // Get vertical middle
-      const hoverMiddleY = 0 //(hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-      // Determine mouse position
-      const clientOffset = monitor.getClientOffset()
-      // Get pixels to the top
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top
-      // Only perform the move when the mouse has crossed half of the items height
-      // When dragging downwards, only move when the cursor is below 50%
-      // When dragging upwards, only move when the cursor is above 50%
-      // Dragging downwards
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        console.log('drag < hover')
-        return
-      }
-      // Dragging upwards
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        console.log('drag > hover')
-        return
-      }
-      // Time to actually perform the action
-      moveIngr(dragIndex, hoverIndex)
-      // Note: we're mutating the monitor item here!
-      // Generally it's better to avoid mutations,
-      // but it's good here for the sake of performance
-      // to avoid expensive index searches.
-      item.index = hoverIndex
-    },*/
   })
-  //dragSource(dropTarget(dragSource))
-
-  /*const moveIngr = useCallback((dragIndex, hoverIndex) => {
-    console.log('In moveIngr.')
-    // const ingredients = [...state.ingredients]
-    ingredients.splice(hoverIndex, 0, ingredients.splice(dragIndex, 1)[0])
-  }, [])*/
 
   // To handle onClick event and add an item to constructor
   const addingItem = (obj) => {
@@ -135,7 +83,36 @@ function BurgerConstructor() {
     }),
   }
 
-  const IngrList = ({ droppedIngr, UUID, index }) => {
+  const moveIngr = useCallback(
+    (dragIndex, hoverIndex) => {
+      //console.log(hoverIndex)
+      //const ingredients = [...ingredients]
+
+      dispatch({
+        type: SAVE_STATE,
+      })
+      ingredients.splice(hoverIndex, 0, ingredients.splice(dragIndex, 1)[0])
+      dispatch({
+        type: SAVE_STATE,
+      })
+      //console.log(ingredients.splice(dragIndex, 1)[0])
+    },
+    [dispatch, ingredients]
+  )
+
+  const renderList = useCallback((droppedIngr, index) => {
+    return (
+      <IngrList
+        key={droppedIngr.UUID}
+        droppedIngr={droppedIngr}
+        UUID={droppedIngr.UUID}
+        index={index}
+        moveIngr={moveIngr}
+      />
+    )
+  }, [])
+
+  const IngrList = ({ droppedIngr, UUID, index, moveIngr }) => {
     const ref = useRef(null)
 
     const [{ handlerId }, drop] = useDrop({
@@ -152,7 +129,7 @@ function BurgerConstructor() {
         }
         const dragIndex = item.UUID //monitor.getItem().index
         //console.log(dragIndex)
-        const hoverIndex = item.index
+        const hoverIndex = index
         // console.log(hoverIndex)
         // Don't replace items with themselves
         if (dragIndex === hoverIndex) {
@@ -198,14 +175,8 @@ function BurgerConstructor() {
         isDragging: monitor.isDragging(),
       }),
     })
-    const opacity = isDragging ? 0.5 : 1
+    const opacity = isDragging ? 0 : 1
     drag(drop(ref))
-
-    const moveIngr = useCallback((dragIndex, hoverIndex) => {
-      //console.log('In moveIngr.')
-      // const droppedIngr = [...state.droppedIngr]
-      ingredients.splice(hoverIndex, 0, ingredients.splice(dragIndex, 1)[0])
-    }, [])
 
     return (
       <React.Fragment key={droppedIngr.UUID}>
@@ -227,7 +198,6 @@ function BurgerConstructor() {
                 _id: droppedIngr._id,
               })
             }
-            //moveIngr={moveIngr}
           />
         </span>
       </React.Fragment>
@@ -291,15 +261,9 @@ function BurgerConstructor() {
               //style={{ opacity }}
               //data-handler-id={handlerId}
             >
-              {ingredients.map((droppedIngr, index) => (
-                <IngrList
-                  key={droppedIngr.UUID}
-                  droppedIngr={droppedIngr}
-                  UUID={droppedIngr.UUID}
-                  index={index}
-                  dropTarget={dropTarget}
-                />
-              ))}
+              {ingredients.map((droppedIngr, index) =>
+                renderList(droppedIngr, index)
+              )}
             </div>
             {bun && (
               <span
@@ -383,10 +347,11 @@ BurgerConstructor.propTypes = {
   droppedIngr: arrayType,
   UUID: PropTypes.string,
   index: PropTypes.number,
-  dropTarget: PropTypes.oneOfType([
+  moveIngr: PropTypes.func,
+  /*dropTarget: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-  ]),
+  ]),*/
 }
 
 export default BurgerConstructor
