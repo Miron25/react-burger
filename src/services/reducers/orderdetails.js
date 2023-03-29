@@ -38,6 +38,8 @@ export const orderDetailsReducer = (state = initialState, action) => {
         orderFailed: true,
         // Запрос закончил своё выполнение
         orderRequest: false,
+        order: null,
+        name: null,
       }
     }
     default: {

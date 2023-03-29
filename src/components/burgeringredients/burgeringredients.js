@@ -1,5 +1,7 @@
-import React, { useState, useRef, useMemo } from 'react'
+import React, { useState, useRef, useMemo, useEffect } from 'react'
 import BurgerIngStyles from './burgering.module.css'
+import { ModalContent } from '../ingredientdetails/ingredientdetails'
+import { useInView } from 'react-intersection-observer'
 import PropTypes from 'prop-types'
 import Modal from './../modal/modal'
 import { arrayType } from '../../types/index'
@@ -8,7 +10,6 @@ import {
   Tab,
   CurrencyIcon,
   Counter,
-  CloseIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import {
   GET_INGREDIENT_DETAILS,
@@ -18,10 +19,9 @@ import { useDrag } from 'react-dnd'
 
 function BurgerIngredients() {
   const initial_array = useSelector((state) => state.feed.feed)
-  const ingDetails = useSelector((state) => state.ingDetails.ingDetails)
   const ingredients = useSelector((state) => state.selectedIng.ingredients)
   const bun = useSelector((state) => state.selectedIng.bun)
-  const [current, setCurrent] = useState('one')
+  const [current, setCurrent] = useState('bun')
   const oneRef = useRef(null) //represents tab "one"
   const twoRef = useRef(null) //represents tab "two"
   const threeRef = useRef(null) //represents tab "three"
@@ -41,6 +41,20 @@ function BurgerIngredients() {
     () => initial_array.filter((ingr) => ingr.type === 'main'),
     [initial_array]
   )
+
+  const [bunRef, InViewBun] = useInView({ threshold: 0 })
+  const [sauceRef, InViewSauce] = useInView({ threshold: 0 })
+  const [mainRef, InViewMain] = useInView({ threshold: 0 })
+
+  useEffect(() => {
+    if (InViewBun) {
+      setCurrent('bun')
+    } else if (InViewSauce) {
+      setCurrent('sauce')
+    } else if (InViewMain) {
+      setCurrent('main')
+    }
+  }, [InViewBun, InViewSauce, InViewMain])
 
   const handleKeyDown = () => {}
 
@@ -108,7 +122,7 @@ function BurgerIngredients() {
   }
 
   // The content of the modal popup - selected ingredient details
-  const ModalContent = () => {
+  /* const ModalContent = () => {
     return (
       <>
         <div className={BurgerIngStyles.popup_title}>
@@ -173,7 +187,7 @@ function BurgerIngredients() {
         </ul>
       </>
     )
-  }
+  }*/
 
   return (
     <>
@@ -183,30 +197,30 @@ function BurgerIngredients() {
         </header>
         <div className={BurgerIngStyles.tabs}>
           <Tab
-            value="one"
-            active={current === 'one'}
+            value="bun"
+            active={current === 'bun'}
             onClick={() => {
-              setCurrent('one')
+              setCurrent('bun')
               handleTabClick(oneRef)
             }}
           >
             Булки
           </Tab>
           <Tab
-            value="two"
-            active={current === 'two'}
+            value="sauce"
+            active={current === 'sauce'}
             onClick={() => {
-              setCurrent('two')
+              setCurrent('sauce')
               handleTabClick(twoRef)
             }}
           >
             Соусы
           </Tab>
           <Tab
-            value="three"
-            active={current === 'three'}
+            value="main"
+            active={current === 'main'}
             onClick={() => {
-              setCurrent('three')
+              setCurrent('main')
               handleTabClick(threeRef)
             }}
           >
@@ -217,7 +231,7 @@ function BurgerIngredients() {
           <p className="text text_type_main-medium pt-10 pb-6" ref={oneRef}>
             Булки
           </p>
-          <div className={BurgerIngStyles.grid_block}>
+          <div className={BurgerIngStyles.grid_block} ref={bunRef}>
             {bunArray.map((filteredIngr) => (
               <GridElement
                 key={filteredIngr._id}
@@ -235,12 +249,12 @@ function BurgerIngredients() {
               })
             }}
           >
-            <ModalContent />
+            <ModalContent setShow={setShow} />
           </Modal>
           <p className="text text_type_main-medium pt-10 pb-6" ref={twoRef}>
             Соусы
           </p>
-          <div className={BurgerIngStyles.grid_block}>
+          <div className={BurgerIngStyles.grid_block} ref={sauceRef}>
             {sauceArray.map((filteredIngr) => (
               <GridElement
                 key={filteredIngr._id}
@@ -257,13 +271,13 @@ function BurgerIngredients() {
                 })
               }}
             >
-              <ModalContent />
+              <ModalContent setShow={setShow} />
             </Modal>
           </div>
           <p className="text text_type_main-medium pt-10 pb-6" ref={threeRef}>
             Начинки
           </p>
-          <div className={BurgerIngStyles.grid_block}>
+          <div className={BurgerIngStyles.grid_block} ref={mainRef}>
             {mainArray.map((filteredIngr) => (
               <GridElement
                 key={filteredIngr._id}
@@ -280,7 +294,7 @@ function BurgerIngredients() {
                 })
               }}
             >
-              <ModalContent />
+              <ModalContent setShow={setShow} />
             </Modal>
           </div>
         </div>

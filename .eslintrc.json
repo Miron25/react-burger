@@ -19,7 +19,7 @@
   },
   "plugins": ["react", "jsx-a11y"],
   "rules": {
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+    "react/jsx-filename-extension": "off" //[1, { "extensions": [".js", ".jsx"] }]
   },
   "settings": {
     "import/resolver": {

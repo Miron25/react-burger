@@ -41,6 +41,7 @@ export const feedReducer = (state = initialState, action) => {
         feedFailed: true,
         // Запрос закончил своё выполнение
         feedRequest: false,
+        feed: [],
       }
     }
     default: {
