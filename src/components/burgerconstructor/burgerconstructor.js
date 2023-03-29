@@ -43,36 +43,35 @@ function BurgerConstructor() {
 
   const [, dropTarget] = useDrop({
     accept: ['main_sauce', 'bun'],
-    drop(itemId) {
-      if (itemId.type === 'bun') {
-        addingBun(itemId)
-      } else if ((itemId.type === 'sauce' || itemId.type === 'main') && bun) {
-        addingItem(itemId)
-      }
+    drop(item) {
+      addingItem_Bun(item)
     },
   })
 
   // To handle onClick event and add an item to constructor
-  const addingItem = (obj) => {
-    const unique_id = uuidv4()
-    dispatch({
-      type: ADD_ITEM,
-      obj,
-      unique_id,
-      _id: obj._id,
-    })
-  }
-
-  const addingBun = (bunobj) => {
-    bunobj = Object.assign({}, bunobj, { UUID: uuidv4(), UUID2: uuidv4() })
-    dispatch({
-      type: DELETE_BUN,
-    })
-    dispatch({
-      type: ADD_BUN,
-      bunobj,
-      _id: bunobj._id,
-    })
+  const addingItem_Bun = (item) => {
+    const itemDropped = item
+    if (itemDropped.type === 'bun') {
+      const bunobj = Object.assign({}, itemDropped, {
+        UUID: uuidv4(),
+        UUID2: uuidv4(),
+      })
+      dispatch({
+        type: DELETE_BUN,
+      }),
+        dispatch({
+          type: ADD_BUN,
+          bunobj,
+          _id: bunobj._id,
+        })
+    } else {
+      const ingobj = Object.assign({}, itemDropped, { UUID: uuidv4() })
+      dispatch({
+        type: ADD_ITEM,
+        ingobj,
+        _id: ingobj._id,
+      })
+    }
   }
 
   const options = {
@@ -90,14 +89,12 @@ function BurgerConstructor() {
       const updatedList = [...ingredients]
       updatedList[dragIndex] = hoverItem
       updatedList[hoverIndex] = dragItem
-      //const ing2 = [...ingredients].splice(hoverIndex, 0, [...ingredients].splice(dragIndex, 1)[0])
       dispatch({
         type: SAVE_STATE,
         updatedList,
       })
-      console.log(ingredients)
     },
-    [ingredients, dispatch]
+    [dispatch, ingredients]
   )
 
   const renderList = useCallback(
@@ -106,7 +103,6 @@ function BurgerConstructor() {
         <IngrList
           key={droppedIngr.UUID}
           droppedIngr={droppedIngr}
-          UUID={droppedIngr.UUID}
           index={index}
           moveIngr={moveIngr}
         />
@@ -115,11 +111,11 @@ function BurgerConstructor() {
     [moveIngr]
   )
 
-  const IngrList = ({ droppedIngr, UUID, index, moveIngr }) => {
+  const IngrList = ({ droppedIngr, index, moveIngr }) => {
     const ref = useRef(null)
 
     const [{ handlerId }, drop] = useDrop({
-      accept: ['main_sauce'],
+      accept: ['sorting'],
       collect(monitor) {
         return {
           handlerId: monitor.getHandlerId(),
@@ -130,16 +126,13 @@ function BurgerConstructor() {
           return
         }
         const dragIndex = item.index
-        //console.log(dragIndex)
         const hoverIndex = index
-        //console.log(dragIndex, hoverIndex)
         // Don't replace items with themselves
         if (dragIndex === hoverIndex) {
           return
         }
         // Determine rectangle on screen
         const hoverBoundingRect = ref.current?.getBoundingClientRect()
-        //console.log(hoverBoundingRect)
         // Get vertical middle
         const hoverMiddleY =
           (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
@@ -169,9 +162,9 @@ function BurgerConstructor() {
     })
 
     const [{ isDragging }, drag] = useDrag({
-      type: 'main_sauce',
+      type: 'sorting',
       item: () => {
-        return { UUID, index }
+        return { index }
       },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
@@ -193,13 +186,13 @@ function BurgerConstructor() {
             text={droppedIngr.name}
             price={droppedIngr.price}
             thumbnail={droppedIngr.image}
-            handleClose={() =>
+            handleClose={() => {
               dispatch({
                 type: DELETE_ITEM,
                 UUID: droppedIngr.UUID,
                 _id: droppedIngr._id,
               })
-            }
+            }}
           />
         </span>
       </React.Fragment>
@@ -314,10 +307,6 @@ BurgerConstructor.propTypes = {
   UUID: PropTypes.string,
   index: PropTypes.number,
   moveIngr: PropTypes.func,
-  /*dropTarget: PropTypes.oneOfType([
-    PropTypes.func,
-    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-  ]),*/
 }
 
 export default BurgerConstructor

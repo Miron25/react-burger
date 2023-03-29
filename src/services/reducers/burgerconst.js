@@ -18,10 +18,7 @@ export const selectedIngredientsReducer = (state = initialState, action) => {
     case ADD_ITEM: {
       return {
         ...state,
-        ingredients: [
-          ...state.ingredients,
-          Object.assign({}, action.obj, { UUID: action.unique_id }),
-        ],
+        ingredients: [...state.ingredients, action.ingobj],
         ing_ids: [...state.ing_ids, action._id],
       }
     }
@@ -35,10 +32,10 @@ export const selectedIngredientsReducer = (state = initialState, action) => {
     case DELETE_ITEM: {
       return {
         ...state,
-        ingredients: [...state.ingredients].filter(
+        ingredients: state.ingredients.filter(
           (item) => item.UUID !== action.UUID
         ),
-        ing_ids: [...state.ing_ids].filter((item) => item._id !== action._id),
+        ing_ids: state.ing_ids.filter((item) => item !== action._id),
       }
     }
     case DELETE_BUN: {
@@ -53,8 +50,6 @@ export const selectedIngredientsReducer = (state = initialState, action) => {
       }
     }
     case SAVE_STATE: {
-      console.log(state.ingredients)
-      console.log(action.updatedList)
       return {
         ...state,
         ingredients: [...action.updatedList],

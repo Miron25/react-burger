@@ -19,6 +19,8 @@ import { useDrag } from 'react-dnd'
 function BurgerIngredients() {
   const initial_array = useSelector((state) => state.feed.feed)
   const ingDetails = useSelector((state) => state.ingDetails.ingDetails)
+  const ingredients = useSelector((state) => state.selectedIng.ingredients)
+  const bun = useSelector((state) => state.selectedIng.bun)
   const [current, setCurrent] = useState('one')
   const oneRef = useRef(null) //represents tab "one"
   const twoRef = useRef(null) //represents tab "two"
@@ -47,9 +49,6 @@ function BurgerIngredients() {
   }
 
   const GridElement = ({ filteredIngr, setShow }) => {
-    const ingredients = useSelector((state) => state.selectedIng.ingredients)
-    const bun = useSelector((state) => state.selectedIng.bun)
-
     const [{ isDragging }, dragRef] = useDrag({
       type: filteredIngr.type === 'bun' ? 'bun' : 'main_sauce',
       item: filteredIngr,
@@ -83,7 +82,7 @@ function BurgerIngredients() {
           style={{ isDragging }}
         >
           {bun && bun._id === filteredIngr._id && (
-            <Counter count={1} size="default" extraClass="m-1" />
+            <Counter count={2} size="default" extraClass="m-1" />
           )}
           {ingredients &&
             ingredients.filter((elem) => elem._id === filteredIngr._id).length >
