@@ -18,7 +18,7 @@ const Modal = ({ children, show, onClose, modalStyle }) => {
     return () => {
       document.removeEventListener('mouseup', checkIfClickedOutside)
     }
-  }, [])
+  }, [onClose])
 
   useEffect(() => {
     const close = (e) => {

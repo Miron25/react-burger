@@ -29,6 +29,11 @@
   overflow-x: hidden;
 }
 
+.elem {
+  width: 568px;
+  height: 80px;
+}
+
 .grid_block {
   display: grid;
   grid-template-columns: 1fr;
