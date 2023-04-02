@@ -1,27 +1,30 @@
 import { Link } from 'react-router-dom'
-
+import AppHeader from '../components/appheader/appheader'
 import styles from './not-found.module.css'
 
 //import { Breadcrumbs } from '../components/breadcrumbs'
 
 export function NotFound404() {
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.container}>
-        {/*} <Breadcrumbs />*/}
-        <div className={styles.content}>
-          <h1>Oops! 404 Error</h1>
-          <p>The page you requested does not exist</p>
-          <br />
-          <br />
-          <p>
-            check the address or try{' '}
-            <Link to="/" className={styles.link}>
-              homepage
-            </Link>
-          </p>
+    <>
+      <AppHeader />
+      <div className={styles.wrapper}>
+        <div className={styles.container}>
+          {/*} <Breadcrumbs />*/}
+          <div className={styles.content}>
+            <h1 className="text text_type_main-large">Упс! Ошибка 404</h1>
+            <p className="text text_type_main-medium">Страница не существует</p>
+            <br />
+            <br />
+            <p className="text text_type_main-small">
+              Проверьте адрес или вернитесь на{' '}
+              <Link to="/" className={styles.link}>
+                домашнюю страницу
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }

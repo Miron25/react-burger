@@ -8,7 +8,15 @@ import './App.css'
 //import { HTML5Backend } from 'react-dnd-html5-backend'
 //import { DndProvider } from 'react-dnd'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { HomePage, NotFound404, LoginPage } from './pages'
+import {
+  HomePage,
+  NotFound404,
+  LoginPage,
+  RegisterPage,
+  ForgotPasswordPage,
+  ResetPasswordPage,
+  ProfilePage,
+} from './pages'
 //import { ProtectedRouteElement } from "./components/protected-route";
 //import { ProvideAuth } from "./services/auth";
 
@@ -42,6 +50,10 @@ function App() {
               </div>
                 </React.Fragment>*/}
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
           {/*<Route path="/list" element={<ProtectedRouteElement element={<ListPage />} />}/>
           <Route path="/list/:country" element={<ProtectedRouteElement element={<CountryPage />} />}/>
   <Route path="/list/:country/:personId" element={<ProtectedRouteElement element={<PersonPage />} />} /> */}

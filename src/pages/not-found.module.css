@@ -1,22 +1,22 @@
 .wrapper {
-  /*background-image: url('../images/person-bg.svg');*/
   width: 100vw;
   height: 100vh;
-  background-size: cover;
-  background-position: bottom;
-  background-position-x: -25vw;
-  background-repeat: no-repeat;
 }
 
 .container {
   padding: var(--container-padding);
   display: flex;
   flex-direction: column;
+  align-items: center;
+  position: absolute;
   height: calc(100vh - var(--container-padding) * 2);
+  top: 200px;
+  left: 800px;
 }
 
 .content {
   margin: auto;
+  text-align: center;
 }
 
 .link {

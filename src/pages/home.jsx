@@ -3,6 +3,7 @@
 //import styles from './home.module.css'
 import { useEffect } from 'react'
 import AppHeader from '../components/appheader/appheader'
+import styles from '../App.css'
 import BurgerIngredients from '../components/burgeringredients/burgeringredients'
 import BurgerConstructor from '../components/burgerconstructor/burgerconstructor'
 import { HTML5Backend } from 'react-dnd-html5-backend'
@@ -24,7 +25,7 @@ export function HomePage() {
   //navigate('/list', { state: initialBreadcrumb })}
 
   return (
-    <div id="root">
+    <div id="root" className={styles.root}>
       <AppHeader />
       {feedRequest && 'Загрузка данных...'}
       {feedFailed && 'Произошла ошибка при получении данных'}

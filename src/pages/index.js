@@ -1,8 +1,17 @@
-//import { CountryPage } from './country';
 import { LoginPage } from './login'
-//import { PersonPage } from './person';
+import { RegisterPage } from './register'
+import { ForgotPasswordPage } from './forgot-password'
 import { HomePage } from './home'
-//import { ListPage } from './list';
+import { ResetPasswordPage } from './reset-password'
+import { ProfilePage } from './profile'
 import { NotFound404 } from './not-found'
 
-export { LoginPage, HomePage, NotFound404 }
+export {
+  HomePage,
+  LoginPage,
+  RegisterPage,
+  ForgotPasswordPage,
+  ResetPasswordPage,
+  ProfilePage,
+  NotFound404,
+}
