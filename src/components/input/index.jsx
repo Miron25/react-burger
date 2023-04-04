@@ -29,7 +29,7 @@ export const Input = ({
 }
 
 Input.propTypes = {
-  icon: PropTypes.element,
+  icon: PropTypes.any,
   onIconClick: PropTypes.func,
   value: PropTypes.string,
   placeholder: PropTypes.string,

@@ -4,6 +4,7 @@ import eye from '../../images/eye.svg'
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import styles from '../input/input.module.css'
+//import {ShowIcon, HideIcon,} from '@ya.praktikum/react-developer-burger-ui-components'
 
 const EyeOff = ({ onClick }) => (
   <input

@@ -1,9 +1,10 @@
-import { useCallback, useState } from 'react'
-//import { Navigate } from 'react-router-dom'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 import AppHeader from '../components/appheader/appheader'
 import styles from './login.module.css'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
-
+import { getAuth } from '../services/actions/authorization'
 //import { useAuth } from '../services/auth'
 //import { Button } from '../components/button'
 import { Input } from '../components/input'
@@ -11,21 +12,39 @@ import { PasswordInput } from '../components/password-input'
 
 export function LoginPage() {
   // let auth = useAuth()
-
+  // const navigate = useNavigate()
   const [form, setValue] = useState({ email: '', password: '' })
+  const dispatch = useDispatch()
+
+  //const handleKeyDown = () => {}
 
   const onChange = (e) => {
     setValue({ ...form, [e.target.name]: e.target.value })
   }
 
-  let login = useCallback(
+  const options = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: form.email,
+      password: form.password,
+    }),
+  }
+  console.log(options)
+
+  /* const onClick = () => {
+    //  const initialBreadcrumb = [{ path: '/', url: '/', title: 'Home' }];
+    navigate('/register')
+  }*/
+
+  /*let login = useCallback(
     (e) => {
       e.preventDefault()
       // auth.signIn(form)
     },
     []
     // [auth, form]
-  )
+  )*/
 
   // if (auth.user) {
   //   return <Navigate to={'/'} />
@@ -56,10 +75,10 @@ export function LoginPage() {
             type="primary"
             size="large"
             onClick={() => {
-              login
+              //login
               //setShow(true)
               //dispatch({ type: CLEAR_ARRAY })
-              //dispatch(getOrder({ options }))
+              dispatch(getAuth({ options }))
             }}
           >
             Войти
@@ -70,29 +89,25 @@ export function LoginPage() {
             <span className="text text_type_main-default text_color_inactive">
               Вы - новый пользователь?
             </span>
-            <a
-              href="https://"
-              target={'_blank'}
-              rel="noopener, noreferrer"
+            <Link
+              to="/register"
               className="text text_type_main-default"
               style={{ color: '#4C4CFF' }}
             >
               Зарегистрироваться
-            </a>
+            </Link>
           </div>
           <div className={styles.registr}>
             <span className="text text_type_main-default text_color_inactive">
               Забыли пароль?
             </span>
-            <a
-              href="https://"
-              target={'_blank'}
-              rel="noopener, noreferrer"
+            <Link
+              to="/forgot-password"
               className="text text_type_main-default"
               style={{ color: '#4C4CFF' }}
             >
               Восстановить пароль
-            </a>
+            </Link>
           </div>
         </div>
       </div>

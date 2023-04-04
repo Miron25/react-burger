@@ -7,6 +7,11 @@ import {
 import { selectedIngredientsReducer } from './../reducers/burgerconst'
 import { orderDetailsReducer } from './../reducers/orderdetails'
 import { ingredientDetailsReducer } from './../reducers/ingredientdetails'
+import { checkEmailReducer } from './forgotpassword'
+import { loginReducer } from './authorization'
+import { registrationReducer } from './registration'
+import { logoutReducer } from './logout'
+import { tokenReducer } from './token'
 
 const initialState = {
   feedRequest: false,
@@ -55,4 +60,9 @@ export const rootReducer = combineReducers({
   selectedIng: selectedIngredientsReducer,
   orderDetails: orderDetailsReducer,
   ingDetails: ingredientDetailsReducer,
+  checkEmail: checkEmailReducer,
+  loginReducer: loginReducer,
+  registrationReducer: registrationReducer,
+  logoutReducer: logoutReducer,
+  tokenReducer: tokenReducer,
 })
