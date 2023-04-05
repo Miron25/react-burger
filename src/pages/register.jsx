@@ -9,6 +9,7 @@ import { getRegistration } from '../services/actions/registration'
 //import { Button } from '../components/button'
 import { Input } from '../components/input'
 import { PasswordInput } from '../components/password-input'
+import { getAToken, getRToken } from '../utils/helperfunctions'
 
 export function RegisterPage() {
   // let auth = useAuth()
@@ -29,6 +30,8 @@ export function RegisterPage() {
       password: form.password,
     }),
   }
+  console.log(getAToken())
+  console.log(getRToken())
   /*let login = useCallback(
     (e) => {
       e.preventDefault()

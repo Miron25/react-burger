@@ -1,57 +1,45 @@
 import {
-  GET_AUTH_REQUEST,
-  GET_AUTH_ERROR,
-  GET_AUTH_SUCCESS,
-} from './../actions/authorization'
-//import { getAToken } from '../../utils/helperfunctions'
-
-//const user = JSON.parse(getAToken())
+  GET_USER_REQUEST,
+  GET_USER_ERROR,
+  GET_USER_SUCCESS,
+} from './../actions/userinfo'
 
 const initialState = {
-  loginRequest: false,
-  loginFailed: false,
-  isLoggedIn: false,
+  userInfoRequest: false,
+  userInfoFailed: false,
   user: null,
-  //user: user ? { isLoggedIn: true, user } : { isLoggedIn: false, user: null },
-  //user_email: '',
-  //user_name: '',
+  message: '',
 }
 
-export const loginReducer = (state = initialState, action) => {
-  //console.log(action.user.email)
+export const userInfoReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_AUTH_REQUEST: {
+    case GET_USER_REQUEST: {
       return {
         ...state,
         // Запрос начал выполняться
-        loginRequest: true,
+        userInfoRequest: true,
         // Сбрасываем статус наличия ошибок от предыдущего запроса на случай, если он был и завершился с ошибкой
-        loginFailed: false,
+        userInfoFailed: false,
       }
     }
-    case GET_AUTH_SUCCESS: {
+    case GET_USER_SUCCESS: {
       return {
         ...state,
         // Запрос выполнился успешно, помещаем полученные данные в хранилище
-        isLoggedIn: true,
         user: action.user,
-        //user_email: action.user.email,
-        //user_name: action.user.name,
         // Запрос закончил своё выполнение
-        loginRequest: false,
+        userInfoRequest: false,
       }
     }
-    case GET_AUTH_ERROR: {
+    case GET_USER_ERROR: {
       return {
         ...state,
+        message: action.message,
         // Запрос выполнился с ошибкой, выставляем соответсвующие значения в хранилище
-        loginFailed: true,
-        isLoggedIn: false,
+        userInfoFailed: true,
         // Запрос закончил своё выполнение
-        loginRequest: false,
+        userInfoRequest: false,
         user: null,
-        //user_email: '',
-        //user_name: '',
       }
     }
     default: {

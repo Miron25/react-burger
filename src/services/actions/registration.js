@@ -1,4 +1,5 @@
 import { NORMA_API } from '../../utils/burger-api'
+import { setAToken, setRToken } from '../../utils/helperfunctions'
 
 export const GET_REGISTRATION_REQUEST = 'GET_REGISTRATION_REQUEST'
 export const GET_REGISTRATION_SUCCESS = 'GET_REGISTRATION_SUCCESS'
@@ -22,14 +23,8 @@ export function getRegistration({ options }) {
             type: GET_REGISTRATION_SUCCESS,
             user_email: result.user.email,
             user_name: result.user.name,
-            access_token: localStorage.setItem(
-              'access_token',
-              JSON.stringify(result.accessToken)
-            ),
-            refresh_token: localStorage.setItem(
-              'refresh_token',
-              JSON.stringify(result.refreshToken)
-            ),
+            access_token: setAToken(JSON.stringify(result.accessToken)),
+            refresh_token: setRToken(JSON.stringify(result.refreshToken)),
           })
         } else {
           dispatch({

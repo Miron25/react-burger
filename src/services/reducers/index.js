@@ -12,6 +12,7 @@ import { loginReducer } from './authorization'
 import { registrationReducer } from './registration'
 import { logoutReducer } from './logout'
 import { tokenReducer } from './token'
+import { userInfoReducer } from './userinfo'
 
 const initialState = {
   feedRequest: false,
@@ -65,4 +66,5 @@ export const rootReducer = combineReducers({
   registrationReducer: registrationReducer,
   logoutReducer: logoutReducer,
   tokenReducer: tokenReducer,
+  userInfoReducer: userInfoReducer,
 })

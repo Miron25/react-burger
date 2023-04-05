@@ -1,8 +1,11 @@
-//import { useState } from 'react'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 //import { Navigate } from 'react-router-dom'
 import AppHeader from '../components/appheader/appheader'
 import styles from './profile.module.css'
 import { EditIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { getAToken } from '../utils/helperfunctions'
+import { getUserInfo } from '../services/actions/userinfo'
 
 //import { useAuth } from '../services/auth'
 //import { Button } from '../components/button'
@@ -10,6 +13,31 @@ import { EditIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 //import { PasswordInput } from '../components/password-input'
 
 export function ProfilePage() {
+  const userLoggedIn = useSelector((state) => state.userInfoReducer.user)
+  const dispatch = useDispatch()
+  /*setAToken(
+    JSON.stringify(
+      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MmM3OGUxMDkwNWZkMDAxYjYyNzY5MyIsImlhdCI6MTY4MDY4MzMxNCwiZXhwIjoxNjgwNjg0NTE0fQ._4azV5mHZiULmyPwPkhsc9VHxG0ByLcl3z7biqMrjCY'
+    )
+  )*/
+
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: JSON.parse(getAToken()),
+    },
+  }
+  console.log(options)
+
+  useEffect(() => {
+    //if (userLoggedIn) {
+    //console.log(userLoggedIn)
+    dispatch(getUserInfo({ options }))
+    //navigate('', { state: [...state, { path: pathname, url, title: countryTitle }], replace: true });
+    //}
+  }, [dispatch])
+
   // let auth = useAuth()
 
   //const [form, setValue] = useState({ email: '', password: '' })
@@ -62,7 +90,7 @@ export function ProfilePage() {
                 Имя
               </p>
               <p className="text text_type_main-default text_color_inactive">
-                Марк
+                {userLoggedIn && userLoggedIn.name}
               </p>
             </div>
             <span className={styles.icon}>
@@ -75,7 +103,7 @@ export function ProfilePage() {
                 Логин
               </p>
               <p className="text text_type_main-default text_color_inactive">
-                mail@stellar.burgers
+                {userLoggedIn && userLoggedIn.email}
               </p>
             </div>
             <span className={styles.icon}>
