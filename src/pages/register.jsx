@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import AppHeader from '../components/appheader/appheader'
 import styles from './register.module.css'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { getRegistration } from '../services/actions/registration'
@@ -47,7 +46,6 @@ export function RegisterPage() {
 
   return (
     <>
-      <AppHeader />
       <div className={styles.wrapper}>
         <div className={styles.container}>
           <form className={styles.form}>

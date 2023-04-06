@@ -2,7 +2,6 @@ import { useCallback, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 //import { Navigate } from 'react-router-dom'
-import AppHeader from '../components/appheader/appheader'
 import styles from './forgot-password.module.css'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link } from 'react-router-dom'
@@ -59,7 +58,6 @@ export function ForgotPasswordPage() {
 
   return (
     <>
-      <AppHeader />
       <div className={styles.wrapper}>
         <div className={styles.container}>
           <form className={styles.form}>

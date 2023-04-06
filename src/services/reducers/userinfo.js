@@ -34,12 +34,12 @@ export const userInfoReducer = (state = initialState, action) => {
     case GET_USER_ERROR: {
       return {
         ...state,
-        message: action.message,
         // Запрос выполнился с ошибкой, выставляем соответсвующие значения в хранилище
         userInfoFailed: true,
         // Запрос закончил своё выполнение
         userInfoRequest: false,
         user: null,
+        message: action.message,
       }
     }
     default: {

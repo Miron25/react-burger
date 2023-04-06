@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 //import { Navigate } from 'react-router-dom'
-import AppHeader from '../components/appheader/appheader'
 import styles from './reset-password.module.css'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link } from 'react-router-dom'
@@ -46,7 +45,6 @@ export function ResetPasswordPage() {
 
   return (
     <>
-      <AppHeader />
       <div className={styles.wrapper}>
         <div className={styles.container}>
           <form className={styles.form}>

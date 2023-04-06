@@ -1,4 +1,5 @@
 //import React from 'react'
+import { useSelector } from 'react-redux'
 import {
   Logo,
   BurgerIcon,
@@ -6,19 +7,28 @@ import {
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import AppheaderStyles from './appheader.module.css'
+import { Link } from 'react-router-dom'
 
 const AccountLink = () => {
+  const userLoggedIn = useSelector((state) => state.loginReducer.isLoggedIn)
   return (
     <div className={AppheaderStyles.accbox}>
       <ProfileIcon type="secondary" />
-      <a
-        href="https://"
-        className="text text_type_main-default text_color_inactive"
-        target={'_blank'}
-        rel="noopener, noreferrer"
-      >
-        Личный кабинет
-      </a>
+      {!userLoggedIn ? (
+        <Link
+          to="/login"
+          className="text text_type_main-default text_color_inactive"
+        >
+          Личный кабинет
+        </Link>
+      ) : (
+        <Link
+          to="/profile"
+          className="text text_type_main-default text_color_inactive"
+        >
+          Профиль
+        </Link>
+      )}
     </div>
   )
 }

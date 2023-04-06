@@ -1,11 +1,14 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 //import { Navigate } from 'react-router-dom'
-import AppHeader from '../components/appheader/appheader'
 import styles from './profile.module.css'
 import { EditIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import { getAToken } from '../utils/helperfunctions'
+import { getAToken, getRToken } from '../utils/helperfunctions'
 import { getUserInfo } from '../services/actions/userinfo'
+import { getToken } from '../services/actions/token'
+import { getLogout } from '../services/actions/logout'
+import { NavLink } from 'react-router-dom'
+//import { NORMA_API } from '../utils/burger-api'
 
 //import { useAuth } from '../services/auth'
 //import { Button } from '../components/button'
@@ -14,13 +17,14 @@ import { getUserInfo } from '../services/actions/userinfo'
 
 export function ProfilePage() {
   const userLoggedIn = useSelector((state) => state.userInfoReducer.user)
+  const errorMessage = useSelector((state) => state.userInfoReducer.message)
   const dispatch = useDispatch()
   /*setAToken(
     JSON.stringify(
       'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MmM3OGUxMDkwNWZkMDAxYjYyNzY5MyIsImlhdCI6MTY4MDY4MzMxNCwiZXhwIjoxNjgwNjg0NTE0fQ._4azV5mHZiULmyPwPkhsc9VHxG0ByLcl3z7biqMrjCY'
     )
   )*/
-
+  //const URL = `${NORMA_API}/auth/user`
   const options = {
     method: 'GET',
     headers: {
@@ -28,15 +32,32 @@ export function ProfilePage() {
       Authorization: JSON.parse(getAToken()),
     },
   }
-  console.log(options)
+  // console.log(options)
+  const tokref = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: JSON.parse(getAToken()),
+    },
+    body: JSON.stringify({
+      token: getRToken(),
+    }),
+    //body: JSON.stringify({ token: JSON.parse(getRToken()) }), //{ token: localStorage.getItem('r_token')
+    //}),
+  }
+  console.log(tokref)
 
   useEffect(() => {
-    //if (userLoggedIn) {
-    //console.log(userLoggedIn)
-    dispatch(getUserInfo({ options }))
-    //navigate('', { state: [...state, { path: pathname, url, title: countryTitle }], replace: true });
-    //}
-  }, [dispatch])
+    if (errorMessage === 'jwt expired') {
+      //console.log('If condition')
+      dispatch(getToken({ tokref }))
+    } else {
+      //if (userLoggedIn) {
+      //console.log('Else condition')
+      dispatch(getUserInfo({ options }))
+      //navigate('', { state: [...state, { path: pathname, url, title: countryTitle }], replace: true });
+    }
+  }, [errorMessage, dispatch])
 
   // let auth = useAuth()
 
@@ -61,22 +82,27 @@ export function ProfilePage() {
 
   return (
     <>
-      <AppHeader />
       <div className={styles.wrapper}>
         <div className={styles.container}>
-          <div className={styles.frame}>
+          <NavLink className={styles.frame}>
             <span className="text text_type_main-medium">Профиль</span>
-          </div>
-          <div className={styles.frame}>
+          </NavLink>
+          <NavLink className={styles.frame}>
             <span className="text text_type_main-medium text_color_inactive">
               История заказов
             </span>
-          </div>
-          <div className={styles.frame}>
+          </NavLink>
+          <NavLink
+            to="/"
+            className={styles.frame}
+            onClick={() => {
+              dispatch(getLogout({ tokref }))
+            }}
+          >
             <span className="text text_type_main-medium text_color_inactive">
               Выход
             </span>
-          </div>
+          </NavLink>
         </div>
         <div className={styles.caption}>
           <span className="text text_type_main-default text_color_inactive">

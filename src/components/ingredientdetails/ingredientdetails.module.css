@@ -1,3 +1,12 @@
+.frame {
+  position: absolute;
+  width: 640px;
+  height: 575px;
+  left: 640px;
+  top: 208px;
+  border: 2px dashed #4c4cff;
+}
+
 .popup_title {
   display: flex;
   flex-direction: row;

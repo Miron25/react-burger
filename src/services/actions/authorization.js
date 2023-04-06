@@ -10,6 +10,23 @@ const checkResponse = (res) => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err))
 }
 
+/*export const checkUserAuth = () => {
+  return (dispatch) => {
+    if (getAToken) {
+      dispatch(getAuth(options))
+        .catch((exception) => {
+          console.log(exception)
+          removeAToken()
+          removeRToken()
+          //dispatch(setUser({}));
+        })
+        .finally(() => dispatch({ isLoggedIn: true }))
+    } else {
+      dispatch({ isLoggedIn: true })
+    }
+  }
+}*/
+
 export function getAuth({ options }) {
   //const token = 'e8a1cb88700e62e297c26652cbed2c321b9f222b3684a0a38ea754044c55160111d5842fc87ac483'
   /* const options2 = {
@@ -36,6 +53,7 @@ export function getAuth({ options }) {
             user: result.user,
             access_token: setAToken(JSON.stringify(result.accessToken)),
             refresh_token: setRToken(JSON.stringify(result.refreshToken)),
+            isLoggedIn: true,
           })
         } else {
           console.log('In error')

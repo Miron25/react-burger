@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import AppHeader from '../components/appheader/appheader'
 import styles from './login.module.css'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { getAuth } from '../services/actions/authorization'
@@ -75,7 +74,6 @@ export function LoginPage() {
 
   return (
     <>
-      <AppHeader />
       <div className={styles.container}>
         <form className={styles.form}>
           <div className={styles.heading}>

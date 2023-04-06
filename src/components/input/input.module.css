@@ -20,8 +20,9 @@
   outline: none;
   color: white;
   background: transparent;
-  width: 100%;
+  width: 80%;
   padding-left: 24px;
+  margin-left: 5px;
 }
 
 .icon_pad {
@@ -36,5 +37,5 @@
 .input:-webkit-autofill:hover,
 .input:-webkit-autofill:focus,
 .input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px #26262c inset !important;
+  -webkit-box-shadow: none;
 }
