@@ -5,6 +5,7 @@ import { HomePage } from './home'
 import { ResetPasswordPage } from './reset-password'
 import { ProfilePage } from './profile'
 import { NotFound404 } from './not-found'
+import { ProfileOrdersPage } from './profile-orders'
 
 export {
   HomePage,
@@ -13,5 +14,6 @@ export {
   ForgotPasswordPage,
   ResetPasswordPage,
   ProfilePage,
+  ProfileOrdersPage,
   NotFound404,
 }

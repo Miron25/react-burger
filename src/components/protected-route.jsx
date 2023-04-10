@@ -6,7 +6,9 @@ import PropTypes from 'prop-types'
 
 export const ProtectedRouteElement = ({ onlyUnAuth = false, element }) => {
   const isAuthChecked = useSelector((state) => state.loginReducer.isLoggedIn)
+  //const isAuthChecked = useSelector((state) => state.userInfoReducer.user)
   const user = useSelector((state) => state.loginReducer.user)
+  //const user = useSelector((state) => state.userInfoReducer.user)
   const location = useLocation()
   //let { getUser, ...auth } = useAuth()
   //const [isUserLoaded, setUserLoaded] = useState(false)
@@ -42,6 +44,10 @@ export const ProtectedRouteElement = ({ onlyUnAuth = false, element }) => {
     // Сервер не ответил
     return <Navigate to="/login" state={{ from: location }} />
   }
+
+  /*if (!onlyUnAuth && user) {
+    console.log('Authorized!')
+  }*/
   return element
 }
 

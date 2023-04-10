@@ -3,11 +3,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getFeed } from './services/actions'
 import './App.css'
 import AppHeader from './components/appheader/appheader'
+import Modal from './components/modal/modal'
 //import BurgerIngredients from './components/burgeringredients/burgeringredients'
 //import BurgerConstructor from './components/burgerconstructor/burgerconstructor'
 //import { HTML5Backend } from 'react-dnd-html5-backend'
 //import { DndProvider } from 'react-dnd'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import {
   HomePage,
   NotFound404,
@@ -16,26 +17,48 @@ import {
   ForgotPasswordPage,
   ResetPasswordPage,
   ProfilePage,
+  ProfileOrdersPage,
 } from './pages'
 import { ProtectedRouteElement } from './components/protected-route'
 import { ModalContent } from './components/ingredientdetails/ingredientdetails'
+//import { getUserInfo } from './services/actions/userinfo'
+//import { getAToken } from './utils/helperfunctions'
 //import { ProvideAuth } from "./services/auth";
 
 function App() {
   const location = useLocation()
-  //const navigate = useNavigate()
+  const navigate = useNavigate()
   const background = location.state && location.state.background
 
   //const handleModalClose = () => { navigate(-1) }
   // Возвращаемся к предыдущему пути при закрытии модалки
 
   const { feed, feedRequest, feedFailed } = useSelector((state) => state.feed)
-  // const userLoggedIn = useSelector((state) => state.loginReducer.isLoggedIn)
+  //const userLoggedIn = useSelector((state) => state.loginReducer.isLoggedIn)
   const dispatch = useDispatch()
+
+  /*const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: localStorage.getItem('a_token'),
+    },
+  }*/
 
   useEffect(() => {
     if (!feed.length) dispatch(getFeed())
   }, [feed.length, dispatch])
+
+  /*useEffect(() => {
+    if (!userLoggedIn) {
+      dispatch(getUserInfo({ options }))
+    } else console.log('User logged in!')
+  }, [userLoggedIn, dispatch])*/
+
+  const handleModalClose = () => {
+    // Возвращаемся к предыдущему пути при закрытии модалки
+    navigate(-1)
+  }
 
   return (
     <>
@@ -46,21 +69,6 @@ function App() {
       {!feedRequest && !feedFailed && feed.length && (
         <Routes location={background || location}>
           <Route path="/" element={<HomePage />} />
-          {/*} <React.Fragment>
-              <div id="root">
-                <AppHeader />
-                {feedRequest && 'Загрузка данных...'}
-                {feedFailed && 'Произошла ошибка при получении данных'}
-                {!feedRequest && !feedFailed && feed.length && (
-                  <>
-                    <DndProvider backend={HTML5Backend}>
-                      <BurgerIngredients />
-                      <BurgerConstructor />
-                    </DndProvider>
-                  </>
-                )}
-              </div>
-                </React.Fragment>*/}
           <Route
             path="/login"
             element={
@@ -98,7 +106,17 @@ function App() {
                 element={<ProfilePage />}
               />
             }
-          />
+          >
+            <Route
+              path="/profile/orders"
+              element={<ProfileOrdersPage />}
+              //<ProtectedRouteElement
+              // onlyUnAuth={false}
+              // element={<ProfileOrdersPage />}
+              // />
+              // }
+            />
+          </Route>
           <Route
             path="/ingredients/:ingredientId"
             element={<ModalContent id={'60666c42cc7b410027a1a9b9'} />}
@@ -115,9 +133,9 @@ function App() {
           <Route
             path="/ingredients/:ingredientId"
             element={
-              //<Modal onClose={handleModalClose}>
-              <ModalContent />
-              // </Modal>
+              <Modal onClose={handleModalClose}>
+                <ModalContent />
+              </Modal>
             }
           />
         </Routes>

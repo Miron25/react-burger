@@ -51,8 +51,8 @@ export function getAuth({ options }) {
           dispatch({
             type: GET_AUTH_SUCCESS,
             user: result.user,
-            access_token: setAToken(JSON.stringify(result.accessToken)),
-            refresh_token: setRToken(JSON.stringify(result.refreshToken)),
+            access_token: setAToken(result.accessToken),
+            refresh_token: setRToken(result.refreshToken),
             isLoggedIn: true,
           })
         } else {
