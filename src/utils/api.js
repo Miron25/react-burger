@@ -7,18 +7,6 @@ const checkResponse = (res) => {
 }
 
 export const refreshToken = () => {
-  const rtoken = localStorage.getItem('r_token')
-  console.log(rtoken)
-  const options = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8',
-    },
-    body: JSON.stringify({
-      token: localStorage.getItem('r_token'),
-    }),
-  }
-  console.log(options.body)
   return fetch(`${NORMA_API}/auth/token`, {
     method: 'POST',
     headers: {

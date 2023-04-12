@@ -1,6 +1,5 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react'
 import BurgerIngStyles from './burgering.module.css'
-import { ModalContent } from '../ingredientdetails/ingredientdetails'
 import { useInView } from 'react-intersection-observer'
 import PropTypes from 'prop-types'
 import Modal from './../modal/modal'
@@ -14,6 +13,7 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 //import {GET_INGREDIENT_DETAILS,  CLEAR_INGREDIENT_DETAILS,} from '../../services/actions/ingredientdetails'
 import { useDrag } from 'react-dnd'
+import { ModalContent } from '../ingredientdetails/ingredientdetails'
 //import { Link } from 'react-router-dom'
 
 function BurgerIngredients() {
@@ -25,7 +25,7 @@ function BurgerIngredients() {
   const twoRef = useRef(null) //represents tab "two"
   const threeRef = useRef(null) //represents tab "three"
   const [show, setShow] = useState(false)
-  //const [selecIng, setSelecIng] = useState()
+  const [id, setId] = useState('')
   //const dispatch = useDispatch()
   //const location = useLocation()
 
@@ -63,7 +63,20 @@ function BurgerIngredients() {
     ref.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const GridElement = ({ filteredIngr, show, setShow }) => {
+  /*function ConditionalLink({ children, condition }) {
+    return condition ? (
+      <Link
+        to={{ pathname: `/ingredients/${id}` }}
+        state={{ background: location }}
+      >
+        {children}
+      </Link>
+    ) : (
+      <>{children}</>
+    )
+  }*/
+
+  const GridElement = ({ filteredIngr, setShow }) => {
     const [{ isDragging }, dragRef] = useDrag({
       type: filteredIngr.type === 'bun' ? 'bun' : 'main_sauce',
       item: filteredIngr,
@@ -72,45 +85,36 @@ function BurgerIngredients() {
       }),
     })
 
-    const callModal = (show, setShow, filteredIngr) => {
-      return (
-        show && (
-          <Modal
-            show={show}
-            onClose={() => {
-              setShow(false)
-            }}
-          >
-            {ModalContent({ setShow, filteredIngr })}
-          </Modal>
-        )
-      )
-    }
-
     const CountItems = () => {
       const count = ingredients.filter(
         (elem) => elem._id === filteredIngr._id
       ).length
       return count
     }
-
+    //<Link to={`/ingredients/${id}`} state={{ background: location }}>
     return (
       <React.Fragment key={filteredIngr._id}>
-        {/*<Link
-          to={`/ingredients/${filteredIngr._id}`}
-          state={{ background: location }}
-    >*/}
         <div
           className={BurgerIngStyles.column1}
           ref={dragRef}
           onClick={() => {
-            setShow(true), callModal(show, setShow, filteredIngr)
+            setShow(true), setId(filteredIngr._id)
           }}
           role="button"
           tabIndex={0}
           onKeyDown={handleKeyDown}
           style={{ isDragging }}
         >
+          {show ? (
+            <Modal
+              show={show}
+              onClose={() => {
+                setShow(false)
+              }}
+            >
+              <ModalContent setShow={setShow} id={id} />
+            </Modal>
+          ) : null}
           {bun && bun._id === filteredIngr._id && (
             <Counter count={2} size="default" extraClass="m-1" />
           )}
@@ -133,7 +137,6 @@ function BurgerIngredients() {
             {filteredIngr.name}
           </p>
         </div>
-        {/*</Link>*/}
       </React.Fragment>
     )
   }
@@ -235,7 +238,7 @@ function BurgerIngredients() {
 }
 
 BurgerIngredients.propTypes = {
-  filteredIngr: arrayType,
+  filteredIngr: PropTypes.array,
   filtered_array: arrayType,
   show: PropTypes.bool,
   setShow: PropTypes.bool,
@@ -243,6 +246,9 @@ BurgerIngredients.propTypes = {
   onClose: PropTypes.func,
   index: PropTypes.number,
   key: PropTypes.string,
+  children: PropTypes.node,
+  condition: PropTypes.bool,
+  to: PropTypes.string,
 }
 
 export default BurgerIngredients

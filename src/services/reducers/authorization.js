@@ -2,6 +2,7 @@ import {
   GET_AUTH_REQUEST,
   GET_AUTH_ERROR,
   GET_AUTH_SUCCESS,
+  GET_AUTH_OUT,
 } from './../actions/authorization'
 //import { getAToken } from '../../utils/helperfunctions'
 
@@ -52,6 +53,11 @@ export const loginReducer = (state = initialState, action) => {
         user: null,
         //user_email: '',
         //user_name: '',
+      }
+    }
+    case GET_AUTH_OUT: {
+      return {
+        ...initialState,
       }
     }
     default: {

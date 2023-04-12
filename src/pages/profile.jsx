@@ -267,7 +267,11 @@ export function ProfilePage() {
                   htmlType="button"
                   type="secondary"
                   size="large"
-                  onClick={() => {}}
+                  onClick={() => {
+                    setEditBox1(false)
+                    setEditBox2(false)
+                    setEditBox3(false)
+                  }}
                 >
                   Отмена
                 </Button>

@@ -2,13 +2,13 @@ import {
   GET_USER_REQUEST,
   GET_USER_ERROR,
   GET_USER_SUCCESS,
+  GET_USER_OUT,
 } from './../actions/userinfo'
 
 const initialState = {
   userInfoRequest: false,
   userInfoFailed: false,
   user: null,
-  message: '',
 }
 
 export const userInfoReducer = (state = initialState, action) => {
@@ -40,6 +40,11 @@ export const userInfoReducer = (state = initialState, action) => {
         userInfoRequest: false,
         user: null,
         message: action.message,
+      }
+    }
+    case GET_USER_OUT: {
+      return {
+        ...initialState,
       }
     }
     default: {

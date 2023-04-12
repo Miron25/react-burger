@@ -8,6 +8,11 @@ import { fetchWithRefresh } from '../../utils/api'
 export const GET_USER_REQUEST = 'GET_USER_REQUEST'
 export const GET_USER_SUCCESS = 'GET_USER_SUCCESS'
 export const GET_USER_ERROR = 'GET_USER_ERROR'
+export const GET_USER_OUT = 'GET_USER_OUT'
+
+const checkResponse = (res) => {
+  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err))
+}
 
 export function getUserInfo({ options }) {
   return function (dispatch) {
@@ -33,14 +38,14 @@ export function getUserInfo({ options }) {
   }
 }
 
-export function getUserUpdate({ options }) {
+export function getUserUpdate({ patchOptions }) {
   return function (dispatch) {
     dispatch({
       type: GET_USER_REQUEST,
     })
-    console.log(options)
-    fetch(`${NORMA_API}/auth/user`, options)
-      //.then(checkResponse)
+    console.log(patchOptions)
+    fetch(`${NORMA_API}/auth/user`, patchOptions)
+      .then(checkResponse)
       .then((result) => {
         console.log(result)
         if (result && result.success) {

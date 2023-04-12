@@ -52,7 +52,7 @@ Modal.propTypes = {
     PropTypes.string,
     PropTypes.number,
     PropTypes.node,
-  ]).isRequired,
+  ]),
   onClose: PropTypes.func,
 }
 

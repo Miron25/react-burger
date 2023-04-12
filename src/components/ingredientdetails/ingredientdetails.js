@@ -1,27 +1,28 @@
 import IngDetailsStyles from './ingredientdetails.module.css'
 //import { useEffect } from 'react'
-//import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 //import { CLEAR_INGREDIENT_DETAILS } from '../../services/actions/ingredientdetails'
 import PropTypes from 'prop-types'
-import { arrayType } from '../../types'
+//import { arrayType } from '../../types'
 
-export const ModalContent = ({ setShow, filteredIngr }) => {
+export const ModalContent = ({ setShow, id }) => {
   //const ingDetails = useSelector((state) => state.ingDetails.ingDetails)
-  console.log(filteredIngr)
-  //const ingredientsList = useSelector((state) => state.feed.feed)
+
+  //console.log(id)
+  const ingredientsList = useSelector((state) => state.feed.feed)
   //console.log(ingredientsList)
-  const ingDetails = filteredIngr //ingredientsList.filter((item) => item._id === id)
-  console.log(ingDetails)
+  const ingDetails = ingredientsList.find((item) => item._id === id)
+  //console.log(ingDetails)
   //const dispatch = useDispatch()
   return (
     <>
       {/*<div className={IngDetailsStyles.frame}>*/}
       <div className={IngDetailsStyles.popup_title}>
         <h1
-          className={
-            IngDetailsStyles.popup_header + 'text text_type_main-large'
-          }
+          className={`${
+            IngDetailsStyles.popup_header
+          } ${'text text_type_main-large'}`}
         >
           Детали игредиента
         </h1>
@@ -84,5 +85,5 @@ export const ModalContent = ({ setShow, filteredIngr }) => {
 
 ModalContent.propTypes = {
   setShow: PropTypes.func,
-  filteredIngr: arrayType,
+  id: PropTypes.string,
 }

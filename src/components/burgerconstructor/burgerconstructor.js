@@ -23,6 +23,7 @@ import {
 } from '../../services/actions/burgerconst'
 import { v4 as uuidv4 } from 'uuid'
 import { getOrder } from '../../services/actions/orderdetails'
+import { useNavigate } from 'react-router-dom'
 
 function BurgerConstructor() {
   const ingredients = useSelector((state) => state.selectedIng.ingredients)
@@ -30,8 +31,10 @@ function BurgerConstructor() {
   const ing_ids = useSelector((state) => state.selectedIng.ing_ids)
   const order = useSelector((state) => state.orderDetails.order)
   const name = useSelector((state) => state.orderDetails.name)
+  const userLoggedIn = useSelector((state) => state.loginReducer.user)
   const [show, setShow] = useState(false)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const totalPrice = useMemo(() => {
     if (bun)
@@ -258,9 +261,13 @@ function BurgerConstructor() {
               type="primary"
               size="large"
               onClick={() => {
-                setShow(true)
-                dispatch({ type: CLEAR_ARRAY })
-                dispatch(getOrder({ options }))
+                {
+                  userLoggedIn
+                    ? (setShow(true),
+                      dispatch({ type: CLEAR_ARRAY }),
+                      dispatch(getOrder({ options })))
+                    : navigate('/login')
+                }
               }}
             >
               Оформить заказ
