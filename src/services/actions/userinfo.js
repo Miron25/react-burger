@@ -14,7 +14,32 @@ export function getUserInfo({ options }) {
     dispatch({
       type: GET_USER_REQUEST,
     })
+    console.log(options)
     fetchWithRefresh(`${NORMA_API}/auth/user`, options)
+      //.then(checkResponse)
+      .then((result) => {
+        console.log(result)
+        if (result && result.success) {
+          dispatch({
+            type: GET_USER_SUCCESS,
+            user: result.user,
+          })
+        } else {
+          dispatch({
+            type: GET_USER_ERROR,
+          })
+        }
+      })
+  }
+}
+
+export function getUserUpdate({ options }) {
+  return function (dispatch) {
+    dispatch({
+      type: GET_USER_REQUEST,
+    })
+    console.log(options)
+    fetch(`${NORMA_API}/auth/user`, options)
       //.then(checkResponse)
       .then((result) => {
         console.log(result)

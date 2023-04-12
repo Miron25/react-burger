@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 //import { Navigate } from 'react-router-dom'
 import styles from './profile.module.css'
@@ -8,10 +8,11 @@ import {
   CloseIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 //import { getAToken, getRToken } from '../utils/helperfunctions'
-import { getUserInfo } from '../services/actions/userinfo'
+import { getUserInfo, getUserUpdate } from '../services/actions/userinfo'
 //import { getToken } from '../services/actions/token'
 import { getLogout } from '../services/actions/logout'
 import { NavLink } from 'react-router-dom'
+//import ContentEditable from 'react-contenteditable'
 //import { Input } from '../components/input'
 //import { NORMA_API } from '../utils/burger-api'
 
@@ -26,12 +27,29 @@ export function ProfilePage() {
   const [editBox1, setEditBox1] = useState(false)
   const [editBox2, setEditBox2] = useState(false)
   const [editBox3, setEditBox3] = useState(false)
-  // const [form, setValue] = useState({ email: '', name: '', password: '' })
+  //const nameState, setNameState] = useState({ html: `Имя <br/> ` })
+  const nameEdit = useRef(null)
+  //const nameValueRef = useRef(null)
+  const emailEdit = useRef(null)
+  const passwordEdit = useRef(null)
+  const [form, setValue] = useState({ email: '', name: '', password: '' })
   const dispatch = useDispatch()
   const setActive = ({ isActive }) =>
     isActive
       ? 'text text_type_main-medium'
       : 'text text_type_main-medium text_color_inactive'
+
+  useEffect(() => {
+    editBox1 && nameEdit.current?.focus()
+  }, [editBox1])
+
+  useEffect(() => {
+    editBox2 && emailEdit.current?.focus()
+  }, [editBox2])
+
+  useEffect(() => {
+    editBox3 && passwordEdit.current?.focus()
+  }, [editBox3])
 
   const options = {
     method: 'GET',
@@ -40,7 +58,7 @@ export function ProfilePage() {
       Authorization: localStorage.getItem('a_token'),
     },
   }
-  console.log(options)
+
   const options2 = {
     method: 'POST',
     headers: {
@@ -53,18 +71,32 @@ export function ProfilePage() {
     //body: JSON.stringify({ token: JSON.parse(getRToken()) }), //{ token: localStorage.getItem('r_token')
     //}),
   }
-  console.log(options2)
+
+  const patchOptions = {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: localStorage.getItem('a_token'),
+    },
+    body: JSON.stringify({
+      name: form.name,
+      email: form.email,
+      //password: form.password,
+    }),
+  }
 
   useEffect(() => {
-    //if (errorMessage === 'jwt expired') {
-    //console.log('If condition')
-    //dispatch(getToken({ tokref }))
-    //} else {
     if (userLoggedIn && !userInProfile) {
-      console.log('Checking user')
       dispatch(getUserInfo({ options }))
-      //navigate('', { state: [...state, { path: pathname, url, title: countryTitle }], replace: true });
-      //}
+    }
+    if (userInProfile) {
+      setValue({
+        ...form,
+        name: userInProfile.name,
+        email: userInProfile.email,
+        password: userInProfile.password,
+      })
+      console.log(form)
     }
   }, [userLoggedIn, userInProfile])
 
@@ -114,25 +146,31 @@ export function ProfilePage() {
           </div>
           <div className={styles.form}>
             <div className={styles.form_inside}>
-              <div
-                className={editBox1 ? styles.info_block : styles.active_input}
-              >
+              <div className={styles.info_block}>
                 <div>
                   <p className="text text_type_main-default text_color_inactive">
                     Имя
                   </p>
-                  {/*editBox1 ? (*/}
-                  <p className="text text_type_main-default text_color_inactive">
-                    {userInProfile && userInProfile.name}
-                  </p>
-                  {/*}) : (
-                    <Input
-                      placeholder={userInProfile.name}
-                      value={userInProfile.name}
-                      name="name"
-                      onChange={onChange}
-                    />
-                  )}*/}
+                  {editBox1 ? (
+                    <input
+                      type="text"
+                      ref={nameEdit}
+                      className={`${
+                        styles.input
+                      } ${'text text_type_main-default'}`}
+                      placeholder={userInProfile && userInProfile.name}
+                      onChange={() => {
+                        setValue({
+                          ...form,
+                          name: nameEdit.current.value,
+                        })
+                      }}
+                    ></input>
+                  ) : (
+                    <p className="text text_type_main-default text_color_inactive">
+                      {userInProfile && userInProfile.name}
+                    </p>
+                  )}
                 </div>
                 <span
                   className={styles.icon}
@@ -151,9 +189,26 @@ export function ProfilePage() {
                   <p className="text text_type_main-default text_color_inactive">
                     Логин
                   </p>
-                  <p className="text text_type_main-default text_color_inactive">
-                    {userInProfile && userInProfile.email}
-                  </p>
+                  {editBox2 ? (
+                    <input
+                      type="text"
+                      ref={emailEdit}
+                      className={`${
+                        styles.input
+                      } ${'text text_type_main-default'}`}
+                      placeholder={userInProfile && userInProfile.email}
+                      onChange={() => {
+                        setValue({
+                          ...form,
+                          email: emailEdit.current.value,
+                        })
+                      }}
+                    ></input>
+                  ) : (
+                    <p className="text text_type_main-default text_color_inactive">
+                      {userInProfile && userInProfile.email}
+                    </p>
+                  )}
                 </div>
                 <span
                   className={styles.icon}
@@ -167,27 +222,44 @@ export function ProfilePage() {
                   {editBox2 ? <CloseIcon /> : <EditIcon />}
                 </span>
               </div>
-              <div className={styles.info_block}>
-                <div>
-                  <p className="text text_type_main-default text_color_inactive">
-                    Пароль
-                  </p>
+            </div>
+            <div className={styles.info_block}>
+              <div>
+                <p className="text text_type_main-default text_color_inactive">
+                  Пароль
+                </p>
+                {editBox3 ? (
+                  <input
+                    type="text"
+                    ref={passwordEdit}
+                    className={`${
+                      styles.input
+                    } ${'text text_type_main-default'}`}
+                    placeholder="******"
+                    onChange={() => {
+                      setValue({
+                        ...form,
+                        password: passwordEdit.current.value,
+                      })
+                    }}
+                  ></input>
+                ) : (
                   <p className="text text_type_main-default text_color_inactive">
                     ******
                   </p>
-                </div>
-                <span
-                  className={styles.icon}
-                  onClick={() => {
-                    setEditBox3(!editBox3)
-                  }}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={handleKeyDown}
-                >
-                  {editBox3 ? <CloseIcon /> : <EditIcon />}
-                </span>
+                )}
               </div>
+              <span
+                className={styles.icon}
+                onClick={() => {
+                  setEditBox3(!editBox3)
+                }}
+                role="button"
+                tabIndex={0}
+                onKeyDown={handleKeyDown}
+              >
+                {editBox3 ? <CloseIcon /> : <EditIcon />}
+              </span>
             </div>
             {(editBox1 || editBox2 || editBox3) && (
               <div className={styles.actions}>
@@ -203,7 +275,21 @@ export function ProfilePage() {
                   htmlType="button"
                   type="primary"
                   size="large"
-                  onClick={() => {}}
+                  onClick={() => {
+                    setEditBox1(false)
+                    setEditBox2(false)
+                    setEditBox3(false)
+                    /*setValue({
+                      name: editBox1 && nameEdit.current.value,
+                      email: editBox2 && emailEdit.current.innerText,
+                      password: editBox3 && passwordEdit.current.innerText,
+                    })*/
+                    console.log(form.name)
+                    console.log(patchOptions)
+                    dispatch(getUserUpdate({ patchOptions }))
+                    //console.log(emailEdit.current.innerText)
+                    //console.log(passwordEdit.current.innerText)
+                  }}
                 >
                   Сохранить
                 </Button>
