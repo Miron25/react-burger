@@ -1,25 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-//import { Navigate } from 'react-router-dom'
 import styles from './profile.module.css'
 import {
   EditIcon,
   Button,
   CloseIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-//import { getAToken, getRToken } from '../utils/helperfunctions'
 import { getUserInfo, getUserUpdate } from '../services/actions/userinfo'
-//import { getToken } from '../services/actions/token'
 import { getLogout } from '../services/actions/logout'
 import { NavLink } from 'react-router-dom'
-//import ContentEditable from 'react-contenteditable'
-//import { Input } from '../components/input'
-//import { NORMA_API } from '../utils/burger-api'
-
-//import { useAuth } from '../services/auth'
-//import { Button } from '../components/button'
-//import { Input } from '../components/input'
-//import { PasswordInput } from '../components/password-input'
 
 export function ProfilePage() {
   const userLoggedIn = useSelector((state) => state.loginReducer.isLoggedIn)
@@ -27,9 +16,7 @@ export function ProfilePage() {
   const [editBox1, setEditBox1] = useState(false)
   const [editBox2, setEditBox2] = useState(false)
   const [editBox3, setEditBox3] = useState(false)
-  //const nameState, setNameState] = useState({ html: `Имя <br/> ` })
   const nameEdit = useRef(null)
-  //const nameValueRef = useRef(null)
   const emailEdit = useRef(null)
   const passwordEdit = useRef(null)
   const [form, setValue] = useState({ email: '', name: '', password: '' })
@@ -63,13 +50,10 @@ export function ProfilePage() {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      //Authorization: JSON.parse(getAToken()),
     },
     body: JSON.stringify({
       token: localStorage.getItem('r_token'),
     }),
-    //body: JSON.stringify({ token: JSON.parse(getRToken()) }), //{ token: localStorage.getItem('r_token')
-    //}),
   }
 
   const patchOptions = {
@@ -81,7 +65,7 @@ export function ProfilePage() {
     body: JSON.stringify({
       name: form.name,
       email: form.email,
-      //password: form.password,
+      password: form.password,
     }),
   }
 
@@ -96,21 +80,10 @@ export function ProfilePage() {
         email: userInProfile.email,
         password: userInProfile.password,
       })
-      console.log(form)
     }
   }, [userLoggedIn, userInProfile])
 
   const handleKeyDown = () => {}
-
-  /*const onChange = (e) => {
-    setValue({ ...form, [e.target.name]: e.target.value })
-  }*/
-
-  /*const handleClick = () => {
-    setEditMode((current) => !current)
-    console.log(editMode)
-    //className={styles.frame}
-  }*/
 
   return (
     userLoggedIn && (
@@ -146,7 +119,11 @@ export function ProfilePage() {
           </div>
           <div className={styles.form}>
             <div className={styles.form_inside}>
-              <div className={styles.info_block}>
+              <div
+                className={
+                  editBox1 ? styles.info_block_edit : styles.info_block
+                }
+              >
                 <div>
                   <p className="text text_type_main-default text_color_inactive">
                     Имя
@@ -184,7 +161,11 @@ export function ProfilePage() {
                   {editBox1 ? <CloseIcon /> : <EditIcon />}
                 </span>
               </div>
-              <div className={styles.info_block}>
+              <div
+                className={
+                  editBox2 ? styles.info_block_edit : styles.info_block
+                }
+              >
                 <div>
                   <p className="text text_type_main-default text_color_inactive">
                     Логин
@@ -223,7 +204,9 @@ export function ProfilePage() {
                 </span>
               </div>
             </div>
-            <div className={styles.info_block}>
+            <div
+              className={editBox3 ? styles.info_block_edit : styles.info_block}
+            >
               <div>
                 <p className="text text_type_main-default text_color_inactive">
                   Пароль
@@ -283,16 +266,7 @@ export function ProfilePage() {
                     setEditBox1(false)
                     setEditBox2(false)
                     setEditBox3(false)
-                    /*setValue({
-                      name: editBox1 && nameEdit.current.value,
-                      email: editBox2 && emailEdit.current.innerText,
-                      password: editBox3 && passwordEdit.current.innerText,
-                    })*/
-                    console.log(form.name)
-                    console.log(patchOptions)
                     dispatch(getUserUpdate({ patchOptions }))
-                    //console.log(emailEdit.current.innerText)
-                    //console.log(passwordEdit.current.innerText)
                   }}
                 >
                   Сохранить

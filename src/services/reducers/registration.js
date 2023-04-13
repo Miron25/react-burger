@@ -7,8 +7,7 @@ import {
 const initialState = {
   registrationRequest: false,
   registrationFailed: false,
-  user_email: '',
-  user_name: '',
+  user: null,
 }
 
 export const registrationReducer = (state = initialState, action) => {
@@ -26,8 +25,7 @@ export const registrationReducer = (state = initialState, action) => {
       return {
         ...state,
         // Запрос выполнился успешно, помещаем полученные данные в хранилище
-        user_email: action.user_email,
-        user_name: action.user_name,
+        user: action.user,
         // Запрос закончил своё выполнение
         registrationRequest: false,
       }
@@ -39,8 +37,7 @@ export const registrationReducer = (state = initialState, action) => {
         registrationFailed: true,
         // Запрос закончил своё выполнение
         registrationRequest: false,
-        user_email: '',
-        user_name: '',
+        user: null,
       }
     }
     default: {

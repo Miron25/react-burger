@@ -1,23 +1,18 @@
-import { useCallback, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-//import { Navigate } from 'react-router-dom'
 import styles from './forgot-password.module.css'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link } from 'react-router-dom'
-//import { useAuth } from '../services/auth'
-//import { Button } from '../components/button'
 import { Input } from '../components/input'
 import {
   getPasswordReset,
-  CLEAR_MESSAGE,
+  //CLEAR_MESSAGE,
 } from '../services/actions/forgotpassword'
-//import { PasswordInput } from '../components/password-input'
 
 export function ForgotPasswordPage() {
-  const { message } = useSelector((state) => state.checkEmail)
+  //const { message } = useSelector((state) => state.checkEmail)
   const navigate = useNavigate()
-  // let auth = useAuth()
 
   const [form, setValue] = useState({ email: '' })
   const dispatch = useDispatch()
@@ -26,14 +21,6 @@ export function ForgotPasswordPage() {
     setValue({ ...form, [e.target.name]: e.target.value })
   }
 
-  const goToResetPasswordPage = useCallback(() => {
-    dispatch(getPasswordReset({ options }))
-    if (message !== '') {
-      navigate('/reset-password')
-      dispatch({ type: CLEAR_MESSAGE })
-    }
-  }, [message])
-
   const options = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -41,20 +28,11 @@ export function ForgotPasswordPage() {
       email: form.email,
     }),
   }
-  //console.log(emailSent)
 
-  /*let login = useCallback(
-    (e) => {
-      e.preventDefault()
-      // auth.signIn(form)
-    },
-    []
-    // [auth, form]
-  )*/
-
-  // if (auth.user) {
-  //   return <Navigate to={'/'} />
-  // }
+  const goToResetPasswordPage = () => {
+    dispatch(getPasswordReset({ options }))
+    navigate('/reset-password')
+  }
 
   return (
     <>
@@ -77,11 +55,7 @@ export function ForgotPasswordPage() {
               type="primary"
               size="large"
               onClick={() => {
-                //login
-                //setShow(true)
-                //dispatch({ type: CLEAR_ARRAY })
                 goToResetPasswordPage()
-                //emailSent && { type: CLEAR_MESSAGE }
               }}
             >
               Восстановить

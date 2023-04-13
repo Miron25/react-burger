@@ -25,8 +25,6 @@ export const logoutReducer = (state = initialState, action) => {
       return {
         ...state,
         // Запрос выполнился успешно, помещаем полученные данные в хранилище
-        //order: action.order,
-        // name: action.name,
         // Запрос закончил своё выполнение
         logoutRequest: false,
       }
@@ -39,7 +37,6 @@ export const logoutReducer = (state = initialState, action) => {
         // Запрос закончил своё выполнение
         logoutRequest: false,
         logout: null,
-        //name: null,
       }
     }
     default: {

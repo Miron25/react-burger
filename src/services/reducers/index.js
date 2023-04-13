@@ -6,7 +6,6 @@ import {
 } from './../actions'
 import { selectedIngredientsReducer } from './../reducers/burgerconst'
 import { orderDetailsReducer } from './../reducers/orderdetails'
-import { ingredientDetailsReducer } from './../reducers/ingredientdetails'
 import { checkEmailReducer } from './forgotpassword'
 import { loginReducer } from './authorization'
 import { registrationReducer } from './registration'
@@ -60,7 +59,6 @@ export const rootReducer = combineReducers({
   feed: feedReducer,
   selectedIng: selectedIngredientsReducer,
   orderDetails: orderDetailsReducer,
-  ingDetails: ingredientDetailsReducer,
   checkEmail: checkEmailReducer,
   loginReducer: loginReducer,
   registrationReducer: registrationReducer,

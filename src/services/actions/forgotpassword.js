@@ -21,6 +21,7 @@ export function getPasswordReset({ options }) {
           dispatch({
             type: GET_EMAIL_SUCCESS,
             message: result.message,
+            reset_key: localStorage.setItem('reset_key', true),
           })
         } else {
           dispatch({

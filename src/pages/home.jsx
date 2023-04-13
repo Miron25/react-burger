@@ -1,33 +1,11 @@
-//import { useNavigate } from 'react-router-dom'
-
-//import styles from './home.module.css'
-//import { useEffect } from 'react'
 import AppHeader from '../components/appheader/appheader'
 import '../App.css'
 import BurgerIngredients from '../components/burgeringredients/burgeringredients'
 import BurgerConstructor from '../components/burgerconstructor/burgerconstructor'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { DndProvider } from 'react-dnd'
-//import { Button } from '../components/button'
-//import { useSelector } from 'react-redux'
-//import { getFeed } from '../services/actions'
 
 export function HomePage() {
-  //const navigate = useNavigate()
-  //const { feed, feedRequest, feedFailed } = useSelector((state) => state.feed)
-  //const dispatch = useDispatch()
-
-  /*useEffect(() => {
-    if (!feed.length) dispatch(getFeed())
-  }, [feed.length, dispatch])
-        {feedRequest && 'Загрузка данных...'}
-      {feedFailed && 'Произошла ошибка при получении данных'}
-      {!feedRequest && !feedFailed && feed.length && ()}
-  */
-
-  //const onClick = () => {const initialBreadcrumb = [{ path: '/', url: '/', title: 'Home' }]
-  //navigate('/list', { state: initialBreadcrumb })}
-
   return (
     <div id="root">
       <AppHeader />

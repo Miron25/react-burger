@@ -28,6 +28,7 @@ import { ModalContent } from './components/ingredientdetails/ingredientdetails'
 function App() {
   const location = useLocation()
   const navigate = useNavigate()
+  //const { ingredientId } = useParams()
   const background = location.state && location.state.background
 
   //const handleModalClose = () => { navigate(-1) }
@@ -72,11 +73,11 @@ function App() {
           <Route
             path="/login"
             element={
-              <LoginPage />
-              //<ProtectedRouteElement
-              // onlyUnAuth={true}
-              // element={<LoginPage />}
-              ///>
+              //<LoginPage />
+              <ProtectedRouteElement
+                onlyUnAuth={true}
+                element={<LoginPage />}
+              />
             }
           />
           <Route
@@ -97,7 +98,15 @@ function App() {
               />
             }
           />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route
+            path="/reset-password"
+            element={
+              <ProtectedRouteElement
+                onlyUnAuth={true}
+                element={<ResetPasswordPage />}
+              />
+            }
+          />
           <Route
             path="/profile"
             element={
@@ -106,24 +115,20 @@ function App() {
                 element={<ProfilePage />}
               />
             }
-          >
-            <Route
-              path="/profile/orders"
-              element={<ProfileOrdersPage />}
-              //<ProtectedRouteElement
-              // onlyUnAuth={false}
-              // element={<ProfileOrdersPage />}
-              // />
-              // }
-            />
-          </Route>
+          />
+          <Route
+            path="/profile/orders"
+            element={
+              <ProtectedRouteElement
+                onlyUnAuth={false}
+                element={<ProfileOrdersPage />}
+              />
+            }
+          />
           <Route
             path="/ingredients/:ingredientId"
-            element={<ModalContent id={'60666c42cc7b410027a1a9b9'} />}
+            element={<ModalContent directLink={true} />}
           />
-          {/*<Route path="/list" element={<ProtectedRouteElement element={<ListPage />} />}/>
-          <Route path="/list/:country" element={<ProtectedRouteElement element={<CountryPage />} />}/>
-  <Route path="/list/:country/:personId" element={<ProtectedRouteElement element={<PersonPage />} />} /> */}
           <Route path="*" element={<NotFound404 />} />
         </Routes>
       )}
@@ -133,8 +138,8 @@ function App() {
           <Route
             path="/ingredients/:ingredientId"
             element={
-              <Modal onClose={handleModalClose}>
-                <ModalContent />
+              <Modal show={true} onClose={handleModalClose}>
+                <ModalContent directLink={false} />
               </Modal>
             }
           />

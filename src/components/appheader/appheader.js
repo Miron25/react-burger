@@ -12,7 +12,6 @@ import AppheaderStyles from './appheader.module.css'
 const AccountLink = () => {
   const userLoggedIn = useSelector((state) => state.loginReducer.isLoggedIn)
   const location = useLocation()
-  //const [iconActive, setIconActive] = useState(false)
   const setActive = ({ isActive }) =>
     isActive
       ? 'text text_type_main-default'
@@ -49,7 +48,7 @@ const NavMenu = () => {
     isActive
       ? 'text text_type_main-default'
       : 'text text_type_main-default text_color_inactive'
-  //const navigate = useNavigate()
+
   return (
     <div className={AppheaderStyles.navmenu}>
       <>

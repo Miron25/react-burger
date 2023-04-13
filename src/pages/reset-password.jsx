@@ -1,19 +1,15 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-//import { Navigate } from 'react-router-dom'
 import styles from './reset-password.module.css'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
-import { Link } from 'react-router-dom'
-//import { useAuth } from '../services/auth'
-//import { Button } from '../components/button'
+import { Link, useNavigate } from 'react-router-dom'
 import { Input } from '../components/input'
 import { PasswordInput } from '../components/password-input'
 import { getPasswordResetConfirmed } from '../services/actions/resetpassword'
 
 export function ResetPasswordPage() {
-  // let auth = useAuth()
-
   const [form, setValue] = useState({ password: '', code: '' })
+  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const onChange = (e) => {
@@ -28,20 +24,6 @@ export function ResetPasswordPage() {
       token: form.code,
     }),
   }
-  console.log(options)
-
-  /*let login = useCallback(
-    (e) => {
-      e.preventDefault()
-      // auth.signIn(form)
-    },
-    []
-    // [auth, form]
-  )*/
-
-  // if (auth.user) {
-  //   return <Navigate to={'/'} />
-  // }
 
   return (
     <>
@@ -70,10 +52,9 @@ export function ResetPasswordPage() {
               type="primary"
               size="large"
               onClick={() => {
-                //login
-                //setShow(true)
-                //dispatch({ type: CLEAR_ARRAY })
                 dispatch(getPasswordResetConfirmed({ options }))
+                localStorage.removeItem('reset_key')
+                navigate('/login')
               }}
             >
               Сохранить

@@ -17,6 +17,7 @@ export function getPasswordResetConfirmed({ options }) {
       .then(checkResponse)
       .then((result) => {
         if (result && result.success) {
+          console.log(result)
           dispatch({
             type: GET_RESETPASS_SUCCESS,
             message: result.message,

@@ -22,7 +22,6 @@ export const resetPasswordReducer = (state = initialState, action) => {
       }
     }
     case GET_RESETPASS_SUCCESS: {
-      console.log(action.message)
       return {
         ...state,
         // Запрос выполнился успешно, помещаем полученные данные в хранилище

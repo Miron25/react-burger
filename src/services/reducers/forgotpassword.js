@@ -12,7 +12,6 @@ const initialState = {
 }
 
 export const checkEmailReducer = (state = initialState, action) => {
-  //const navigate = useNavigate()
   switch (action.type) {
     case GET_EMAIL_REQUEST: {
       return {
@@ -24,13 +23,12 @@ export const checkEmailReducer = (state = initialState, action) => {
       }
     }
     case GET_EMAIL_SUCCESS: {
-      console.log(action.message)
       return {
         ...state,
         // Запрос выполнился успешно, помещаем полученные данные в хранилище
         message: action.message,
         // Запрос закончил своё выполнение
-        //emailRequest: false,
+        emailRequest: false,
       }
     }
     case GET_EMAIL_ERROR: {

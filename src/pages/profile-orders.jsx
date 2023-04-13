@@ -1,15 +1,25 @@
-//import { useEffect } from 'react'
-//import { useDispatch, useSelector } from 'react-redux'
 import styles from './profile.module.css'
-//import { getLogout } from '../services/actions/logout'
+import { useDispatch } from 'react-redux'
 import { NavLink } from 'react-router-dom'
+import { getLogout } from '../services/actions/logout'
 
 export function ProfileOrdersPage() {
+  const dispatch = useDispatch()
   const setActive = ({ isActive }) =>
     isActive
       ? 'text text_type_main-medium'
       : 'text text_type_main-medium text_color_inactive'
-  console.log('In Orders!')
+
+  const options2 = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      token: localStorage.getItem('r_token'),
+    }),
+  }
+
   return (
     <>
       <div className={styles.wrapper}>
@@ -29,7 +39,7 @@ export function ProfileOrdersPage() {
               to="/login"
               className={setActive}
               onClick={() => {
-                //dispatch(getLogout({ options2 }))
+                dispatch(getLogout({ options2 }))
               }}
             >
               Выход

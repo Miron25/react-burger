@@ -16,7 +16,7 @@ export const Input = ({
   return (
     <div className={styles.inputContainer}>
       <input
-        className={styles.input}
+        className={`${styles.input} ${'text text_type_main-default'}`}
         type={type}
         value={value}
         placeholder={placeholder}

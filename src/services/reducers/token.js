@@ -22,7 +22,6 @@ export const tokenReducer = (state = initialState, action) => {
       }
     }
     case GET_TOKEN_SUCCESS: {
-      console.log(action.token)
       return {
         ...state,
         // Запрос выполнился успешно, помещаем полученные данные в хранилище

@@ -2,19 +2,16 @@ import React, { useState, useRef, useMemo, useEffect } from 'react'
 import BurgerIngStyles from './burgering.module.css'
 import { useInView } from 'react-intersection-observer'
 import PropTypes from 'prop-types'
-import Modal from './../modal/modal'
 import { arrayType } from '../../types/index'
 import { useSelector } from 'react-redux'
-//import { useLocation } from 'react-router'
+import { useLocation } from 'react-router'
 import {
   Tab,
   CurrencyIcon,
   Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-//import {GET_INGREDIENT_DETAILS,  CLEAR_INGREDIENT_DETAILS,} from '../../services/actions/ingredientdetails'
 import { useDrag } from 'react-dnd'
-import { ModalContent } from '../ingredientdetails/ingredientdetails'
-//import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 function BurgerIngredients() {
   const initial_array = useSelector((state) => state.feed.feed)
@@ -26,8 +23,7 @@ function BurgerIngredients() {
   const threeRef = useRef(null) //represents tab "three"
   const [show, setShow] = useState(false)
   const [id, setId] = useState('')
-  //const dispatch = useDispatch()
-  //const location = useLocation()
+  const location = useLocation()
 
   //To filter initial data from API based on the type of the ingredients
   const bunArray = useMemo(
@@ -57,24 +53,17 @@ function BurgerIngredients() {
     }
   }, [InViewBun, InViewSauce, InViewMain])
 
+  useEffect(() => {}, [show])
+
   const handleKeyDown = () => {}
 
   const handleTabClick = (ref) => {
     ref.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  /*function ConditionalLink({ children, condition }) {
-    return condition ? (
-      <Link
-        to={{ pathname: `/ingredients/${id}` }}
-        state={{ background: location }}
-      >
-        {children}
-      </Link>
-    ) : (
-      <>{children}</>
-    )
-  }*/
+  function ConditionalLink({ children, condition, ...props }) {
+    return condition ? <Link {...props}>{children}</Link> : <>{children}</>
+  }
 
   const GridElement = ({ filteredIngr, setShow }) => {
     const [{ isDragging }, dragRef] = useDrag({
@@ -91,52 +80,52 @@ function BurgerIngredients() {
       ).length
       return count
     }
-    //<Link to={`/ingredients/${id}`} state={{ background: location }}>
+
     return (
       <React.Fragment key={filteredIngr._id}>
-        <div
-          className={BurgerIngStyles.column1}
-          ref={dragRef}
-          onClick={() => {
-            setShow(true), setId(filteredIngr._id)
-          }}
-          role="button"
-          tabIndex={0}
-          onKeyDown={handleKeyDown}
-          style={{ isDragging }}
+        <ConditionalLink
+          to={`/ingredients/${id}`}
+          condition={show}
+          state={{ background: location }}
         >
-          {show ? (
-            <Modal
-              show={show}
-              onClose={() => {
-                setShow(false)
-              }}
-            >
-              <ModalContent setShow={setShow} id={id} />
-            </Modal>
-          ) : null}
-          {bun && bun._id === filteredIngr._id && (
-            <Counter count={2} size="default" extraClass="m-1" />
-          )}
-          {ingredients &&
-            ingredients.filter((elem) => elem._id === filteredIngr._id).length >
-              0 && (
-              <Counter count={<CountItems />} size="default" extraClass="m-1" />
-            )}
-          <img src={filteredIngr.image} alt=""></img>
-          <div className={BurgerIngStyles.pricebox}>
-            <span className="text text_type_digits-default">
-              {filteredIngr.price}
-            </span>
-            <CurrencyIcon />
-          </div>
-          <p
-            className="text text_type_main-default"
-            style={{ textAlign: 'center' }}
+          <div
+            className={BurgerIngStyles.column1}
+            ref={dragRef}
+            onClick={() => {
+              setShow(true), setId(filteredIngr._id)
+            }}
+            role="button"
+            tabIndex={0}
+            onKeyDown={handleKeyDown}
+            style={{ isDragging }}
           >
-            {filteredIngr.name}
-          </p>
-        </div>
+            {bun && bun._id === filteredIngr._id && (
+              <Counter count={2} size="default" extraClass="m-1" />
+            )}
+            {ingredients &&
+              ingredients.filter((elem) => elem._id === filteredIngr._id)
+                .length > 0 && (
+                <Counter
+                  count={<CountItems />}
+                  size="default"
+                  extraClass="m-1"
+                />
+              )}
+            <img src={filteredIngr.image} alt=""></img>
+            <div className={BurgerIngStyles.pricebox}>
+              <span className="text text_type_digits-default">
+                {filteredIngr.price}
+              </span>
+              <CurrencyIcon />
+            </div>
+            <p
+              className="text text_type_main-default"
+              style={{ textAlign: 'center' }}
+            >
+              {filteredIngr.name}
+            </p>
+          </div>
+        </ConditionalLink>
       </React.Fragment>
     )
   }
@@ -206,17 +195,6 @@ function BurgerIngredients() {
                 setShow={setShow}
               />
             ))}
-            {/*<Modal
-              show={show}
-              onClose={() => {
-                setShow(false)
-                dispatch({
-                  type: CLEAR_INGREDIENT_DETAILS,
-                })
-              }}
-            >
-              <ModalContent setShow={setShow} />
-            </Modal>*/}
           </div>
           <p className="text text_type_main-medium pt-10 pb-6" ref={threeRef}>
             Начинки

@@ -1,24 +1,27 @@
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import styles from './register.module.css'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { getRegistration } from '../services/actions/registration'
-//import { useAuth } from '../services/auth'
-//import { Button } from '../components/button'
 import { Input } from '../components/input'
 import { PasswordInput } from '../components/password-input'
-import { getAToken, getRToken } from '../utils/helperfunctions'
 
 export function RegisterPage() {
-  // let auth = useAuth()
-
+  const userRegistered = useSelector((state) => state.registrationReducer.user)
   const [form, setValue] = useState({ name: '', email: '', password: '' })
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const onChange = (e) => {
     setValue({ ...form, [e.target.name]: e.target.value })
   }
+
+  useEffect(() => {
+    if (userRegistered) {
+      navigate('/')
+    }
+  }, [userRegistered])
 
   const options = {
     method: 'POST',
@@ -29,20 +32,6 @@ export function RegisterPage() {
       password: form.password,
     }),
   }
-  console.log(getAToken())
-  console.log(getRToken())
-  /*let login = useCallback(
-    (e) => {
-      e.preventDefault()
-      // auth.signIn(form)
-    },
-    []
-    // [auth, form]
-  )*/
-
-  // if (auth.user) {
-  //   return <Navigate to={'/'} />
-  // }
 
   return (
     <>
@@ -78,10 +67,6 @@ export function RegisterPage() {
               type="primary"
               size="large"
               onClick={() => {
-                console.log(options)
-                //login
-                //setShow(true)
-                //dispatch({ type: CLEAR_ARRAY })
                 dispatch(getRegistration({ options }))
               }}
             >

@@ -1,10 +1,14 @@
 .frame {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   position: absolute;
   width: 640px;
   height: 575px;
   left: 640px;
   top: 208px;
-  border: 2px dashed #4c4cff;
+  text-align: center;
 }
 
 .popup_title {
