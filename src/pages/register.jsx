@@ -21,7 +21,7 @@ export function RegisterPage() {
     if (userRegistered) {
       navigate('/')
     }
-  }, [userRegistered])
+  }, [navigate, userRegistered])
 
   const options = {
     method: 'POST',

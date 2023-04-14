@@ -33,7 +33,7 @@ export function LoginPage() {
     if (userLoggedIn) {
       navigate('/')
     }
-  }, [userLoggedIn])
+  }, [navigate, userLoggedIn])
 
   return (
     <>

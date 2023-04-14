@@ -73,15 +73,15 @@ export function ProfilePage() {
     if (userLoggedIn && !userInProfile) {
       dispatch(getUserInfo({ options }))
     }
-    if (userInProfile) {
+    /*if (userInProfile) {
       setValue({
         ...form,
         name: userInProfile.name,
         email: userInProfile.email,
         password: userInProfile.password,
       })
-    }
-  }, [userLoggedIn, userInProfile])
+    }*/
+  }, [dispatch, userLoggedIn, userInProfile])
 
   const handleKeyDown = () => {}
 
