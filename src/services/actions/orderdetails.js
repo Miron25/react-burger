@@ -1,12 +1,9 @@
-import { NORMA_API } from '../../utils/burger-api'
+import { NORMA_API, checkResponse } from '../../utils/api'
+import { optionsType } from '../../utils/types'
 
 export const GET_ORDER_REQUEST = 'GET_ORDER_REQUEST'
 export const GET_ORDER_SUCCESS = 'GET_ORDER_SUCCESS'
 export const GET_ORDER_ERROR = 'GET_ORDER_ERROR'
-
-const checkReponse = (res) => {
-  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err))
-}
 
 export function getOrder({ options }) {
   return function (dispatch) {
@@ -14,7 +11,7 @@ export function getOrder({ options }) {
       type: GET_ORDER_REQUEST,
     })
     fetch(`${NORMA_API}/orders`, options)
-      .then(checkReponse)
+      .then(checkResponse)
       .then((result) => {
         if (result && result.success) {
           dispatch({
@@ -35,4 +32,8 @@ export function getOrder({ options }) {
         })
       })
   }
+}
+
+getOrder.propTypes = {
+  options: optionsType,
 }

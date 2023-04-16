@@ -1,32 +1,23 @@
 import React, { useState, useRef, useMemo, useEffect } from 'react'
 import BurgerIngStyles from './burgering.module.css'
-import { ModalContent } from '../ingredientdetails/ingredientdetails'
 import { useInView } from 'react-intersection-observer'
-import PropTypes from 'prop-types'
-import Modal from './../modal/modal'
-import { arrayType } from '../../types/index'
-import { useSelector, useDispatch } from 'react-redux'
+import { filteredIngrType } from '../../utils/types'
+import { useSelector } from 'react-redux'
+import { useLocation } from 'react-router'
 import {
   Tab,
   CurrencyIcon,
   Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import {
-  GET_INGREDIENT_DETAILS,
-  CLEAR_INGREDIENT_DETAILS,
-} from '../../services/actions/ingredientdetails'
 import { useDrag } from 'react-dnd'
+import { Link } from 'react-router-dom'
 
 function BurgerIngredients() {
   const initial_array = useSelector((state) => state.feed.feed)
-  const ingredients = useSelector((state) => state.selectedIng.ingredients)
-  const bun = useSelector((state) => state.selectedIng.bun)
   const [current, setCurrent] = useState('bun')
   const oneRef = useRef(null) //represents tab "one"
   const twoRef = useRef(null) //represents tab "two"
   const threeRef = useRef(null) //represents tab "three"
-  const [show, setShow] = useState(false)
-  const dispatch = useDispatch()
 
   //To filter initial data from API based on the type of the ingredients
   const bunArray = useMemo(
@@ -56,138 +47,9 @@ function BurgerIngredients() {
     }
   }, [InViewBun, InViewSauce, InViewMain])
 
-  const handleKeyDown = () => {}
-
   const handleTabClick = (ref) => {
     ref.current?.scrollIntoView({ behavior: 'smooth' })
   }
-
-  const GridElement = ({ filteredIngr, setShow }) => {
-    const [{ isDragging }, dragRef] = useDrag({
-      type: filteredIngr.type === 'bun' ? 'bun' : 'main_sauce',
-      item: filteredIngr,
-      collect: (monitor) => ({
-        isDragging: monitor.isDragging() ? 0.5 : 1,
-      }),
-    })
-
-    const CountItems = () => {
-      const count = ingredients.filter(
-        (elem) => elem._id === filteredIngr._id
-      ).length
-      return count
-    }
-
-    return (
-      <React.Fragment key={filteredIngr._id}>
-        <div
-          className={BurgerIngStyles.column1}
-          ref={dragRef}
-          onClick={() => {
-            setShow(true)
-            dispatch({
-              type: GET_INGREDIENT_DETAILS,
-              ingr: filteredIngr,
-            })
-          }}
-          role="button"
-          tabIndex={0}
-          onKeyDown={handleKeyDown}
-          style={{ isDragging }}
-        >
-          {bun && bun._id === filteredIngr._id && (
-            <Counter count={2} size="default" extraClass="m-1" />
-          )}
-          {ingredients &&
-            ingredients.filter((elem) => elem._id === filteredIngr._id).length >
-              0 && (
-              <Counter count={<CountItems />} size="default" extraClass="m-1" />
-            )}
-          <img src={filteredIngr.image} alt=""></img>
-          <div className={BurgerIngStyles.pricebox}>
-            <span className="text text_type_digits-default">
-              {filteredIngr.price}
-            </span>
-            <CurrencyIcon />
-          </div>
-          <p
-            className="text text_type_main-default"
-            style={{ textAlign: 'center' }}
-          >
-            {filteredIngr.name}
-          </p>
-        </div>
-      </React.Fragment>
-    )
-  }
-
-  // The content of the modal popup - selected ingredient details
-  /* const ModalContent = () => {
-    return (
-      <>
-        <div className={BurgerIngStyles.popup_title}>
-          <h1
-            className={
-              BurgerIngStyles.popup_header + 'text text_type_main-large'
-            }
-          >
-            Детали игредиента
-          </h1>
-          <CloseIcon
-            onClick={() => {
-              setShow(false)
-              dispatch({
-                type: CLEAR_INGREDIENT_DETAILS,
-              })
-            }}
-          />
-        </div>
-
-        <img
-          src={ingDetails.image}
-          alt=""
-          className={BurgerIngStyles.popup_img}
-        ></img>
-        <div className={BurgerIngStyles.popup_name}>
-          <h2 className="text text_type_main-medium">{ingDetails.name}</h2>
-        </div>
-        <ul className={BurgerIngStyles.popup_nutrition}>
-          <div className={BurgerIngStyles.popup_nutrition_value}>
-            <span className="text text_type_main-default text_color_inactive">
-              Калории,ккал
-            </span>
-            <span className="text text_type_digits-default">
-              {ingDetails.calories}
-            </span>
-          </div>
-          <div className={BurgerIngStyles.popup_nutrition_value}>
-            <span className="text text_type_main-default text_color_inactive">
-              Белки, г
-            </span>
-            <span className="text text_type_digits-default">
-              {ingDetails.proteins}
-            </span>
-          </div>
-          <div className={BurgerIngStyles.popup_nutrition_value}>
-            <span className="text text_type_main-default text_color_inactive">
-              Жиры, г
-            </span>
-            <span className="text text_type_digits-default">
-              {ingDetails.fat}
-            </span>
-          </div>
-          <div className={BurgerIngStyles.popup_nutrition_value}>
-            <span className="text text_type_main-default text_color_inactive">
-              Углеводы, г
-            </span>
-            <span className="text text_type_digits-default">
-              {ingDetails.carbohydrates}
-            </span>
-          </div>
-        </ul>
-      </>
-    )
-  }*/
 
   return (
     <>
@@ -233,69 +95,24 @@ function BurgerIngredients() {
           </p>
           <div className={BurgerIngStyles.grid_block} ref={bunRef}>
             {bunArray.map((filteredIngr) => (
-              <GridElement
-                key={filteredIngr._id}
-                filteredIngr={filteredIngr}
-                setShow={setShow}
-              />
+              <GridElement key={filteredIngr._id} filteredIngr={filteredIngr} />
             ))}
           </div>
-          <Modal
-            show={show}
-            onClose={() => {
-              setShow(false)
-              dispatch({
-                type: CLEAR_INGREDIENT_DETAILS,
-              })
-            }}
-          >
-            <ModalContent setShow={setShow} />
-          </Modal>
           <p className="text text_type_main-medium pt-10 pb-6" ref={twoRef}>
             Соусы
           </p>
           <div className={BurgerIngStyles.grid_block} ref={sauceRef}>
             {sauceArray.map((filteredIngr) => (
-              <GridElement
-                key={filteredIngr._id}
-                filteredIngr={filteredIngr}
-                setShow={setShow}
-              />
+              <GridElement key={filteredIngr._id} filteredIngr={filteredIngr} />
             ))}
-            <Modal
-              show={show}
-              onClose={() => {
-                setShow(false)
-                dispatch({
-                  type: CLEAR_INGREDIENT_DETAILS,
-                })
-              }}
-            >
-              <ModalContent setShow={setShow} />
-            </Modal>
           </div>
           <p className="text text_type_main-medium pt-10 pb-6" ref={threeRef}>
             Начинки
           </p>
           <div className={BurgerIngStyles.grid_block} ref={mainRef}>
             {mainArray.map((filteredIngr) => (
-              <GridElement
-                key={filteredIngr._id}
-                filteredIngr={filteredIngr}
-                setShow={setShow}
-              />
+              <GridElement key={filteredIngr._id} filteredIngr={filteredIngr} />
             ))}
-            <Modal
-              show={show}
-              onClose={() => {
-                setShow(false)
-                dispatch({
-                  type: CLEAR_INGREDIENT_DETAILS,
-                })
-              }}
-            >
-              <ModalContent setShow={setShow} />
-            </Modal>
           </div>
         </div>
       </div>
@@ -303,14 +120,66 @@ function BurgerIngredients() {
   )
 }
 
-BurgerIngredients.propTypes = {
-  filteredIngr: arrayType,
-  filtered_array: arrayType,
-  setShow: PropTypes.bool,
-  setInd: PropTypes.number,
-  onClose: PropTypes.func,
-  index: PropTypes.number,
-  key: PropTypes.string,
+const GridElement = ({ filteredIngr }) => {
+  const ingredients = useSelector((state) => state.selectedIng.ingredients)
+  const bun = useSelector((state) => state.selectedIng.bun)
+  const location = useLocation()
+
+  const [{ isDragging }, dragRef] = useDrag({
+    type: filteredIngr.type === 'bun' ? 'bun' : 'main_sauce',
+    item: filteredIngr,
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging() ? 0.5 : 1,
+    }),
+  })
+
+  const CountItems = () => {
+    const count = ingredients.filter(
+      (elem) => elem._id === filteredIngr._id
+    ).length
+    return count
+  }
+
+  return (
+    <React.Fragment key={filteredIngr._id}>
+      <Link
+        to={`/ingredients/${filteredIngr._id}`}
+        state={{ background: location }}
+      >
+        <div
+          className={BurgerIngStyles.column1}
+          ref={dragRef}
+          style={{ isDragging }}
+        >
+          {bun && bun._id === filteredIngr._id && (
+            <Counter count={2} size="default" extraClass="m-1" />
+          )}
+          {ingredients &&
+            ingredients.filter((elem) => elem._id === filteredIngr._id).length >
+              0 && (
+              <Counter count={<CountItems />} size="default" extraClass="m-1" />
+            )}
+          <img src={filteredIngr.image} alt=""></img>
+          <div className={BurgerIngStyles.pricebox}>
+            <span className="text text_type_digits-default">
+              {filteredIngr.price}
+            </span>
+            <CurrencyIcon />
+          </div>
+          <p
+            className="text text_type_main-default"
+            style={{ textAlign: 'center' }}
+          >
+            {filteredIngr.name}
+          </p>
+        </div>
+      </Link>
+    </React.Fragment>
+  )
+}
+
+GridElement.propTypes = {
+  filteredIngr: filteredIngrType,
 }
 
 export default BurgerIngredients

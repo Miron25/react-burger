@@ -1,17 +1,11 @@
 import * as ReactDOM from 'react-dom/client'
 import App from './App'
-//import reportWebVitals from './reportWebVitals'
-//import { configureStore } from '@reduxjs/toolkit'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { createStore, applyMiddleware } from 'redux'
+import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { rootReducer } from './services/reducers'
 import thunk from 'redux-thunk'
-
-/*const store = configureStore({
-  reducer: rootReducer,
-  middleware: [thunk],
-})*/
 
 const store = createStore(
   rootReducer,
@@ -21,7 +15,9 @@ const store = createStore(
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <Provider store={store}>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </Provider>
 )
 

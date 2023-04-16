@@ -1,0 +1,24 @@
+.wrapper {
+  width: 100vw;
+  height: 100vh;
+}
+
+.container {
+  padding: var(--container-padding);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  height: calc(100vh - var(--container-padding) * 2);
+  top: 200px;
+  left: 800px;
+}
+
+.content {
+  margin: auto;
+  text-align: center;
+}
+
+.link {
+  color: #4c4cff;
+}
