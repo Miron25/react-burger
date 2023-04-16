@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styles from './profile.module.css'
 import {
@@ -16,27 +16,12 @@ export function ProfilePage() {
   const [editBox1, setEditBox1] = useState(false)
   const [editBox2, setEditBox2] = useState(false)
   const [editBox3, setEditBox3] = useState(false)
-  const nameEdit = useRef(null)
-  const emailEdit = useRef(null)
-  const passwordEdit = useRef(null)
-  const [form, setValue] = useState({ email: '', name: '', password: '' })
+  const [form, setValue] = useState({})
   const dispatch = useDispatch()
   const setActive = ({ isActive }) =>
     isActive
       ? 'text text_type_main-medium'
       : 'text text_type_main-medium text_color_inactive'
-
-  useEffect(() => {
-    editBox1 && nameEdit.current?.focus()
-  }, [editBox1])
-
-  useEffect(() => {
-    editBox2 && emailEdit.current?.focus()
-  }, [editBox2])
-
-  useEffect(() => {
-    editBox3 && passwordEdit.current?.focus()
-  }, [editBox3])
 
   const options = {
     method: 'GET',
@@ -73,17 +58,33 @@ export function ProfilePage() {
     if (userLoggedIn && !userInProfile) {
       dispatch(getUserInfo({ options }))
     }
-    /*if (userInProfile) {
-      setValue({
-        ...form,
-        name: userInProfile.name,
-        email: userInProfile.email,
-        password: userInProfile.password,
-      })
-    }*/
   }, [dispatch, userLoggedIn, userInProfile])
 
   const handleKeyDown = () => {}
+
+  const handleChange = (event) => {
+    setValue({
+      ...form,
+      [event.target.name]: event.target.value,
+    })
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    setEditBox1(false)
+    setEditBox2(false)
+    setEditBox3(false)
+    dispatch(getUserUpdate({ patchOptions }))
+    setValue({})
+  }
+
+  const handleReset = (event) => {
+    event.preventDefault()
+    setEditBox1(false)
+    setEditBox2(false)
+    setEditBox3(false)
+    setValue({})
+  }
 
   return (
     userLoggedIn && (
@@ -106,6 +107,7 @@ export function ProfilePage() {
                 className={setActive}
                 onClick={() => {
                   dispatch(getLogout({ options2 }))
+                  localStorage.removeItem('user')
                 }}
               >
                 Выход
@@ -117,92 +119,82 @@ export function ProfilePage() {
               В этом разделе вы можете изменить свои персональные данные
             </span>
           </div>
-          <div className={styles.form}>
-            <div className={styles.form_inside}>
-              <div
-                className={
-                  editBox1 ? styles.info_block_edit : styles.info_block
-                }
-              >
-                <div>
+          <form
+            onSubmit={handleSubmit}
+            onReset={handleReset}
+            className={styles.form}
+          >
+            <div
+              className={editBox1 ? styles.info_block_edit : styles.info_block}
+            >
+              <div>
+                <p className="text text_type_main-default text_color_inactive">
+                  Имя
+                </p>
+                {editBox1 ? (
+                  <input
+                    type="text"
+                    name="name"
+                    value={form.name || ''}
+                    className={`${
+                      styles.input
+                    } ${'text text_type_main-default'}`}
+                    placeholder={userInProfile && userInProfile.name}
+                    onChange={handleChange}
+                  ></input>
+                ) : (
                   <p className="text text_type_main-default text_color_inactive">
-                    Имя
+                    {userInProfile && userInProfile.name}
                   </p>
-                  {editBox1 ? (
-                    <input
-                      type="text"
-                      ref={nameEdit}
-                      className={`${
-                        styles.input
-                      } ${'text text_type_main-default'}`}
-                      placeholder={userInProfile && userInProfile.name}
-                      onChange={() => {
-                        setValue({
-                          ...form,
-                          name: nameEdit.current.value,
-                        })
-                      }}
-                    ></input>
-                  ) : (
-                    <p className="text text_type_main-default text_color_inactive">
-                      {userInProfile && userInProfile.name}
-                    </p>
-                  )}
-                </div>
-                <span
-                  className={styles.icon}
-                  onClick={() => {
-                    setEditBox1(!editBox1)
-                  }}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={handleKeyDown}
-                >
-                  {editBox1 ? <CloseIcon /> : <EditIcon />}
-                </span>
+                )}
               </div>
-              <div
-                className={
-                  editBox2 ? styles.info_block_edit : styles.info_block
-                }
+              <span
+                className={styles.icon}
+                onClick={() => {
+                  setEditBox1(!editBox1)
+                }}
+                role="button"
+                tabIndex={0}
+                onKeyDown={handleKeyDown}
               >
-                <div>
+                {editBox1 ? <CloseIcon /> : <EditIcon />}
+              </span>
+            </div>
+            <div
+              className={editBox2 ? styles.info_block_edit : styles.info_block}
+            >
+              <div>
+                <p className="text text_type_main-default text_color_inactive">
+                  Логин
+                </p>
+                {editBox2 ? (
+                  <input
+                    type="text"
+                    name="email"
+                    value={form.email || ''}
+                    className={`${
+                      styles.input
+                    } ${'text text_type_main-default'}`}
+                    placeholder={userInProfile && userInProfile.email}
+                    onChange={handleChange}
+                  ></input>
+                ) : (
                   <p className="text text_type_main-default text_color_inactive">
-                    Логин
+                    {userInProfile && userInProfile.email}
                   </p>
-                  {editBox2 ? (
-                    <input
-                      type="text"
-                      ref={emailEdit}
-                      className={`${
-                        styles.input
-                      } ${'text text_type_main-default'}`}
-                      placeholder={userInProfile && userInProfile.email}
-                      onChange={() => {
-                        setValue({
-                          ...form,
-                          email: emailEdit.current.value,
-                        })
-                      }}
-                    ></input>
-                  ) : (
-                    <p className="text text_type_main-default text_color_inactive">
-                      {userInProfile && userInProfile.email}
-                    </p>
-                  )}
-                </div>
-                <span
-                  className={styles.icon}
-                  onClick={() => {
-                    setEditBox2(!editBox2)
-                  }}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={handleKeyDown}
-                >
-                  {editBox2 ? <CloseIcon /> : <EditIcon />}
-                </span>
+                )}
               </div>
+              <span
+                className={styles.icon}
+                onClick={() => {
+                  setEditBox2(!editBox2)
+                }}
+                role="button"
+                tabIndex={0}
+                onKeyDown={handleKeyDown}
+              >
+                {editBox2 ? <CloseIcon /> : <EditIcon />}
+              </span>
             </div>
             <div
               className={editBox3 ? styles.info_block_edit : styles.info_block}
@@ -213,18 +205,14 @@ export function ProfilePage() {
                 </p>
                 {editBox3 ? (
                   <input
-                    type="text"
-                    ref={passwordEdit}
+                    type="password"
+                    name="password"
                     className={`${
                       styles.input
                     } ${'text text_type_main-default'}`}
                     placeholder="******"
-                    onChange={() => {
-                      setValue({
-                        ...form,
-                        password: passwordEdit.current.value,
-                      })
-                    }}
+                    value={form.password || ''}
+                    onChange={handleChange}
                   ></input>
                 ) : (
                   <p className="text text_type_main-default text_color_inactive">
@@ -246,34 +234,15 @@ export function ProfilePage() {
             </div>
             {(editBox1 || editBox2 || editBox3) && (
               <div className={styles.actions}>
-                <Button
-                  htmlType="button"
-                  type="secondary"
-                  size="large"
-                  onClick={() => {
-                    setEditBox1(false)
-                    setEditBox2(false)
-                    setEditBox3(false)
-                  }}
-                >
+                <Button htmlType="reset" type="secondary" size="large">
                   Отмена
                 </Button>
-                <Button
-                  htmlType="button"
-                  type="primary"
-                  size="large"
-                  onClick={() => {
-                    setEditBox1(false)
-                    setEditBox2(false)
-                    setEditBox3(false)
-                    dispatch(getUserUpdate({ patchOptions }))
-                  }}
-                >
+                <Button htmlType="submit" type="primary" size="large">
                   Сохранить
                 </Button>
               </div>
             )}
-          </div>
+          </form>
         </div>
       </React.Fragment>
     )

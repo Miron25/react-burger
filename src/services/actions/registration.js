@@ -1,19 +1,16 @@
-import { NORMA_API } from '../../utils/burger-api'
+import { NORMA_API, checkResponse } from '../../utils/api'
+import { optionsType } from '../../utils/types'
 
 export const GET_REGISTRATION_REQUEST = 'GET_REGISTRATION_REQUEST'
 export const GET_REGISTRATION_SUCCESS = 'GET_REGISTRATION_SUCCESS'
 export const GET_REGISTRATION_ERROR = 'GET_REGISTRATION_ERROR'
 
-const checkResponse = (res) => {
-  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err))
-}
-
-export function getRegistration({ options }) {
+export function getRegistration({ options_1 }) {
   return function (dispatch) {
     dispatch({
       type: GET_REGISTRATION_REQUEST,
     })
-    fetch(`${NORMA_API}/auth/register`, options)
+    fetch(`${NORMA_API}/auth/register`, options_1)
       .then(checkResponse)
       .then((result) => {
         if (result && result.success) {
@@ -37,4 +34,8 @@ export function getRegistration({ options }) {
         })
       })
   }
+}
+
+getRegistration.propTypes = {
+  options: optionsType,
 }

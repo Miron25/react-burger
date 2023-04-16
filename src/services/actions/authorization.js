@@ -1,13 +1,10 @@
-import { NORMA_API } from '../../utils/burger-api'
+import { NORMA_API, checkResponse } from '../../utils/api'
+import { optionsType } from '../../utils/types'
 
 export const GET_AUTH_REQUEST = 'GET_AUTH_REQUEST'
 export const GET_AUTH_SUCCESS = 'GET_AUTH_SUCCESS'
 export const GET_AUTH_ERROR = 'GET_AUTH_ERROR'
 export const GET_AUTH_OUT = 'GET_AUTH_OUT'
-
-const checkResponse = (res) => {
-  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err))
-}
 
 export function getAuth({ options }) {
   return function (dispatch) {
@@ -22,6 +19,10 @@ export function getAuth({ options }) {
           dispatch({
             type: GET_AUTH_SUCCESS,
             user: result.user,
+            logged_in_user: localStorage.setItem(
+              'user',
+              JSON.stringify(result.user)
+            ),
             access_token: localStorage.setItem('a_token', result.accessToken),
             refresh_token: localStorage.setItem('r_token', result.refreshToken),
             isLoggedIn: true,
@@ -39,4 +40,8 @@ export function getAuth({ options }) {
         })
       })
   }
+}
+
+getAuth.propTypes = {
+  options: optionsType,
 }

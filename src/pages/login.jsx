@@ -35,10 +35,15 @@ export function LoginPage() {
     }
   }, [navigate, userLoggedIn])
 
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    dispatch(getAuth({ options }))
+  }
+
   return (
     <>
       <div className={styles.container}>
-        <form className={styles.form}>
+        <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.heading}>
             <h1 className="text text_type_main-medium pb-6">Вход</h1>
           </div>
@@ -54,14 +59,7 @@ export function LoginPage() {
             name="password"
             onChange={onChange}
           />
-          <Button
-            htmlType="button"
-            type="primary"
-            size="large"
-            onClick={() => {
-              dispatch(getAuth({ options }))
-            }}
-          >
+          <Button htmlType="submit" type="primary" size="large">
             Войти
           </Button>
         </form>

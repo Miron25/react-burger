@@ -16,27 +16,21 @@ export const checkEmailReducer = (state = initialState, action) => {
     case GET_EMAIL_REQUEST: {
       return {
         ...state,
-        // Запрос начал выполняться
         emailRequest: true,
-        // Сбрасываем статус наличия ошибок от предыдущего запроса на случай, если он был и завершился с ошибкой
         emailFailed: false,
       }
     }
     case GET_EMAIL_SUCCESS: {
       return {
         ...state,
-        // Запрос выполнился успешно, помещаем полученные данные в хранилище
         message: action.message,
-        // Запрос закончил своё выполнение
         emailRequest: false,
       }
     }
     case GET_EMAIL_ERROR: {
       return {
         ...state,
-        // Запрос выполнился с ошибкой, выставляем соответсвующие значения в хранилище
         emailFailed: true,
-        // Запрос закончил своё выполнение
         emailRequest: false,
         message: '',
       }

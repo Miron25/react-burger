@@ -60,11 +60,9 @@ const NavMenu = () => {
         </NavLink>
 
         <ListIcon
-          type={
-            location.pathname === '/profile/orders' ? 'primary' : 'secondary'
-          }
+          type={location.pathname === '/feed' ? 'primary' : 'secondary'}
         />
-        <NavLink to="/profile/orders" className={setActive}>
+        <NavLink to="/feed" className={setActive}>
           Лента заказов
         </NavLink>
       </>
@@ -79,7 +77,9 @@ function AppHeader() {
         {
           <>
             <NavMenu />
-            <Logo styles={{ alignSelf: 'center' }} />
+            <NavLink to="/">
+              <Logo styles={{ alignSelf: 'center' }} />
+            </NavLink>
             <AccountLink />
           </>
         }

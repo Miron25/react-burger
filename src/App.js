@@ -4,10 +4,6 @@ import { getFeed } from './services/actions'
 import './App.css'
 import AppHeader from './components/appheader/appheader'
 import Modal from './components/modal/modal'
-//import BurgerIngredients from './components/burgeringredients/burgeringredients'
-//import BurgerConstructor from './components/burgerconstructor/burgerconstructor'
-//import { HTML5Backend } from 'react-dnd-html5-backend'
-//import { DndProvider } from 'react-dnd'
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import {
   HomePage,
@@ -18,43 +14,35 @@ import {
   ResetPasswordPage,
   ProfilePage,
   ProfileOrdersPage,
+  OrdersFeedPage,
 } from './pages'
 import { ProtectedRouteElement } from './components/protected-route'
 import { ModalContent } from './components/ingredientdetails/ingredientdetails'
-//import { getUserInfo } from './services/actions/userinfo'
-//import { getAToken } from './utils/helperfunctions'
-//import { ProvideAuth } from "./services/auth";
+import { GET_AUTH_SUCCESS } from './services/actions/authorization'
 
 function App() {
   const location = useLocation()
   const navigate = useNavigate()
-  //const { ingredientId } = useParams()
   const background = location.state && location.state.background
-
-  //const handleModalClose = () => { navigate(-1) }
-  // Возвращаемся к предыдущему пути при закрытии модалки
-
   const { feed, feedRequest, feedFailed } = useSelector((state) => state.feed)
-  //const userLoggedIn = useSelector((state) => state.loginReducer.isLoggedIn)
   const dispatch = useDispatch()
-
-  /*const options = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: localStorage.getItem('a_token'),
-    },
-  }*/
+  const resetKey = localStorage.getItem('reset_key')
 
   useEffect(() => {
     if (!feed.length) dispatch(getFeed())
   }, [feed.length, dispatch])
 
-  /*useEffect(() => {
-    if (!userLoggedIn) {
-      dispatch(getUserInfo({ options }))
-    } else console.log('User logged in!')
-  }, [userLoggedIn, dispatch])*/
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem('user')
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser)
+      dispatch({
+        type: GET_AUTH_SUCCESS,
+        user: foundUser,
+        isLoggedIn: true,
+      })
+    }
+  }, [])
 
   const handleModalClose = () => {
     // Возвращаемся к предыдущему пути при закрытии модалки
@@ -63,7 +51,6 @@ function App() {
 
   return (
     <>
-      {/*<ProvideAuth> location={background || location}*/}
       <AppHeader />
       {feedRequest && 'Загрузка данных...'}
       {feedFailed && 'Произошла ошибка при получении данных'}
@@ -73,7 +60,6 @@ function App() {
           <Route
             path="/login"
             element={
-              //<LoginPage />
               <ProtectedRouteElement
                 onlyUnAuth={true}
                 element={<LoginPage />}
@@ -101,10 +87,12 @@ function App() {
           <Route
             path="/reset-password"
             element={
-              <ProtectedRouteElement
-                onlyUnAuth={true}
-                element={<ResetPasswordPage />}
-              />
+              resetKey && (
+                <ProtectedRouteElement
+                  onlyUnAuth={true}
+                  element={<ResetPasswordPage />}
+                />
+              )
             }
           />
           <Route
@@ -122,6 +110,15 @@ function App() {
               <ProtectedRouteElement
                 onlyUnAuth={false}
                 element={<ProfileOrdersPage />}
+              />
+            }
+          />
+          <Route
+            path="/feed"
+            element={
+              <ProtectedRouteElement
+                onlyUnAuth={false}
+                element={<OrdersFeedPage />}
               />
             }
           />
@@ -145,8 +142,6 @@ function App() {
           />
         </Routes>
       )}
-
-      {/*</ProvideAuth>*/}
     </>
   )
 }

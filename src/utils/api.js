@@ -1,6 +1,6 @@
-import { NORMA_API } from './burger-api'
+export const NORMA_API = 'https://norma.nomoreparties.space/api'
 
-const checkResponse = (res) => {
+export const checkResponse = (res) => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err))
 }
 

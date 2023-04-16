@@ -24,6 +24,6 @@ export const ProtectedRouteElement = ({ onlyUnAuth = false, element }) => {
 }
 
 ProtectedRouteElement.propTypes = {
-  element: PropTypes.element,
-  onlyUnAuth: PropTypes.bool,
+  element: PropTypes.node.isRequired,
+  onlyUnAuth: PropTypes.bool.isRequired,
 }

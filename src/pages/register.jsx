@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import styles from './register.module.css'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { getRegistration } from '../services/actions/registration'
+import { getAuth } from '../services/actions/authorization'
 import { Input } from '../components/input'
 import { PasswordInput } from '../components/password-input'
 
@@ -19,11 +20,12 @@ export function RegisterPage() {
 
   useEffect(() => {
     if (userRegistered) {
+      dispatch(getAuth({ options }))
       navigate('/')
     }
   }, [navigate, userRegistered])
 
-  const options = {
+  const options_1 = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -33,11 +35,28 @@ export function RegisterPage() {
     }),
   }
 
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: localStorage.getItem('a_token'),
+    },
+    body: JSON.stringify({
+      email: form.email,
+      password: form.password,
+    }),
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    dispatch(getRegistration({ options_1 }))
+  }
+
   return (
     <>
       <div className={styles.wrapper}>
         <div className={styles.container}>
-          <form className={styles.form}>
+          <form onSubmit={handleSubmit} className={styles.form}>
             <div className={styles.heading}>
               <h1 className="text text_type_main-medium pb-6">Регистрация</h1>
             </div>
@@ -62,14 +81,7 @@ export function RegisterPage() {
               onChange={onChange}
               required
             />
-            <Button
-              htmlType="button"
-              type="primary"
-              size="large"
-              onClick={() => {
-                dispatch(getRegistration({ options }))
-              }}
-            >
+            <Button htmlType="submit" type="primary" size="large">
               Зарегистрироваться
             </Button>
           </form>

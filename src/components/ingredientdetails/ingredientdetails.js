@@ -4,7 +4,15 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 
-export const ModalContent = ({ setShow, directLink }) => {
+function CenterIngredient({ children, directLink }) {
+  return directLink ? (
+    <div className={IngDetailsStyles.frame}>{children}</div>
+  ) : (
+    <>{children}</>
+  )
+}
+
+export const ModalContent = ({ directLink }) => {
   const navigate = useNavigate()
   const location = useLocation()
   const { ingredientId } = useParams()
@@ -12,16 +20,9 @@ export const ModalContent = ({ setShow, directLink }) => {
   const ingredientsList = useSelector((state) => state.feed.feed)
   const ingDetails = ingredientsList.find((item) => item._id === ingredientId)
 
-  function CenterIngredient({ children }) {
-    return directLink ? (
-      <div className={IngDetailsStyles.frame}>{children}</div>
-    ) : (
-      <>{children}</>
-    )
-  }
   return (
     <>
-      <CenterIngredient>
+      <CenterIngredient directLink={directLink}>
         <div className={IngDetailsStyles.popup_title}>
           <h1
             className={`${
@@ -33,7 +34,7 @@ export const ModalContent = ({ setShow, directLink }) => {
           {!directLink && (
             <CloseIcon
               onClick={() => {
-                location.state.background ? navigate(-1) : setShow(false)
+                location.state.background && navigate(-1)
               }}
             />
           )}
@@ -87,7 +88,10 @@ export const ModalContent = ({ setShow, directLink }) => {
 }
 
 ModalContent.propTypes = {
-  setShow: PropTypes.func,
-  directLink: PropTypes.bool,
+  directLink: PropTypes.bool.isRequired,
+}
+
+CenterIngredient.propTypes = {
   children: PropTypes.node,
+  directLink: PropTypes.bool.isRequired,
 }

@@ -8,6 +8,7 @@ const initialState = {
   resetRequest: false,
   resetFailed: false,
   message: '',
+  isCodeCorrect: false,
 }
 
 export const resetPasswordReducer = (state = initialState, action) => {
@@ -15,29 +16,25 @@ export const resetPasswordReducer = (state = initialState, action) => {
     case GET_RESETPASS_REQUEST: {
       return {
         ...state,
-        // Запрос начал выполняться
         resetRequest: true,
-        // Сбрасываем статус наличия ошибок от предыдущего запроса на случай, если он был и завершился с ошибкой
         resetFailed: false,
       }
     }
     case GET_RESETPASS_SUCCESS: {
       return {
         ...state,
-        // Запрос выполнился успешно, помещаем полученные данные в хранилище
         message: action.message,
-        // Запрос закончил своё выполнение
+        isCodeCorrect: true,
         resetRequest: false,
       }
     }
     case GET_RESETPASS_ERROR: {
       return {
         ...state,
-        // Запрос выполнился с ошибкой, выставляем соответсвующие значения в хранилище
         resetFailed: true,
-        // Запрос закончил своё выполнение
         resetRequest: false,
-        message: '',
+        message: action.message,
+        isCodeCorrect: false,
       }
     }
     default: {

@@ -15,27 +15,21 @@ export const registrationReducer = (state = initialState, action) => {
     case GET_REGISTRATION_REQUEST: {
       return {
         ...state,
-        // Запрос начал выполняться
         registrationRequest: true,
-        // Сбрасываем статус наличия ошибок от предыдущего запроса на случай, если он был и завершился с ошибкой
         registrationFailed: false,
       }
     }
     case GET_REGISTRATION_SUCCESS: {
       return {
         ...state,
-        // Запрос выполнился успешно, помещаем полученные данные в хранилище
         user: action.user,
-        // Запрос закончил своё выполнение
         registrationRequest: false,
       }
     }
     case GET_REGISTRATION_ERROR: {
       return {
         ...state,
-        // Запрос выполнился с ошибкой, выставляем соответсвующие значения в хранилище
         registrationFailed: true,
-        // Запрос закончил своё выполнение
         registrationRequest: false,
         user: null,
       }

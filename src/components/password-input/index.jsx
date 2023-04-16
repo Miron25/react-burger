@@ -4,7 +4,6 @@ import eye from '../../images/eye.svg'
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import styles from '../input/input.module.css'
-//import {ShowIcon, HideIcon,} from '@ya.praktikum/react-developer-burger-ui-components'
 
 const EyeOff = ({ onClick }) => (
   <input
@@ -27,7 +26,6 @@ const Eye = ({ onClick }) => (
 
 export const PasswordInput = ({ ...props }) => {
   const [isVisible, setVisible] = useState(false)
-  //console.log(type)
   return (
     <Input
       {...props}
@@ -44,8 +42,4 @@ EyeOff.propTypes = {
 
 Eye.propTypes = {
   onClick: PropTypes.func,
-}
-
-PasswordInput.propTypes = {
-  type: PropTypes.string,
 }

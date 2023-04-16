@@ -47,13 +47,9 @@ const Modal = ({ children, show, onClose, modalStyle }) => {
 }
 
 Modal.propTypes = {
-  show: PropTypes.bool,
-  children: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-    PropTypes.node,
-  ]),
-  onClose: PropTypes.func,
+  show: PropTypes.bool.isRequired,
+  children: PropTypes.node,
+  onClose: PropTypes.func.isRequired,
 }
 
 export default Modal

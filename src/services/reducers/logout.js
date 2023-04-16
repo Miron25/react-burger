@@ -15,26 +15,20 @@ export const logoutReducer = (state = initialState, action) => {
     case GET_LOGOUT_REQUEST: {
       return {
         ...state,
-        // Запрос начал выполняться
         logoutRequest: true,
-        // Сбрасываем статус наличия ошибок от предыдущего запроса на случай, если он был и завершился с ошибкой
         logoutFailed: false,
       }
     }
     case GET_LOGOUT_SUCCESS: {
       return {
         ...state,
-        // Запрос выполнился успешно, помещаем полученные данные в хранилище
-        // Запрос закончил своё выполнение
         logoutRequest: false,
       }
     }
     case GET_LOGOUT_ERROR: {
       return {
         ...state,
-        // Запрос выполнился с ошибкой, выставляем соответсвующие значения в хранилище
         logoutFailed: true,
-        // Запрос закончил своё выполнение
         logoutRequest: false,
         logout: null,
       }

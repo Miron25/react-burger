@@ -4,13 +4,9 @@ import styles from './forgot-password.module.css'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, useNavigate } from 'react-router-dom'
 import { Input } from '../components/input'
-import {
-  getPasswordReset,
-  //CLEAR_MESSAGE,
-} from '../services/actions/forgotpassword'
+import { getPasswordReset } from '../services/actions/forgotpassword'
 
 export function ForgotPasswordPage() {
-  //const { message } = useSelector((state) => state.checkEmail)
   const navigate = useNavigate()
 
   const [form, setValue] = useState({ email: '' })
@@ -28,7 +24,9 @@ export function ForgotPasswordPage() {
     }),
   }
 
-  const goToResetPasswordPage = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    localStorage.setItem('reset_key', true)
     dispatch(getPasswordReset({ options }))
     navigate('/reset-password')
   }
@@ -37,7 +35,7 @@ export function ForgotPasswordPage() {
     <>
       <div className={styles.wrapper}>
         <div className={styles.container}>
-          <form className={styles.form}>
+          <form onSubmit={handleSubmit} className={styles.form}>
             <div className={styles.heading}>
               <h1 className="text text_type_main-medium pb-6">
                 Восстановление пароля
@@ -49,14 +47,7 @@ export function ForgotPasswordPage() {
               name="email"
               onChange={onChange}
             />
-            <Button
-              htmlType="button"
-              type="primary"
-              size="large"
-              onClick={() => {
-                goToResetPasswordPage()
-              }}
-            >
+            <Button htmlType="submit" type="primary" size="large">
               Восстановить
             </Button>
           </form>

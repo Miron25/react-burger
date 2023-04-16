@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import styles from './reset-password.module.css'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, useNavigate } from 'react-router-dom'
@@ -8,9 +8,19 @@ import { PasswordInput } from '../components/password-input'
 import { getPasswordResetConfirmed } from '../services/actions/resetpassword'
 
 export function ResetPasswordPage() {
+  const codeCorrect = useSelector(
+    (state) => state.resetPasswordReducer.isCodeCorrect
+  )
   const [form, setValue] = useState({ password: '', code: '' })
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  localStorage.removeItem('reset_key')
+
+  useEffect(() => {
+    if (codeCorrect) {
+      navigate('/login')
+    }
+  }, [navigate, codeCorrect])
 
   const onChange = (e) => {
     setValue({ ...form, [e.target.name]: e.target.value })
@@ -25,11 +35,16 @@ export function ResetPasswordPage() {
     }),
   }
 
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    dispatch(getPasswordResetConfirmed({ options }))
+  }
+
   return (
     <>
       <div className={styles.wrapper}>
         <div className={styles.container}>
-          <form className={styles.form}>
+          <form onSubmit={handleSubmit} className={styles.form}>
             <div className={styles.heading}>
               <h1 className="text text_type_main-medium pb-6">
                 Восстановление пароля
@@ -47,16 +62,7 @@ export function ResetPasswordPage() {
               name="code"
               onChange={onChange}
             />
-            <Button
-              htmlType="button"
-              type="primary"
-              size="large"
-              onClick={() => {
-                dispatch(getPasswordResetConfirmed({ options }))
-                localStorage.removeItem('reset_key')
-                navigate('/login')
-              }}
-            >
+            <Button htmlType="submit" type="primary" size="large">
               Сохранить
             </Button>
           </form>

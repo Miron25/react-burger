@@ -1,14 +1,11 @@
-import { NORMA_API } from '../../utils/burger-api'
+import { NORMA_API, checkResponse } from '../../utils/api'
 import { GET_AUTH_OUT } from '../actions/authorization'
 import { GET_USER_OUT } from '../actions/userinfo'
+import { optionsType } from '../../utils/types'
 
 export const GET_LOGOUT_REQUEST = 'GET_LOGOUT_REQUEST'
 export const GET_LOGOUT_SUCCESS = 'GET_LOGOUT_SUCCESS'
 export const GET_LOGOUT_ERROR = 'GET_LOGOUT_ERROR'
-
-const checkResponse = (res) => {
-  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err))
-}
 
 export function getLogout({ options2 }) {
   return function (dispatch) {
@@ -41,4 +38,8 @@ export function getLogout({ options2 }) {
         })
       })
   }
+}
+
+getLogout.propTypes = {
+  options2: optionsType,
 }

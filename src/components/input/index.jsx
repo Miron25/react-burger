@@ -31,8 +31,8 @@ export const Input = ({
 Input.propTypes = {
   icon: PropTypes.any,
   onIconClick: PropTypes.func,
-  value: PropTypes.string,
-  placeholder: PropTypes.string,
-  onChange: PropTypes.func,
+  value: PropTypes.string.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
   type: PropTypes.string,
 }

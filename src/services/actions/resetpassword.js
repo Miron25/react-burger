@@ -1,12 +1,9 @@
-import { NORMA_API } from '../../utils/burger-api'
+import { NORMA_API, checkResponse } from '../../utils/api'
+import { optionsType } from '../../utils/types'
 
 export const GET_RESETPASS_REQUEST = 'GET_RESETPASS_REQUEST'
 export const GET_RESETPASS_SUCCESS = 'GET_RESETPASS_SUCCESS'
 export const GET_RESETPASS_ERROR = 'GET_RESETPASS_ERROR'
-
-const checkResponse = (res) => {
-  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err))
-}
 
 export function getPasswordResetConfirmed({ options }) {
   return function (dispatch) {
@@ -21,10 +18,12 @@ export function getPasswordResetConfirmed({ options }) {
           dispatch({
             type: GET_RESETPASS_SUCCESS,
             message: result.message,
+            isCodeCorrect: true,
           })
         } else {
           dispatch({
             type: GET_RESETPASS_ERROR,
+            message: result.message,
           })
         }
       })
@@ -32,7 +31,12 @@ export function getPasswordResetConfirmed({ options }) {
         console.log(exception)
         dispatch({
           type: GET_RESETPASS_ERROR,
+          message: exception.message,
         })
       })
   }
+}
+
+getPasswordResetConfirmed.propTypes = {
+  options: optionsType,
 }

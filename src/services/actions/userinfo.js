@@ -1,5 +1,5 @@
-import { NORMA_API } from '../../utils/burger-api'
-import { fetchWithRefresh } from '../../utils/api'
+import { NORMA_API, fetchWithRefresh } from '../../utils/api'
+import { optionsType } from '../../utils/types'
 
 export const GET_USER_REQUEST = 'GET_USER_REQUEST'
 export const GET_USER_SUCCESS = 'GET_USER_SUCCESS'
@@ -11,21 +11,19 @@ export function getUserInfo({ options }) {
     dispatch({
       type: GET_USER_REQUEST,
     })
-    fetchWithRefresh(`${NORMA_API}/auth/user`, options)
-      //.then(checkResponse)
-      .then((result) => {
-        console.log(result)
-        if (result && result.success) {
-          dispatch({
-            type: GET_USER_SUCCESS,
-            user: result.user,
-          })
-        } else {
-          dispatch({
-            type: GET_USER_ERROR,
-          })
-        }
-      })
+    fetchWithRefresh(`${NORMA_API}/auth/user`, options).then((result) => {
+      console.log(result)
+      if (result && result.success) {
+        dispatch({
+          type: GET_USER_SUCCESS,
+          user: result.user,
+        })
+      } else {
+        dispatch({
+          type: GET_USER_ERROR,
+        })
+      }
+    })
   }
 }
 
@@ -34,20 +32,26 @@ export function getUserUpdate({ patchOptions }) {
     dispatch({
       type: GET_USER_REQUEST,
     })
-    fetchWithRefresh(`${NORMA_API}/auth/user`, patchOptions)
-      //.then(checkResponse)
-      .then((result) => {
-        console.log(result)
-        if (result && result.success) {
-          dispatch({
-            type: GET_USER_SUCCESS,
-            user: result.user,
-          })
-        } else {
-          dispatch({
-            type: GET_USER_ERROR,
-          })
-        }
-      })
+    fetchWithRefresh(`${NORMA_API}/auth/user`, patchOptions).then((result) => {
+      console.log(result)
+      if (result && result.success) {
+        dispatch({
+          type: GET_USER_SUCCESS,
+          user: result.user,
+        })
+      } else {
+        dispatch({
+          type: GET_USER_ERROR,
+        })
+      }
+    })
   }
+}
+
+getUserInfo.propTypes = {
+  options: optionsType,
+}
+
+getUserUpdate.propTypes = {
+  patchOptions: optionsType,
 }

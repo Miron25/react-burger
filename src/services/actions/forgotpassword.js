@@ -1,13 +1,10 @@
-import { NORMA_API } from '../../utils/burger-api'
+import { NORMA_API, checkResponse } from '../../utils/api'
+import { optionsType } from '../../utils/types'
 
 export const GET_EMAIL_REQUEST = 'GET_EMAIL_REQUEST'
 export const GET_EMAIL_SUCCESS = 'GET_EMAIL_SUCCESS'
 export const GET_EMAIL_ERROR = 'GET_EMAIL_ERROR'
 export const CLEAR_MESSAGE = 'CLEAR_MESSAGE'
-
-const checkResponse = (res) => {
-  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err))
-}
 
 export function getPasswordReset({ options }) {
   return function (dispatch) {
@@ -21,7 +18,7 @@ export function getPasswordReset({ options }) {
           dispatch({
             type: GET_EMAIL_SUCCESS,
             message: result.message,
-            reset_key: localStorage.setItem('reset_key', true),
+            //reset_key: localStorage.setItem('reset_key', true),
           })
         } else {
           dispatch({
@@ -36,4 +33,8 @@ export function getPasswordReset({ options }) {
         })
       })
   }
+}
+
+getPasswordReset.propTypes = {
+  options: optionsType,
 }

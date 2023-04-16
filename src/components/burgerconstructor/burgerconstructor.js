@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import BurgerConsStyles from './burgercons.module.css'
 import PropTypes from 'prop-types'
 import Modal from './../modal/modal'
-import { arrayType } from '../../types/index'
+import { singleIngrType } from '../../utils/types'
 import graphics from '../../images/graphics.png'
 import {
   ConstructorElement,
@@ -114,94 +114,6 @@ function BurgerConstructor() {
     [moveIngr]
   )
 
-  const IngrList = ({ droppedIngr, index, moveIngr }) => {
-    const ref = useRef(null)
-
-    const [{ handlerId }, drop] = useDrop({
-      accept: ['sorting'],
-      collect(monitor) {
-        return {
-          handlerId: monitor.getHandlerId(),
-        }
-      },
-      hover(item, monitor) {
-        if (!ref.current) {
-          return
-        }
-        const dragIndex = item.index
-        const hoverIndex = index
-        // Don't replace items with themselves
-        if (dragIndex === hoverIndex) {
-          return
-        }
-        // Determine rectangle on screen
-        const hoverBoundingRect = ref.current?.getBoundingClientRect()
-        // Get vertical middle
-        const hoverMiddleY =
-          (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-        // Determine mouse position
-        const clientOffset = monitor.getClientOffset()
-        // Get pixels to the top
-        const hoverClientY = clientOffset.y - hoverBoundingRect.top
-        // Only perform the move when the mouse has crossed half of the items height
-        // When dragging downwards, only move when the cursor is below 50%
-        // When dragging upwards, only move when the cursor is above 50%
-        // Dragging downwards
-        if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-          return
-        }
-        // Dragging upwards
-        if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-          return
-        }
-        // Time to actually perform the action
-        moveIngr(dragIndex, hoverIndex)
-        // Note: we're mutating the monitor item here!
-        // Generally it's better to avoid mutations,
-        // but it's good here for the sake of performance
-        // to avoid expensive index searches.
-        item.index = hoverIndex
-      },
-    })
-
-    const [{ isDragging }, drag] = useDrag({
-      type: 'sorting',
-      item: () => {
-        return { index }
-      },
-      collect: (monitor) => ({
-        isDragging: monitor.isDragging(),
-      }),
-    })
-    const opacity = isDragging ? 0.1 : 1
-    drag(drop(ref))
-
-    return (
-      <React.Fragment key={droppedIngr.UUID}>
-        <span
-          className={BurgerConsStyles.elem}
-          ref={ref}
-          style={{ opacity }}
-          data-handler-id={handlerId}
-        >
-          <DragIcon />
-          <ConstructorElement
-            text={droppedIngr.name}
-            price={droppedIngr.price}
-            thumbnail={droppedIngr.image}
-            handleClose={() => {
-              dispatch({
-                type: DELETE_ITEM,
-                UUID: droppedIngr.UUID,
-                _id: droppedIngr._id,
-              })
-            }}
-          />
-        </span>
-      </React.Fragment>
-    )
-  }
-
   return (
     <div className={BurgerConsStyles.main}>
       <div className={BurgerConsStyles.constr_block} ref={dropTarget}>
@@ -309,9 +221,97 @@ function BurgerConstructor() {
   )
 }
 
-BurgerConstructor.propTypes = {
-  droppedIngr: arrayType,
-  UUID: PropTypes.string,
+const IngrList = ({ droppedIngr, index, moveIngr }) => {
+  const dispatch = useDispatch()
+  const ref = useRef(null)
+
+  const [{ handlerId }, drop] = useDrop({
+    accept: ['sorting'],
+    collect(monitor) {
+      return {
+        handlerId: monitor.getHandlerId(),
+      }
+    },
+    hover(item, monitor) {
+      if (!ref.current) {
+        return
+      }
+      const dragIndex = item.index
+      const hoverIndex = index
+      // Don't replace items with themselves
+      if (dragIndex === hoverIndex) {
+        return
+      }
+      // Determine rectangle on screen
+      const hoverBoundingRect = ref.current?.getBoundingClientRect()
+      // Get vertical middle
+      const hoverMiddleY =
+        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+      // Determine mouse position
+      const clientOffset = monitor.getClientOffset()
+      // Get pixels to the top
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top
+      // Only perform the move when the mouse has crossed half of the items height
+      // When dragging downwards, only move when the cursor is below 50%
+      // When dragging upwards, only move when the cursor is above 50%
+      // Dragging downwards
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return
+      }
+      // Dragging upwards
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return
+      }
+      // Time to actually perform the action
+      moveIngr(dragIndex, hoverIndex)
+      // Note: we're mutating the monitor item here!
+      // Generally it's better to avoid mutations,
+      // but it's good here for the sake of performance
+      // to avoid expensive index searches.
+      item.index = hoverIndex
+    },
+  })
+
+  const [{ isDragging }, drag] = useDrag({
+    type: 'sorting',
+    item: () => {
+      return { index }
+    },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  })
+  const opacity = isDragging ? 0.1 : 1
+  drag(drop(ref))
+
+  return (
+    <React.Fragment key={droppedIngr.UUID}>
+      <span
+        className={BurgerConsStyles.elem}
+        ref={ref}
+        style={{ opacity }}
+        data-handler-id={handlerId}
+      >
+        <DragIcon />
+        <ConstructorElement
+          text={droppedIngr.name}
+          price={droppedIngr.price}
+          thumbnail={droppedIngr.image}
+          handleClose={() => {
+            dispatch({
+              type: DELETE_ITEM,
+              UUID: droppedIngr.UUID,
+              _id: droppedIngr._id,
+            })
+          }}
+        />
+      </span>
+    </React.Fragment>
+  )
+}
+
+IngrList.propTypes = {
+  droppedIngr: singleIngrType,
   index: PropTypes.number,
   moveIngr: PropTypes.func,
 }
