@@ -1,18 +1,19 @@
-import { useState } from 'react'
+import { useState, ChangeEvent, FormEvent } from 'react'
 import { useDispatch } from 'react-redux'
 import styles from './forgot-password.module.css'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, useNavigate } from 'react-router-dom'
 import { Input } from '../components/input'
 import { getPasswordReset } from '../services/actions/forgotpassword'
+import { IForm } from '.'
 
 export function ForgotPasswordPage() {
   const navigate = useNavigate()
 
-  const [form, setValue] = useState({ email: '' })
+  const [form, setValue] = useState<IForm>({ email: '' })
   const dispatch = useDispatch()
 
-  const onChange = (e) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, [e.target.name]: e.target.value })
   }
 
@@ -24,9 +25,10 @@ export function ForgotPasswordPage() {
     }),
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
-    localStorage.setItem('reset_key', true)
+    localStorage.setItem('reset_key', 'true')
+    //@ts-ignore: Will be typed later
     dispatch(getPasswordReset({ options }))
     navigate('/reset-password')
   }

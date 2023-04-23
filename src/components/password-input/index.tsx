@@ -1,11 +1,11 @@
-import { Input } from '../input'
+import { Input, TInput, TIconProps } from '../input'
+import { FC } from 'react'
 import eyeOff from '../../images/eye-off.svg'
 import eye from '../../images/eye.svg'
 import { useState } from 'react'
-import PropTypes from 'prop-types'
 import styles from '../input/input.module.css'
 
-const EyeOff = ({ onClick }) => (
+const EyeOff: TIconProps = ({ onClick }) => (
   <input
     type="image"
     src={eyeOff}
@@ -14,7 +14,7 @@ const EyeOff = ({ onClick }) => (
     className={styles.icon_pad}
   />
 )
-const Eye = ({ onClick }) => (
+const Eye: TIconProps = ({ onClick }) => (
   <input
     type="image"
     src={eye}
@@ -24,8 +24,8 @@ const Eye = ({ onClick }) => (
   />
 )
 
-export const PasswordInput = ({ ...props }) => {
-  const [isVisible, setVisible] = useState(false)
+export const PasswordInput: FC<TInput> = ({ ...props }) => {
+  const [isVisible, setVisible] = useState<boolean>(false)
   return (
     <Input
       {...props}
@@ -34,12 +34,4 @@ export const PasswordInput = ({ ...props }) => {
       onIconClick={() => setVisible(!isVisible)}
     />
   )
-}
-
-EyeOff.propTypes = {
-  onClick: PropTypes.func,
-}
-
-Eye.propTypes = {
-  onClick: PropTypes.func,
 }

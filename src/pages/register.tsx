@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import styles from './register.module.css'
@@ -7,19 +7,28 @@ import { getRegistration } from '../services/actions/registration'
 import { getAuth } from '../services/actions/authorization'
 import { Input } from '../components/input'
 import { PasswordInput } from '../components/password-input'
+import { IForm } from '.'
+import { RootState } from '..'
 
 export function RegisterPage() {
-  const userRegistered = useSelector((state) => state.registrationReducer.user)
-  const [form, setValue] = useState({ name: '', email: '', password: '' })
+  const userRegistered = useSelector(
+    (state: RootState) => state.registrationReducer.user
+  )
+  const [form, setValue] = useState<IForm>({
+    name: '',
+    email: '',
+    password: '',
+  })
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const onChange = (e) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, [e.target.name]: e.target.value })
   }
 
   useEffect(() => {
     if (userRegistered) {
+      //@ts-ignore: Will be typed later
       dispatch(getAuth({ options }))
       navigate('/')
     }
@@ -47,8 +56,9 @@ export function RegisterPage() {
     }),
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
+    //@ts-ignore: Will be typed later
     dispatch(getRegistration({ options_1 }))
   }
 
@@ -65,21 +75,18 @@ export function RegisterPage() {
               value={form.name}
               name="name"
               onChange={onChange}
-              required
             />
             <Input
               placeholder="E-mail"
               value={form.email}
               name="email"
               onChange={onChange}
-              required
             />
             <PasswordInput
               placeholder="Пароль"
               value={form.password}
               name="password"
               onChange={onChange}
-              required
             />
             <Button htmlType="submit" type="primary" size="large">
               Зарегистрироваться

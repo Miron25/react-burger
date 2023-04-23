@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styles from './reset-password.module.css'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -6,12 +6,14 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Input } from '../components/input'
 import { PasswordInput } from '../components/password-input'
 import { getPasswordResetConfirmed } from '../services/actions/resetpassword'
+import { RootState } from '..'
+import { IForm } from '.'
 
 export function ResetPasswordPage() {
   const codeCorrect = useSelector(
-    (state) => state.resetPasswordReducer.isCodeCorrect
+    (state: RootState) => state.resetPasswordReducer.isCodeCorrect
   )
-  const [form, setValue] = useState({ password: '', code: '' })
+  const [form, setValue] = useState<IForm>({ password: '', code: '' })
   const navigate = useNavigate()
   const dispatch = useDispatch()
   localStorage.removeItem('reset_key')
@@ -22,7 +24,7 @@ export function ResetPasswordPage() {
     }
   }, [navigate, codeCorrect])
 
-  const onChange = (e) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, [e.target.name]: e.target.value })
   }
 
@@ -35,8 +37,9 @@ export function ResetPasswordPage() {
     }),
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
+    //@ts-ignore: Will be typed later
     dispatch(getPasswordResetConfirmed({ options }))
   }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styles from './profile.module.css'
 import {
@@ -9,16 +9,22 @@ import {
 import { getUserInfo, getUserUpdate } from '../services/actions/userinfo'
 import { getLogout } from '../services/actions/logout'
 import { NavLink } from 'react-router-dom'
+import { IForm } from '.'
+import { RootState } from '..'
 
 export function ProfilePage() {
-  const userLoggedIn = useSelector((state) => state.loginReducer.isLoggedIn)
-  const userInProfile = useSelector((state) => state.userInfoReducer.user)
-  const [editBox1, setEditBox1] = useState(false)
-  const [editBox2, setEditBox2] = useState(false)
-  const [editBox3, setEditBox3] = useState(false)
-  const [form, setValue] = useState({})
+  const userLoggedIn = useSelector(
+    (state: RootState) => state.loginReducer.isLoggedIn
+  )
+  const userInProfile = useSelector(
+    (state: RootState) => state.userInfoReducer.user
+  )
+  const [editBox1, setEditBox1] = useState<boolean>(false)
+  const [editBox2, setEditBox2] = useState<boolean>(false)
+  const [editBox3, setEditBox3] = useState<boolean>(false)
+  const [form, setValue] = useState<IForm>({})
   const dispatch = useDispatch()
-  const setActive = ({ isActive }) =>
+  const setActive = ({ isActive }: { isActive: boolean }): string =>
     isActive
       ? 'text text_type_main-medium'
       : 'text text_type_main-medium text_color_inactive'
@@ -56,29 +62,31 @@ export function ProfilePage() {
 
   useEffect(() => {
     if (userLoggedIn && !userInProfile) {
+      //@ts-ignore: Will be typed later
       dispatch(getUserInfo({ options }))
     }
   }, [dispatch, userLoggedIn, userInProfile])
 
   const handleKeyDown = () => {}
 
-  const handleChange = (event) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue({
       ...form,
       [event.target.name]: event.target.value,
     })
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
     setEditBox1(false)
     setEditBox2(false)
     setEditBox3(false)
+    //@ts-ignore: Will be typed later
     dispatch(getUserUpdate({ patchOptions }))
     setValue({})
   }
 
-  const handleReset = (event) => {
+  const handleReset = (event: FormEvent) => {
     event.preventDefault()
     setEditBox1(false)
     setEditBox2(false)
@@ -106,6 +114,7 @@ export function ProfilePage() {
                 to="/login"
                 className={setActive}
                 onClick={() => {
+                  //@ts-ignore: Will be typed later
                   dispatch(getLogout({ options2 }))
                   localStorage.removeItem('user')
                 }}
@@ -157,7 +166,11 @@ export function ProfilePage() {
                 tabIndex={0}
                 onKeyDown={handleKeyDown}
               >
-                {editBox1 ? <CloseIcon /> : <EditIcon />}
+                {editBox1 ? (
+                  <CloseIcon type="primary" />
+                ) : (
+                  <EditIcon type="primary" />
+                )}
               </span>
             </div>
             <div
@@ -193,7 +206,11 @@ export function ProfilePage() {
                 tabIndex={0}
                 onKeyDown={handleKeyDown}
               >
-                {editBox2 ? <CloseIcon /> : <EditIcon />}
+                {editBox2 ? (
+                  <CloseIcon type="primary" />
+                ) : (
+                  <EditIcon type="primary" />
+                )}
               </span>
             </div>
             <div
@@ -229,7 +246,11 @@ export function ProfilePage() {
                 tabIndex={0}
                 onKeyDown={handleKeyDown}
               >
-                {editBox3 ? <CloseIcon /> : <EditIcon />}
+                {editBox3 ? (
+                  <CloseIcon type="primary" />
+                ) : (
+                  <EditIcon type="primary" />
+                )}
               </span>
             </div>
             {(editBox1 || editBox2 || editBox3) && (
