@@ -7,14 +7,12 @@ import { getAuth } from '../services/actions/authorization'
 import { Input } from '../components/input'
 import { PasswordInput } from '../components/password-input'
 import { IForm } from '.'
-import { RootState } from '..'
 
 export function LoginPage() {
   const navigate = useNavigate()
   const [form, setValue] = useState<IForm>({ email: '', password: '' })
-  const userLoggedIn = useSelector(
-    (state: RootState) => state.loginReducer.user
-  )
+  //@ts-ignore: Will be typed in the next sprint
+  const userLoggedIn = useSelector((state) => state.loginReducer.user)
   const dispatch = useDispatch()
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {

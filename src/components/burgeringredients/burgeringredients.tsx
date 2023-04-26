@@ -1,7 +1,13 @@
-import React, { useState, useRef, useMemo, useEffect } from 'react'
+import React, {
+  useState,
+  useRef,
+  useMemo,
+  useEffect,
+  RefObject,
+  FC,
+} from 'react'
 import BurgerIngStyles from './burgering.module.css'
 import { useInView } from 'react-intersection-observer'
-import { filteredIngrType } from '../../utils/types'
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router'
 import {
@@ -11,25 +17,27 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useDrag } from 'react-dnd'
 import { Link } from 'react-router-dom'
+import { IIngredient, IFilteredIngr } from '../../utils/types'
 
 function BurgerIngredients() {
+  //@ts-ignore: Will be typed in the next sprint
   const initial_array = useSelector((state) => state.feed.feed)
-  const [current, setCurrent] = useState('bun')
-  const oneRef = useRef(null) //represents tab "one"
-  const twoRef = useRef(null) //represents tab "two"
-  const threeRef = useRef(null) //represents tab "three"
+  const [current, setCurrent] = useState<string>('bun')
+  const oneRef = useRef<HTMLDivElement>(null) //represents tab "one"
+  const twoRef = useRef<HTMLDivElement>(null) //represents tab "two"
+  const threeRef = useRef<HTMLDivElement>(null) //represents tab "three"
 
   //To filter initial data from API based on the type of the ingredients
-  const bunArray = useMemo(
-    () => initial_array.filter((ingr) => ingr.type === 'bun'),
+  const bunArray = useMemo<ReadonlyArray<IIngredient>>(
+    () => initial_array.filter((ingr: any) => ingr.type === 'bun'),
     [initial_array]
   )
-  const sauceArray = useMemo(
-    () => initial_array.filter((ingr) => ingr.type === 'sauce'),
+  const sauceArray = useMemo<ReadonlyArray<IIngredient>>(
+    () => initial_array.filter((ingr: any) => ingr.type === 'sauce'),
     [initial_array]
   )
-  const mainArray = useMemo(
-    () => initial_array.filter((ingr) => ingr.type === 'main'),
+  const mainArray = useMemo<ReadonlyArray<IIngredient>>(
+    () => initial_array.filter((ingr: any) => ingr.type === 'main'),
     [initial_array]
   )
 
@@ -47,7 +55,7 @@ function BurgerIngredients() {
     }
   }, [InViewBun, InViewSauce, InViewMain])
 
-  const handleTabClick = (ref) => {
+  const handleTabClick = (ref: RefObject<HTMLDivElement>) => {
     ref.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
@@ -90,7 +98,10 @@ function BurgerIngredients() {
           </Tab>
         </div>
         <div className={BurgerIngStyles.ing_block}>
-          <p className="text text_type_main-medium pt-10 pb-6" ref={oneRef}>
+          <p
+            className="text text_type_main-medium pt-10 pb-6"
+            ref={oneRef as RefObject<HTMLParagraphElement>}
+          >
             Булки
           </p>
           <div className={BurgerIngStyles.grid_block} ref={bunRef}>
@@ -98,7 +109,10 @@ function BurgerIngredients() {
               <GridElement key={filteredIngr._id} filteredIngr={filteredIngr} />
             ))}
           </div>
-          <p className="text text_type_main-medium pt-10 pb-6" ref={twoRef}>
+          <p
+            className="text text_type_main-medium pt-10 pb-6"
+            ref={twoRef as RefObject<HTMLParagraphElement>}
+          >
             Соусы
           </p>
           <div className={BurgerIngStyles.grid_block} ref={sauceRef}>
@@ -106,7 +120,10 @@ function BurgerIngredients() {
               <GridElement key={filteredIngr._id} filteredIngr={filteredIngr} />
             ))}
           </div>
-          <p className="text text_type_main-medium pt-10 pb-6" ref={threeRef}>
+          <p
+            className="text text_type_main-medium pt-10 pb-6"
+            ref={threeRef as RefObject<HTMLParagraphElement>}
+          >
             Начинки
           </p>
           <div className={BurgerIngStyles.grid_block} ref={mainRef}>
@@ -120,8 +137,10 @@ function BurgerIngredients() {
   )
 }
 
-const GridElement = ({ filteredIngr }) => {
+const GridElement: FC<IFilteredIngr> = ({ filteredIngr }) => {
+  //@ts-ignore: Will be typed in the next sprint
   const ingredients = useSelector((state) => state.selectedIng.ingredients)
+  //@ts-ignore: Will be typed in the next sprint
   const bun = useSelector((state) => state.selectedIng.bun)
   const location = useLocation()
 
@@ -129,13 +148,14 @@ const GridElement = ({ filteredIngr }) => {
     type: filteredIngr.type === 'bun' ? 'bun' : 'main_sauce',
     item: filteredIngr,
     collect: (monitor) => ({
-      isDragging: monitor.isDragging() ? 0.5 : 1,
+      isDragging: monitor.isDragging(),
     }),
   })
+  const opacity = isDragging ? 0.2 : 1
 
-  const CountItems = () => {
+  function CountItems(): number {
     const count = ingredients.filter(
-      (elem) => elem._id === filteredIngr._id
+      (elem: any) => elem._id === filteredIngr._id
     ).length
     return count
   }
@@ -149,22 +169,22 @@ const GridElement = ({ filteredIngr }) => {
         <div
           className={BurgerIngStyles.column1}
           ref={dragRef}
-          style={{ isDragging }}
+          style={{ opacity: opacity }}
         >
           {bun && bun._id === filteredIngr._id && (
             <Counter count={2} size="default" extraClass="m-1" />
           )}
           {ingredients &&
-            ingredients.filter((elem) => elem._id === filteredIngr._id).length >
-              0 && (
-              <Counter count={<CountItems />} size="default" extraClass="m-1" />
+            ingredients.filter((elem: any) => elem._id === filteredIngr._id)
+              .length > 0 && (
+              <Counter count={CountItems()} size="default" extraClass="m-1" />
             )}
           <img src={filteredIngr.image} alt=""></img>
           <div className={BurgerIngStyles.pricebox}>
             <span className="text text_type_digits-default">
               {filteredIngr.price}
             </span>
-            <CurrencyIcon />
+            <CurrencyIcon type="primary" />
           </div>
           <p
             className="text text_type_main-default"
@@ -176,10 +196,6 @@ const GridElement = ({ filteredIngr }) => {
       </Link>
     </React.Fragment>
   )
-}
-
-GridElement.propTypes = {
-  filteredIngr: filteredIngrType,
 }
 
 export default BurgerIngredients

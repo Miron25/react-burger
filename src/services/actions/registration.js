@@ -1,5 +1,4 @@
 import { NORMA_API, checkResponse } from '../../utils/api'
-import { optionsType } from '../../utils/types'
 
 export const GET_REGISTRATION_REQUEST = 'GET_REGISTRATION_REQUEST'
 export const GET_REGISTRATION_SUCCESS = 'GET_REGISTRATION_SUCCESS'
@@ -34,8 +33,4 @@ export function getRegistration({ options_1 }) {
         })
       })
   }
-}
-
-getRegistration.propTypes = {
-  options: optionsType,
 }

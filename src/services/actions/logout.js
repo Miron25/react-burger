@@ -1,7 +1,6 @@
 import { NORMA_API, checkResponse } from '../../utils/api'
 import { GET_AUTH_OUT } from '../actions/authorization'
 import { GET_USER_OUT } from '../actions/userinfo'
-import { optionsType } from '../../utils/types'
 
 export const GET_LOGOUT_REQUEST = 'GET_LOGOUT_REQUEST'
 export const GET_LOGOUT_SUCCESS = 'GET_LOGOUT_SUCCESS'
@@ -38,8 +37,4 @@ export function getLogout({ options2 }) {
         })
       })
   }
-}
-
-getLogout.propTypes = {
-  options2: optionsType,
 }

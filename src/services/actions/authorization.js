@@ -1,5 +1,4 @@
 import { NORMA_API, checkResponse } from '../../utils/api'
-import { optionsType } from '../../utils/types'
 
 export const GET_AUTH_REQUEST = 'GET_AUTH_REQUEST'
 export const GET_AUTH_SUCCESS = 'GET_AUTH_SUCCESS'
@@ -40,8 +39,4 @@ export function getAuth({ options }) {
         })
       })
   }
-}
-
-getAuth.propTypes = {
-  options: optionsType,
 }

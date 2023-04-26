@@ -8,12 +8,10 @@ import { getAuth } from '../services/actions/authorization'
 import { Input } from '../components/input'
 import { PasswordInput } from '../components/password-input'
 import { IForm } from '.'
-import { RootState } from '..'
 
 export function RegisterPage() {
-  const userRegistered = useSelector(
-    (state: RootState) => state.registrationReducer.user
-  )
+  //@ts-ignore: Will be typed in the next sprint
+  const userRegistered = useSelector((state) => state.registrationReducer.user)
   const [form, setValue] = useState<IForm>({
     name: '',
     email: '',

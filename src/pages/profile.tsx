@@ -10,15 +10,12 @@ import { getUserInfo, getUserUpdate } from '../services/actions/userinfo'
 import { getLogout } from '../services/actions/logout'
 import { NavLink } from 'react-router-dom'
 import { IForm } from '.'
-import { RootState } from '..'
 
 export function ProfilePage() {
-  const userLoggedIn = useSelector(
-    (state: RootState) => state.loginReducer.isLoggedIn
-  )
-  const userInProfile = useSelector(
-    (state: RootState) => state.userInfoReducer.user
-  )
+  //@ts-ignore: Will be typed in the next sprint
+  const userLoggedIn = useSelector((state) => state.loginReducer.isLoggedIn)
+  //@ts-ignore: Will be typed in the next sprint
+  const userInProfile = useSelector((state) => state.userInfoReducer.user)
   const [editBox1, setEditBox1] = useState<boolean>(false)
   const [editBox2, setEditBox2] = useState<boolean>(false)
   const [editBox3, setEditBox3] = useState<boolean>(false)
@@ -67,7 +64,7 @@ export function ProfilePage() {
     }
   }, [dispatch, userLoggedIn, userInProfile])
 
-  const handleKeyDown = () => {}
+  const handleKeyDown = (): void => {}
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue({
@@ -94,178 +91,171 @@ export function ProfilePage() {
     setValue({})
   }
 
+  //userLoggedIn &&
   return (
-    userLoggedIn && (
-      <React.Fragment>
-        <div className={styles.wrapper}>
-          <div className={styles.container}>
-            <div className={styles.frame}>
-              <NavLink to="/profile" end className={setActive}>
-                Профиль
-              </NavLink>
-            </div>
-            <div className={styles.frame}>
-              <NavLink to="/profile/orders" className={setActive}>
-                История заказов
-              </NavLink>
-            </div>
-            <div className={styles.frame}>
-              <NavLink
-                to="/login"
-                className={setActive}
-                onClick={() => {
-                  //@ts-ignore: Will be typed later
-                  dispatch(getLogout({ options2 }))
-                  localStorage.removeItem('user')
-                }}
-              >
-                Выход
-              </NavLink>
-            </div>
+    <React.Fragment>
+      <div className={styles.wrapper}>
+        <div className={styles.container}>
+          <div className={styles.frame}>
+            <NavLink to="/profile" end className={setActive}>
+              Профиль
+            </NavLink>
           </div>
-          <div className={styles.caption}>
-            <span className="text text_type_main-default text_color_inactive">
-              В этом разделе вы можете изменить свои персональные данные
+          <div className={styles.frame}>
+            <NavLink to="/profile/orders" className={setActive}>
+              История заказов
+            </NavLink>
+          </div>
+          <div className={styles.frame}>
+            <NavLink
+              to="/login"
+              className={setActive}
+              onClick={() => {
+                //@ts-ignore: Will be typed later
+                dispatch(getLogout({ options2 }))
+                localStorage.removeItem('user')
+              }}
+            >
+              Выход
+            </NavLink>
+          </div>
+        </div>
+        <div className={styles.caption}>
+          <span className="text text_type_main-default text_color_inactive">
+            В этом разделе вы можете изменить свои персональные данные
+          </span>
+        </div>
+        <form
+          onSubmit={handleSubmit}
+          onReset={handleReset}
+          className={styles.form}
+        >
+          <div
+            className={editBox1 ? styles.info_block_edit : styles.info_block}
+          >
+            <div>
+              <p className="text text_type_main-default text_color_inactive">
+                Имя
+              </p>
+              {editBox1 ? (
+                <input
+                  type="text"
+                  name="name"
+                  value={form.name || ''}
+                  className={`${styles.input} ${'text text_type_main-default'}`}
+                  placeholder={userInProfile && userInProfile.name}
+                  onChange={handleChange}
+                ></input>
+              ) : (
+                <p className="text text_type_main-default text_color_inactive">
+                  {userInProfile && userInProfile.name}
+                </p>
+              )}
+            </div>
+            <span
+              className={styles.icon}
+              onClick={() => {
+                setEditBox1(!editBox1)
+              }}
+              role="button"
+              tabIndex={0}
+              onKeyDown={handleKeyDown}
+            >
+              {editBox1 ? (
+                <CloseIcon type="primary" />
+              ) : (
+                <EditIcon type="primary" />
+              )}
             </span>
           </div>
-          <form
-            onSubmit={handleSubmit}
-            onReset={handleReset}
-            className={styles.form}
+          <div
+            className={editBox2 ? styles.info_block_edit : styles.info_block}
           >
-            <div
-              className={editBox1 ? styles.info_block_edit : styles.info_block}
-            >
-              <div>
+            <div>
+              <p className="text text_type_main-default text_color_inactive">
+                Логин
+              </p>
+              {editBox2 ? (
+                <input
+                  type="text"
+                  name="email"
+                  value={form.email || ''}
+                  className={`${styles.input} ${'text text_type_main-default'}`}
+                  placeholder={userInProfile && userInProfile.email}
+                  onChange={handleChange}
+                ></input>
+              ) : (
                 <p className="text text_type_main-default text_color_inactive">
-                  Имя
+                  {userInProfile && userInProfile.email}
                 </p>
-                {editBox1 ? (
-                  <input
-                    type="text"
-                    name="name"
-                    value={form.name || ''}
-                    className={`${
-                      styles.input
-                    } ${'text text_type_main-default'}`}
-                    placeholder={userInProfile && userInProfile.name}
-                    onChange={handleChange}
-                  ></input>
-                ) : (
-                  <p className="text text_type_main-default text_color_inactive">
-                    {userInProfile && userInProfile.name}
-                  </p>
-                )}
-              </div>
-              <span
-                className={styles.icon}
-                onClick={() => {
-                  setEditBox1(!editBox1)
-                }}
-                role="button"
-                tabIndex={0}
-                onKeyDown={handleKeyDown}
-              >
-                {editBox1 ? (
-                  <CloseIcon type="primary" />
-                ) : (
-                  <EditIcon type="primary" />
-                )}
-              </span>
+              )}
             </div>
-            <div
-              className={editBox2 ? styles.info_block_edit : styles.info_block}
+            <span
+              className={styles.icon}
+              onClick={() => {
+                setEditBox2(!editBox2)
+              }}
+              role="button"
+              tabIndex={0}
+              onKeyDown={handleKeyDown}
             >
-              <div>
+              {editBox2 ? (
+                <CloseIcon type="primary" />
+              ) : (
+                <EditIcon type="primary" />
+              )}
+            </span>
+          </div>
+          <div
+            className={editBox3 ? styles.info_block_edit : styles.info_block}
+          >
+            <div>
+              <p className="text text_type_main-default text_color_inactive">
+                Пароль
+              </p>
+              {editBox3 ? (
+                <input
+                  type="password"
+                  name="password"
+                  className={`${styles.input} ${'text text_type_main-default'}`}
+                  placeholder="******"
+                  value={form.password || ''}
+                  onChange={handleChange}
+                ></input>
+              ) : (
                 <p className="text text_type_main-default text_color_inactive">
-                  Логин
+                  ******
                 </p>
-                {editBox2 ? (
-                  <input
-                    type="text"
-                    name="email"
-                    value={form.email || ''}
-                    className={`${
-                      styles.input
-                    } ${'text text_type_main-default'}`}
-                    placeholder={userInProfile && userInProfile.email}
-                    onChange={handleChange}
-                  ></input>
-                ) : (
-                  <p className="text text_type_main-default text_color_inactive">
-                    {userInProfile && userInProfile.email}
-                  </p>
-                )}
-              </div>
-              <span
-                className={styles.icon}
-                onClick={() => {
-                  setEditBox2(!editBox2)
-                }}
-                role="button"
-                tabIndex={0}
-                onKeyDown={handleKeyDown}
-              >
-                {editBox2 ? (
-                  <CloseIcon type="primary" />
-                ) : (
-                  <EditIcon type="primary" />
-                )}
-              </span>
+              )}
             </div>
-            <div
-              className={editBox3 ? styles.info_block_edit : styles.info_block}
+            <span
+              className={styles.icon}
+              onClick={() => {
+                setEditBox3(!editBox3)
+              }}
+              role="button"
+              tabIndex={0}
+              onKeyDown={handleKeyDown}
             >
-              <div>
-                <p className="text text_type_main-default text_color_inactive">
-                  Пароль
-                </p>
-                {editBox3 ? (
-                  <input
-                    type="password"
-                    name="password"
-                    className={`${
-                      styles.input
-                    } ${'text text_type_main-default'}`}
-                    placeholder="******"
-                    value={form.password || ''}
-                    onChange={handleChange}
-                  ></input>
-                ) : (
-                  <p className="text text_type_main-default text_color_inactive">
-                    ******
-                  </p>
-                )}
-              </div>
-              <span
-                className={styles.icon}
-                onClick={() => {
-                  setEditBox3(!editBox3)
-                }}
-                role="button"
-                tabIndex={0}
-                onKeyDown={handleKeyDown}
-              >
-                {editBox3 ? (
-                  <CloseIcon type="primary" />
-                ) : (
-                  <EditIcon type="primary" />
-                )}
-              </span>
+              {editBox3 ? (
+                <CloseIcon type="primary" />
+              ) : (
+                <EditIcon type="primary" />
+              )}
+            </span>
+          </div>
+          {(editBox1 || editBox2 || editBox3) && (
+            <div className={styles.actions}>
+              <Button htmlType="reset" type="secondary" size="large">
+                Отмена
+              </Button>
+              <Button htmlType="submit" type="primary" size="large">
+                Сохранить
+              </Button>
             </div>
-            {(editBox1 || editBox2 || editBox3) && (
-              <div className={styles.actions}>
-                <Button htmlType="reset" type="secondary" size="large">
-                  Отмена
-                </Button>
-                <Button htmlType="submit" type="primary" size="large">
-                  Сохранить
-                </Button>
-              </div>
-            )}
-          </form>
-        </div>
-      </React.Fragment>
-    )
+          )}
+        </form>
+      </div>
+    </React.Fragment>
   )
 }

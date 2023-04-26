@@ -1,9 +1,13 @@
 import { Navigate, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import PropTypes from 'prop-types'
+import { FC } from 'react'
+import { IPrRootProps } from '../utils/types'
 
-export const ProtectedRouteElement = ({ onlyUnAuth = false, element }) => {
-  //const isAuthChecked = useSelector((state) => state.loginReducer.isLoggedIn)
+export const ProtectedRouteElement: FC<IPrRootProps> = ({
+  onlyUnAuth = false,
+  element,
+}) => {
+  //@ts-ignore: Will be typed in the next sprint
   const user = useSelector((state) => state.loginReducer.user)
   const location = useLocation()
 
@@ -21,9 +25,4 @@ export const ProtectedRouteElement = ({ onlyUnAuth = false, element }) => {
   }
 
   return element
-}
-
-ProtectedRouteElement.propTypes = {
-  element: PropTypes.node.isRequired,
-  onlyUnAuth: PropTypes.bool.isRequired,
 }

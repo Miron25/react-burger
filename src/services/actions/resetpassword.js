@@ -1,5 +1,4 @@
 import { NORMA_API, checkResponse } from '../../utils/api'
-import { optionsType } from '../../utils/types'
 
 export const GET_RESETPASS_REQUEST = 'GET_RESETPASS_REQUEST'
 export const GET_RESETPASS_SUCCESS = 'GET_RESETPASS_SUCCESS'
@@ -35,8 +34,4 @@ export function getPasswordResetConfirmed({ options }) {
         })
       })
   }
-}
-
-getPasswordResetConfirmed.propTypes = {
-  options: optionsType,
 }

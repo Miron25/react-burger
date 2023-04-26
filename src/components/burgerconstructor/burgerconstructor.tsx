@@ -1,9 +1,7 @@
-import React, { useState, useMemo, useRef, useCallback } from 'react'
+import React, { useState, useMemo, useRef, useCallback, FC } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import BurgerConsStyles from './burgercons.module.css'
-import PropTypes from 'prop-types'
-import Modal from './../modal/modal'
-import { singleIngrType } from '../../utils/types'
+import Modal from '../modal/modal'
 import graphics from '../../images/graphics.png'
 import {
   ConstructorElement,
@@ -24,27 +22,43 @@ import {
 import { v4 as uuidv4 } from 'uuid'
 import { getOrder } from '../../services/actions/orderdetails'
 import { useNavigate } from 'react-router-dom'
+import { IIngredient, IDroppedIngr } from '../../utils/types'
+
+type TDragItem = {
+  index: number
+}
+
+type TDragProps = {
+  isDragging: boolean
+}
 
 function BurgerConstructor() {
+  //@ts-ignore: Will be typed in the next sprint
   const ingredients = useSelector((state) => state.selectedIng.ingredients)
+  //@ts-ignore: Will be typed in the next sprint
   const bun = useSelector((state) => state.selectedIng.bun)
+  //@ts-ignore: Will be typed in the next sprint
   const ing_ids = useSelector((state) => state.selectedIng.ing_ids)
+  //@ts-ignore: Will be typed in the next sprint
   const order = useSelector((state) => state.orderDetails.order)
+  //@ts-ignore: Will be typed in the next sprint
   const name = useSelector((state) => state.orderDetails.name)
+  //@ts-ignore: Will be typed in the next sprint
   const userLoggedIn = useSelector((state) => state.loginReducer.user)
-  const [show, setShow] = useState(false)
+  const [show, setShow] = useState<boolean>(false)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const totalPrice = useMemo(() => {
+  const totalPrice = useMemo<number>(() => {
     if (bun)
       return (
-        ingredients.reduce((sum, item) => sum + item.price, 0) + bun.price * 2
+        ingredients.reduce((sum: number, item: any) => sum + item.price, 0) +
+        bun.price * 2
       )
     else return 0
   }, [ingredients, bun])
 
-  const [, dropTarget] = useDrop({
+  const [, dropTarget] = useDrop<IIngredient, unknown, unknown>({
     accept: ['main_sauce', 'bun'],
     drop(item) {
       addingItem_Bun(item)
@@ -52,9 +66,9 @@ function BurgerConstructor() {
   })
 
   // To handle onClick event and add an item to constructor
-  const addingItem_Bun = (item) => {
+  const addingItem_Bun = (item: IIngredient): void => {
     const itemDropped = item
-    if (itemDropped.type === 'bun') {
+    if (itemDropped?.type === 'bun') {
       const bunobj = Object.assign({}, itemDropped, {
         UUID: uuidv4(),
         UUID2: uuidv4(),
@@ -86,7 +100,7 @@ function BurgerConstructor() {
   }
 
   const moveIngr = useCallback(
-    (dragIndex, hoverIndex) => {
+    (dragIndex: number, hoverIndex: number): void => {
       const dragItem = ingredients[dragIndex]
       const hoverItem = ingredients[hoverIndex]
       const updatedList = [...ingredients]
@@ -101,7 +115,7 @@ function BurgerConstructor() {
   )
 
   const renderList = useCallback(
-    (droppedIngr, index) => {
+    (droppedIngr: IIngredient, index: number) => {
       return (
         <IngrList
           key={droppedIngr.UUID}
@@ -135,7 +149,7 @@ function BurgerConstructor() {
               </span>
             )}
             <div className={BurgerConsStyles.scroll_block}>
-              {ingredients.map((droppedIngr, index) =>
+              {ingredients.map((droppedIngr: IIngredient, index: number) =>
                 renderList(droppedIngr, index)
               )}
             </div>
@@ -166,7 +180,7 @@ function BurgerConstructor() {
               }
             >
               {totalPrice}
-              <CurrencyIcon />
+              <CurrencyIcon type="primary" />
             </span>
             <Button
               htmlType="button"
@@ -177,6 +191,7 @@ function BurgerConstructor() {
                   userLoggedIn
                     ? (setShow(true),
                       dispatch({ type: CLEAR_ARRAY }),
+                      //@ts-ignore: Will be typed in the next sprint
                       dispatch(getOrder({ options })))
                     : navigate('/login')
                 }
@@ -192,7 +207,7 @@ function BurgerConstructor() {
           modalStyle={{ height: '718px' }}
         >
           <div className={BurgerConsStyles.popup_title}>
-            <CloseIcon onClick={() => setShow(false)} />
+            <CloseIcon type="primary" onClick={() => setShow(false)} />
           </div>
           <div className={BurgerConsStyles.popup_order}>
             <p className="text text_type_digits-large">{order}</p>
@@ -221,58 +236,63 @@ function BurgerConstructor() {
   )
 }
 
-const IngrList = ({ droppedIngr, index, moveIngr }) => {
+const IngrList: FC<IDroppedIngr> = ({ droppedIngr, index, moveIngr }) => {
   const dispatch = useDispatch()
-  const ref = useRef(null)
+  const ref = useRef<HTMLDivElement | null>(null)
 
-  const [{ handlerId }, drop] = useDrop({
-    accept: ['sorting'],
-    collect(monitor) {
-      return {
-        handlerId: monitor.getHandlerId(),
-      }
-    },
-    hover(item, monitor) {
-      if (!ref.current) {
-        return
-      }
-      const dragIndex = item.index
-      const hoverIndex = index
-      // Don't replace items with themselves
-      if (dragIndex === hoverIndex) {
-        return
-      }
-      // Determine rectangle on screen
-      const hoverBoundingRect = ref.current?.getBoundingClientRect()
-      // Get vertical middle
-      const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-      // Determine mouse position
-      const clientOffset = monitor.getClientOffset()
-      // Get pixels to the top
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top
-      // Only perform the move when the mouse has crossed half of the items height
-      // When dragging downwards, only move when the cursor is below 50%
-      // When dragging upwards, only move when the cursor is above 50%
-      // Dragging downwards
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        return
-      }
-      // Dragging upwards
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return
-      }
-      // Time to actually perform the action
-      moveIngr(dragIndex, hoverIndex)
-      // Note: we're mutating the monitor item here!
-      // Generally it's better to avoid mutations,
-      // but it's good here for the sake of performance
-      // to avoid expensive index searches.
-      item.index = hoverIndex
-    },
-  })
+  const [{ handlerId }, drop] = useDrop<TDragItem, unknown, { handlerId: any }>(
+    {
+      accept: ['sorting'],
+      collect(monitor) {
+        return {
+          handlerId: monitor.getHandlerId(),
+        }
+      },
+      hover(item, monitor) {
+        if (!ref.current) {
+          return
+        }
+        const dragIndex = item.index
+        const hoverIndex = index
+        // Don't replace items with themselves
+        if (dragIndex === hoverIndex) {
+          return
+        }
+        // Determine rectangle on screen
+        const hoverBoundingRect = ref.current?.getBoundingClientRect()
+        // Get vertical middle
+        const hoverMiddleY =
+          (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+        // Determine mouse position
+        const clientOffset = monitor.getClientOffset()
+        if (!clientOffset) {
+          return
+        }
+        // Get pixels to the top
+        const hoverClientY = clientOffset.y - hoverBoundingRect.top
+        // Only perform the move when the mouse has crossed half of the items height
+        // When dragging downwards, only move when the cursor is below 50%
+        // When dragging upwards, only move when the cursor is above 50%
+        // Dragging downwards
+        if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+          return
+        }
+        // Dragging upwards
+        if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+          return
+        }
+        // Time to actually perform the action
+        moveIngr(dragIndex, hoverIndex)
+        // Note: we're mutating the monitor item here!
+        // Generally it's better to avoid mutations,
+        // but it's good here for the sake of performance
+        // to avoid expensive index searches.
+        item.index = hoverIndex
+      },
+    }
+  )
 
-  const [{ isDragging }, drag] = useDrag({
+  const [{ isDragging }, drag] = useDrag<TDragItem, unknown, TDragProps>({
     type: 'sorting',
     item: () => {
       return { index }
@@ -281,7 +301,7 @@ const IngrList = ({ droppedIngr, index, moveIngr }) => {
       isDragging: monitor.isDragging(),
     }),
   })
-  const opacity = isDragging ? 0.1 : 1
+  const opacity = isDragging ? 0.2 : 1
   drag(drop(ref))
 
   return (
@@ -289,10 +309,10 @@ const IngrList = ({ droppedIngr, index, moveIngr }) => {
       <span
         className={BurgerConsStyles.elem}
         ref={ref}
-        style={{ opacity }}
+        style={{ opacity: opacity }}
         data-handler-id={handlerId}
       >
-        <DragIcon />
+        <DragIcon type="primary" />
         <ConstructorElement
           text={droppedIngr.name}
           price={droppedIngr.price}
@@ -308,12 +328,6 @@ const IngrList = ({ droppedIngr, index, moveIngr }) => {
       </span>
     </React.Fragment>
   )
-}
-
-IngrList.propTypes = {
-  droppedIngr: singleIngrType,
-  index: PropTypes.number,
-  moveIngr: PropTypes.func,
 }
 
 export default BurgerConstructor

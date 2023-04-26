@@ -1,5 +1,4 @@
 import { NORMA_API, checkResponse } from '../../utils/api'
-import { optionsType } from '../../utils/types'
 
 export const GET_ORDER_REQUEST = 'GET_ORDER_REQUEST'
 export const GET_ORDER_SUCCESS = 'GET_ORDER_SUCCESS'
@@ -32,8 +31,4 @@ export function getOrder({ options }) {
         })
       })
   }
-}
-
-getOrder.propTypes = {
-  options: optionsType,
 }

@@ -1,5 +1,4 @@
 import { NORMA_API, fetchWithRefresh } from '../../utils/api'
-import { optionsType } from '../../utils/types'
 
 export const GET_USER_REQUEST = 'GET_USER_REQUEST'
 export const GET_USER_SUCCESS = 'GET_USER_SUCCESS'
@@ -46,12 +45,4 @@ export function getUserUpdate({ patchOptions }) {
       }
     })
   }
-}
-
-getUserInfo.propTypes = {
-  options: optionsType,
-}
-
-getUserUpdate.propTypes = {
-  patchOptions: optionsType,
 }

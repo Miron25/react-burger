@@ -10,12 +10,14 @@ import {
 import AppheaderStyles from './appheader.module.css'
 
 const AccountLink = () => {
+  //@ts-ignore: Will be typed in the next sprint
   const userLoggedIn = useSelector((state) => state.loginReducer.isLoggedIn)
   const location = useLocation()
-  const setActive = ({ isActive }) =>
+  const setActive = ({ isActive }: { isActive: boolean }): string =>
     isActive
       ? 'text text_type_main-default'
       : 'text text_type_main-default text_color_inactive'
+
   useEffect(() => {}, [userLoggedIn])
 
   return (
@@ -44,7 +46,7 @@ const AccountLink = () => {
 }
 
 const NavMenu = () => {
-  const setActive = ({ isActive }) =>
+  const setActive = ({ isActive }: { isActive: boolean }): string =>
     isActive
       ? 'text text_type_main-default'
       : 'text text_type_main-default text_color_inactive'
@@ -78,7 +80,7 @@ function AppHeader() {
           <>
             <NavMenu />
             <NavLink to="/">
-              <Logo styles={{ alignSelf: 'center' }} />
+              <Logo />
             </NavLink>
             <AccountLink />
           </>

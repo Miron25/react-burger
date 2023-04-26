@@ -6,12 +6,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Input } from '../components/input'
 import { PasswordInput } from '../components/password-input'
 import { getPasswordResetConfirmed } from '../services/actions/resetpassword'
-import { RootState } from '..'
 import { IForm } from '.'
 
 export function ResetPasswordPage() {
   const codeCorrect = useSelector(
-    (state: RootState) => state.resetPasswordReducer.isCodeCorrect
+    //@ts-ignore: Will be typed in the next sprint
+    (state) => state.resetPasswordReducer.isCodeCorrect
   )
   const [form, setValue] = useState<IForm>({ password: '', code: '' })
   const navigate = useNavigate()
