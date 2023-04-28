@@ -1,5 +1,4 @@
 import { NORMA_API, fetchWithRefresh } from '../../utils/api'
-import { optionsType } from '../../utils/types'
 
 export const GET_USER_REQUEST = 'GET_USER_REQUEST'
 export const GET_USER_SUCCESS = 'GET_USER_SUCCESS'
@@ -11,19 +10,26 @@ export function getUserInfo({ options }) {
     dispatch({
       type: GET_USER_REQUEST,
     })
-    fetchWithRefresh(`${NORMA_API}/auth/user`, options).then((result) => {
-      console.log(result)
-      if (result && result.success) {
-        dispatch({
-          type: GET_USER_SUCCESS,
-          user: result.user,
-        })
-      } else {
+    fetchWithRefresh(`${NORMA_API}/auth/user`, options)
+      .then((result) => {
+        console.log(result)
+        if (result && result.success) {
+          dispatch({
+            type: GET_USER_SUCCESS,
+            user: result.user,
+          })
+        } else {
+          dispatch({
+            type: GET_USER_ERROR,
+          })
+        }
+      })
+      .catch((exception) => {
+        console.log(exception)
         dispatch({
           type: GET_USER_ERROR,
         })
-      }
-    })
+      })
   }
 }
 
@@ -32,26 +38,29 @@ export function getUserUpdate({ patchOptions }) {
     dispatch({
       type: GET_USER_REQUEST,
     })
-    fetchWithRefresh(`${NORMA_API}/auth/user`, patchOptions).then((result) => {
-      console.log(result)
-      if (result && result.success) {
-        dispatch({
-          type: GET_USER_SUCCESS,
-          user: result.user,
-        })
-      } else {
+    fetchWithRefresh(`${NORMA_API}/auth/user`, patchOptions)
+      .then((result) => {
+        console.log(result)
+        if (result && result.success) {
+          dispatch({
+            type: GET_USER_SUCCESS,
+            user: result.user,
+            logged_in_user: localStorage.setItem(
+              'user',
+              JSON.stringify(result.user)
+            ),
+          })
+        } else {
+          dispatch({
+            type: GET_USER_ERROR,
+          })
+        }
+      })
+      .catch((exception) => {
+        console.log(exception)
         dispatch({
           type: GET_USER_ERROR,
         })
-      }
-    })
+      })
   }
-}
-
-getUserInfo.propTypes = {
-  options: optionsType,
-}
-
-getUserUpdate.propTypes = {
-  patchOptions: optionsType,
 }

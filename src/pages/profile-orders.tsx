@@ -5,7 +5,7 @@ import { getLogout } from '../services/actions/logout'
 
 export function ProfileOrdersPage() {
   const dispatch = useDispatch()
-  const setActive = ({ isActive }) =>
+  const setActive = ({ isActive }: { isActive: boolean }): string =>
     isActive
       ? 'text text_type_main-medium'
       : 'text text_type_main-medium text_color_inactive'
@@ -39,6 +39,7 @@ export function ProfileOrdersPage() {
               to="/login"
               className={setActive}
               onClick={() => {
+                //@ts-ignore: Will be typed later
                 dispatch(getLogout({ options2 }))
               }}
             >

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, ChangeEvent, FormEvent } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import styles from './login.module.css'
@@ -6,14 +6,16 @@ import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { getAuth } from '../services/actions/authorization'
 import { Input } from '../components/input'
 import { PasswordInput } from '../components/password-input'
+import { IForm } from '.'
 
 export function LoginPage() {
   const navigate = useNavigate()
-  const [form, setValue] = useState({ email: '', password: '' })
+  const [form, setValue] = useState<IForm>({ email: '', password: '' })
+  //@ts-ignore: Will be typed in the next sprint
   const userLoggedIn = useSelector((state) => state.loginReducer.user)
   const dispatch = useDispatch()
 
-  const onChange = (e) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue({ ...form, [e.target.name]: e.target.value })
   }
 
@@ -35,8 +37,9 @@ export function LoginPage() {
     }
   }, [navigate, userLoggedIn])
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
+    //@ts-ignore: Will be typed later
     dispatch(getAuth({ options }))
   }
 

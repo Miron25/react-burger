@@ -1,10 +1,14 @@
 import IngDetailsStyles from './ingredientdetails.module.css'
 import { useSelector } from 'react-redux'
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
-import PropTypes from 'prop-types'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
+import { ReactNode, ReactElement, FC } from 'react'
 
-function CenterIngredient({ children, directLink }) {
+type TModal = { directLink: boolean }
+
+type TCIng = TModal & { children: ReactNode }
+
+function CenterIngredient({ children, directLink }: TCIng): ReactElement {
   return directLink ? (
     <div className={IngDetailsStyles.frame}>{children}</div>
   ) : (
@@ -12,11 +16,12 @@ function CenterIngredient({ children, directLink }) {
   )
 }
 
-export const ModalContent = ({ directLink }) => {
+export const ModalContent: FC<TModal> = ({ directLink }) => {
   const navigate = useNavigate()
   const location = useLocation()
-  const { ingredientId } = useParams()
+  const { ingredientId } = useParams<{ ingredientId?: string }>()
 
+  //@ts-ignore: Will be typed in the next sprint
   const ingredientsList = useSelector((state) => state.feed.feed)
   const ingDetails = ingredientsList.find((item) => item._id === ingredientId)
 
@@ -33,6 +38,7 @@ export const ModalContent = ({ directLink }) => {
           </h1>
           {!directLink && (
             <CloseIcon
+              type="primary"
               onClick={() => {
                 location.state.background && navigate(-1)
               }}
@@ -85,13 +91,4 @@ export const ModalContent = ({ directLink }) => {
       </CenterIngredient>
     </>
   )
-}
-
-ModalContent.propTypes = {
-  directLink: PropTypes.bool.isRequired,
-}
-
-CenterIngredient.propTypes = {
-  children: PropTypes.node,
-  directLink: PropTypes.bool.isRequired,
 }

@@ -1,7 +1,26 @@
+import {
+  ChangeEventHandler,
+  FC,
+  MouseEventHandler,
+  HTMLAttributes,
+} from 'react'
 import styles from './input.module.css'
-import PropTypes from 'prop-types'
 
-export const Input = ({
+export interface TIconProps extends FC<HTMLAttributes<HTMLInputElement>> {
+  onClick?: MouseEventHandler<HTMLInputElement>
+}
+
+export type TInput = {
+  placeholder: string
+  value?: string
+  type?: string
+  name: string
+  icon?: TIconProps
+  onChange: ChangeEventHandler<HTMLInputElement>
+  onIconClick?: MouseEventHandler<HTMLInputElement>
+}
+
+export const Input: FC<TInput> = ({
   icon: Icon,
   onIconClick,
   value,
@@ -26,13 +45,4 @@ export const Input = ({
       {icon}
     </div>
   )
-}
-
-Input.propTypes = {
-  icon: PropTypes.any,
-  onIconClick: PropTypes.func,
-  value: PropTypes.string.isRequired,
-  placeholder: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  type: PropTypes.string,
 }

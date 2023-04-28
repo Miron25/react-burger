@@ -8,6 +8,13 @@ import { NotFound404 } from './not-found'
 import { ProfileOrdersPage } from './profile-orders'
 import { OrdersFeedPage } from './orders-feed'
 
+export interface IForm {
+  email?: string
+  name?: string
+  password?: string
+  code?: string
+}
+
 export {
   HomePage,
   LoginPage,

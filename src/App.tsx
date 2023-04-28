@@ -24,11 +24,13 @@ function App() {
   const location = useLocation()
   const navigate = useNavigate()
   const background = location.state && location.state.background
+  //@ts-ignore: Will be typed in the next sprint
   const { feed, feedRequest, feedFailed } = useSelector((state) => state.feed)
   const dispatch = useDispatch()
   const resetKey = localStorage.getItem('reset_key')
 
   useEffect(() => {
+    //@ts-ignore: Will be typed in the next sprint
     if (!feed.length) dispatch(getFeed())
   }, [feed.length, dispatch])
 
@@ -44,7 +46,7 @@ function App() {
     }
   }, [])
 
-  const handleModalClose = () => {
+  const handleModalClose = (): void => {
     // Возвращаемся к предыдущему пути при закрытии модалки
     navigate(-1)
   }
