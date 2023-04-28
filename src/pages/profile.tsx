@@ -16,23 +16,15 @@ export function ProfilePage() {
   const userLoggedIn = useSelector((state) => state.loginReducer.isLoggedIn)
   //@ts-ignore: Will be typed in the next sprint
   const userInProfile = useSelector((state) => state.userInfoReducer.user)
-  const [editBox1, setEditBox1] = useState<boolean>(false)
-  const [editBox2, setEditBox2] = useState<boolean>(false)
-  const [editBox3, setEditBox3] = useState<boolean>(false)
+  const [editBox1, setEditBox1] = useState(false)
+  const [editBox2, setEditBox2] = useState(false)
+  const [editBox3, setEditBox3] = useState(false)
   const [form, setValue] = useState<IForm>({})
   const dispatch = useDispatch()
   const setActive = ({ isActive }: { isActive: boolean }): string =>
     isActive
       ? 'text text_type_main-medium'
       : 'text text_type_main-medium text_color_inactive'
-
-  const options = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: localStorage.getItem('a_token'),
-    },
-  }
 
   const options2 = {
     method: 'POST',
@@ -58,13 +50,18 @@ export function ProfilePage() {
   }
 
   useEffect(() => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem('a_token'),
+      },
+    }
     if (userLoggedIn && !userInProfile) {
       //@ts-ignore: Will be typed later
       dispatch(getUserInfo({ options }))
     }
   }, [dispatch, userLoggedIn, userInProfile])
-
-  const handleKeyDown = (): void => {}
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue({
@@ -159,7 +156,9 @@ export function ProfilePage() {
               }}
               role="button"
               tabIndex={0}
-              onKeyDown={handleKeyDown}
+              onKeyDown={(): void => {
+                null
+              }}
             >
               {editBox1 ? (
                 <CloseIcon type="primary" />
@@ -197,7 +196,9 @@ export function ProfilePage() {
               }}
               role="button"
               tabIndex={0}
-              onKeyDown={handleKeyDown}
+              onKeyDown={(): void => {
+                null
+              }}
             >
               {editBox2 ? (
                 <CloseIcon type="primary" />
@@ -235,7 +236,9 @@ export function ProfilePage() {
               }}
               role="button"
               tabIndex={0}
-              onKeyDown={handleKeyDown}
+              onKeyDown={(): void => {
+                null
+              }}
             >
               {editBox3 ? (
                 <CloseIcon type="primary" />

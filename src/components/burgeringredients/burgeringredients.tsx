@@ -22,7 +22,7 @@ import { IIngredient, IFilteredIngr } from '../../utils/types'
 function BurgerIngredients() {
   //@ts-ignore: Will be typed in the next sprint
   const initial_array = useSelector((state) => state.feed.feed)
-  const [current, setCurrent] = useState<string>('bun')
+  const [current, setCurrent] = useState('bun')
   const oneRef = useRef<HTMLDivElement>(null) //represents tab "one"
   const twoRef = useRef<HTMLDivElement>(null) //represents tab "two"
   const threeRef = useRef<HTMLDivElement>(null) //represents tab "three"

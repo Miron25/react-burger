@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { NavLink, useLocation } from 'react-router-dom'
 import {
@@ -17,8 +16,6 @@ const AccountLink = () => {
     isActive
       ? 'text text_type_main-default'
       : 'text text_type_main-default text_color_inactive'
-
-  useEffect(() => {}, [userLoggedIn])
 
   return (
     <div className={AppheaderStyles.accbox}>

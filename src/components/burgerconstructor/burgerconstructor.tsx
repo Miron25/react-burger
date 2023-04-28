@@ -45,20 +45,22 @@ function BurgerConstructor() {
   const name = useSelector((state) => state.orderDetails.name)
   //@ts-ignore: Will be typed in the next sprint
   const userLoggedIn = useSelector((state) => state.loginReducer.user)
-  const [show, setShow] = useState<boolean>(false)
+  const [show, setShow] = useState(false)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const totalPrice = useMemo<number>(() => {
     if (bun)
-      return (
-        ingredients.reduce((sum: number, item: any) => sum + item.price, 0) +
-        bun.price * 2
+      return Number(
+        ingredients.reduce(
+          (sum: number, item: IIngredient): number => sum + Number(item.price),
+          0
+        ) + Number(bun.price * 2)
       )
     else return 0
   }, [ingredients, bun])
 
-  const [, dropTarget] = useDrop<IIngredient, unknown, unknown>({
+  const [, dropTarget] = useDrop<IIngredient>({
     accept: ['main_sauce', 'bun'],
     drop(item) {
       addingItem_Bun(item)
@@ -142,7 +144,7 @@ function BurgerConstructor() {
                 <ConstructorElement
                   type="top"
                   isLocked={true}
-                  text={bun.name + ' (верх)'}
+                  text={`${String(bun.name)} (верх)`}
                   price={bun.price}
                   thumbnail={bun.image}
                 />
@@ -162,7 +164,7 @@ function BurgerConstructor() {
                 <ConstructorElement
                   type="bottom"
                   isLocked={true}
-                  text={bun.name + ' (низ)'}
+                  text={`${String(bun.name)}  (низ)`}
                   price={bun.price}
                   thumbnail={bun.image}
                 />

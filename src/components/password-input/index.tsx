@@ -25,7 +25,7 @@ const Eye: TIconProps = ({ onClick }) => (
 )
 
 export const PasswordInput: FC<TInput> = ({ ...props }) => {
-  const [isVisible, setVisible] = useState<boolean>(false)
+  const [isVisible, setVisible] = useState(false)
   return (
     <Input
       {...props}
