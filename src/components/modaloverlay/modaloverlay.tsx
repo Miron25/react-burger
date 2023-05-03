@@ -7,6 +7,7 @@ type TShow = {
 }
 
 const ModalOverlay: FC<TShow> = ({ show, children }) => {
+  console.log(show)
   return (
     <div
       className={

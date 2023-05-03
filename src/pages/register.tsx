@@ -1,5 +1,5 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from '../services/types/hooks'
 import { Link, useNavigate } from 'react-router-dom'
 import styles from './register.module.css'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -7,10 +7,9 @@ import { getRegistration } from '../services/actions/registration'
 import { getAuth } from '../services/actions/authorization'
 import { Input } from '../components/input'
 import { PasswordInput } from '../components/password-input'
-import { IForm } from '.'
+import { IForm } from '../services/types/data'
 
 export function RegisterPage() {
-  //@ts-ignore: Will be typed in the next sprint
   const userRegistered = useSelector((state) => state.registrationReducer.user)
   const [form, setValue] = useState<IForm>({
     name: '',
@@ -25,14 +24,24 @@ export function RegisterPage() {
   }
 
   useEffect(() => {
+    const options: RequestInit = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem('a_token') || '',
+      },
+      body: JSON.stringify({
+        email: form.email,
+        password: form.password,
+      }),
+    }
     if (userRegistered) {
-      //@ts-ignore: Will be typed later
       dispatch(getAuth({ options }))
       navigate('/')
     }
-  }, [navigate, userRegistered])
+  }, [navigate, dispatch, form.email, form.password, userRegistered])
 
-  const options_1 = {
+  const options_1: RequestInit = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -42,21 +51,8 @@ export function RegisterPage() {
     }),
   }
 
-  const options = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: localStorage.getItem('a_token'),
-    },
-    body: JSON.stringify({
-      email: form.email,
-      password: form.password,
-    }),
-  }
-
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
-    //@ts-ignore: Will be typed later
     dispatch(getRegistration({ options_1 }))
   }
 

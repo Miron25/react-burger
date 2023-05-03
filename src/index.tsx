@@ -1,16 +1,8 @@
 import * as ReactDOM from 'react-dom/client'
 import App from './App'
-import { composeWithDevTools } from 'redux-devtools-extension'
-import { createStore, applyMiddleware } from 'redux'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import { rootReducer } from './services/reducers'
-import thunk from 'redux-thunk'
-
-const store = createStore(
-  rootReducer,
-  composeWithDevTools(applyMiddleware(thunk))
-)
+import { store } from './services/store'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(

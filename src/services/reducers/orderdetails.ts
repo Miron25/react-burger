@@ -2,15 +2,26 @@ import {
   GET_ORDER_REQUEST,
   GET_ORDER_ERROR,
   GET_ORDER_SUCCESS,
-} from './../actions/orderdetails'
+} from '../constants'
+import { TGetOrderActions } from '../actions/orderdetails'
 
-const initialState = {
+export type TOrderState = {
+  orderRequest: boolean
+  orderFailed: boolean
+  order?: number
+  name?: string
+}
+const initialState: TOrderState = {
   orderRequest: false,
   orderFailed: false,
-  order: null,
+  order: undefined,
+  name: undefined,
 }
 
-export const orderDetailsReducer = (state = initialState, action) => {
+export const orderDetailsReducer = (
+  state = initialState,
+  action: TGetOrderActions
+): TOrderState => {
   switch (action.type) {
     case GET_ORDER_REQUEST: {
       return {
@@ -32,8 +43,8 @@ export const orderDetailsReducer = (state = initialState, action) => {
         ...state,
         orderFailed: true,
         orderRequest: false,
-        order: null,
-        name: null,
+        order: undefined,
+        name: undefined,
       }
     }
     default: {

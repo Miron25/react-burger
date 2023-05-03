@@ -5,15 +5,26 @@ import {
   DELETE_BUN,
   CLEAR_ARRAY,
   SAVE_STATE,
-} from './../actions/burgerconst'
+} from '../constants'
+import { IIngUUID } from '../types/data'
+import { TConstructorActions } from '../actions/burgerconst'
 
-const initialState = {
-  bun: null,
+export type TSelectedIngrState = {
+  bun?: IIngUUID
+  ingredients: ReadonlyArray<IIngUUID>
+  ing_ids: ReadonlyArray<string>
+}
+
+const initialState: TSelectedIngrState = {
+  bun: undefined,
   ingredients: [],
   ing_ids: [],
 }
 
-export const selectedIngredientsReducer = (state = initialState, action) => {
+export const selectedIngredientsReducer = (
+  state = initialState,
+  action: TConstructorActions
+): TSelectedIngrState => {
   switch (action.type) {
     case ADD_ITEM: {
       return {
@@ -41,7 +52,7 @@ export const selectedIngredientsReducer = (state = initialState, action) => {
     case DELETE_BUN: {
       return {
         ...state,
-        bun: null,
+        bun: undefined,
       }
     }
     case CLEAR_ARRAY: {

@@ -1,28 +1,27 @@
 import React, { useState, useMemo, useRef, useCallback, FC } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from '../../services/types/hooks'
 import BurgerConsStyles from './burgercons.module.css'
 import Modal from '../modal/modal'
-import graphics from '../../images/graphics.png'
 import {
   ConstructorElement,
   DragIcon,
   CurrencyIcon,
   Button,
-  CloseIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useDrag, useDrop } from 'react-dnd'
 import {
-  ADD_ITEM,
-  ADD_BUN,
-  DELETE_ITEM,
-  DELETE_BUN,
-  CLEAR_ARRAY,
-  SAVE_STATE,
+  clearArrayAction,
+  addItemAction,
+  addBunAction,
+  deleteItemAction,
+  deleteBunAction,
+  saveStateAction,
 } from '../../services/actions/burgerconst'
 import { v4 as uuidv4 } from 'uuid'
 import { getOrder } from '../../services/actions/orderdetails'
 import { useNavigate } from 'react-router-dom'
-import { IIngredient, IDroppedIngr } from '../../utils/types'
+import { IIngredient, IDroppedIngr, IIngUUID } from '../../services/types/data'
+import { OrderDetailsContent } from '../orderdetails/orderdetails'
 
 type TDragItem = {
   index: number
@@ -33,17 +32,9 @@ type TDragProps = {
 }
 
 function BurgerConstructor() {
-  //@ts-ignore: Will be typed in the next sprint
   const ingredients = useSelector((state) => state.selectedIng.ingredients)
-  //@ts-ignore: Will be typed in the next sprint
   const bun = useSelector((state) => state.selectedIng.bun)
-  //@ts-ignore: Will be typed in the next sprint
   const ing_ids = useSelector((state) => state.selectedIng.ing_ids)
-  //@ts-ignore: Will be typed in the next sprint
-  const order = useSelector((state) => state.orderDetails.order)
-  //@ts-ignore: Will be typed in the next sprint
-  const name = useSelector((state) => state.orderDetails.name)
-  //@ts-ignore: Will be typed in the next sprint
   const userLoggedIn = useSelector((state) => state.loginReducer.user)
   const [show, setShow] = useState(false)
   const dispatch = useDispatch()
@@ -60,7 +51,7 @@ function BurgerConstructor() {
     else return 0
   }, [ingredients, bun])
 
-  const [, dropTarget] = useDrop<IIngredient>({
+  const [, dropTarget] = useDrop<IIngUUID | undefined>({
     accept: ['main_sauce', 'bun'],
     drop(item) {
       addingItem_Bun(item)
@@ -68,28 +59,16 @@ function BurgerConstructor() {
   })
 
   // To handle onClick event and add an item to constructor
-  const addingItem_Bun = (item: IIngredient): void => {
+  const addingItem_Bun = (item: IIngUUID | undefined): void => {
     const itemDropped = item
     if (itemDropped?.type === 'bun') {
-      const bunobj = Object.assign({}, itemDropped, {
-        UUID: uuidv4(),
-        UUID2: uuidv4(),
-      })
-      dispatch({
-        type: DELETE_BUN,
-      }),
-        dispatch({
-          type: ADD_BUN,
-          bunobj,
-          _id: bunobj._id,
-        })
-    } else {
-      const ingobj = Object.assign({}, itemDropped, { UUID: uuidv4() })
-      dispatch({
-        type: ADD_ITEM,
-        ingobj,
-        _id: ingobj._id,
-      })
+      //const bunobj = Object.assign({}, itemDropped, {UUID: uuidv4(), UUID2: uuidv4(),})
+      const bunobj = { ...itemDropped, UUID: uuidv4(), UUID2: uuidv4() }
+      dispatch(deleteBunAction()), dispatch(addBunAction(bunobj, bunobj._id))
+    } else if (itemDropped?.type === 'main' || itemDropped?.type === 'sauce') {
+      //const ingobj = Object.assign({}, itemDropped, { UUID: uuidv4() })
+      const ingobj = { ...itemDropped, UUID: uuidv4() }
+      dispatch(addItemAction(ingobj, ingobj._id))
     }
   }
 
@@ -108,16 +87,13 @@ function BurgerConstructor() {
       const updatedList = [...ingredients]
       updatedList[dragIndex] = hoverItem
       updatedList[hoverIndex] = dragItem
-      dispatch({
-        type: SAVE_STATE,
-        updatedList,
-      })
+      dispatch(saveStateAction(updatedList, []))
     },
     [dispatch, ingredients]
   )
 
   const renderList = useCallback(
-    (droppedIngr: IIngredient, index: number) => {
+    (droppedIngr: IIngUUID, index: number) => {
       return (
         <IngrList
           key={droppedIngr.UUID}
@@ -151,7 +127,7 @@ function BurgerConstructor() {
               </span>
             )}
             <div className={BurgerConsStyles.scroll_block}>
-              {ingredients.map((droppedIngr: IIngredient, index: number) =>
+              {ingredients.map((droppedIngr: IIngUUID, index: number) =>
                 renderList(droppedIngr, index)
               )}
             </div>
@@ -192,8 +168,7 @@ function BurgerConstructor() {
                 {
                   userLoggedIn
                     ? (setShow(true),
-                      dispatch({ type: CLEAR_ARRAY }),
-                      //@ts-ignore: Will be typed in the next sprint
+                      dispatch(clearArrayAction()),
                       dispatch(getOrder({ options })))
                     : navigate('/login')
                 }
@@ -208,30 +183,7 @@ function BurgerConstructor() {
           onClose={() => setShow(false)}
           modalStyle={{ height: '718px' }}
         >
-          <div className={BurgerConsStyles.popup_title}>
-            <CloseIcon type="primary" onClick={() => setShow(false)} />
-          </div>
-          <div className={BurgerConsStyles.popup_order}>
-            <p className="text text_type_digits-large">{order}</p>
-          </div>
-          <div className={BurgerConsStyles.popup_text1}>
-            <p className="text text_type_main-medium">{name}</p>
-          </div>
-          <img
-            src={graphics}
-            alt="graphics"
-            className={BurgerConsStyles.popup_img}
-          />
-          <div className={BurgerConsStyles.popup_text2}>
-            <p className="text text_type_main-small">
-              Ваш заказ начали готовить
-            </p>
-          </div>
-          <div className={BurgerConsStyles.popup_text3}>
-            <p className="text text_type_main-default text_color_inactive pb-30">
-              Дождитесь готовности на орбитальной станции
-            </p>
-          </div>
+          <OrderDetailsContent setShow={setShow} />
         </Modal>
       </div>
     </div>
@@ -320,11 +272,9 @@ const IngrList: FC<IDroppedIngr> = ({ droppedIngr, index, moveIngr }) => {
           price={droppedIngr.price}
           thumbnail={droppedIngr.image}
           handleClose={() => {
-            dispatch({
-              type: DELETE_ITEM,
-              UUID: droppedIngr.UUID,
-              _id: droppedIngr._id,
-            })
+            dispatch(
+              deleteItemAction(droppedIngr, droppedIngr._id, droppedIngr.UUID)
+            )
           }}
         />
       </span>

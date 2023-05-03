@@ -3,15 +3,25 @@ import {
   GET_EMAIL_ERROR,
   GET_EMAIL_SUCCESS,
   CLEAR_MESSAGE,
-} from './../actions/forgotpassword'
+} from '../constants'
+import { TGetEmailActions } from '../actions/forgotpassword'
 
-const initialState = {
+export type TEmailState = {
+  emailRequest: boolean
+  emailFailed: boolean
+  message: string
+}
+
+const initialState: TEmailState = {
   emailRequest: false,
   emailFailed: false,
   message: '',
 }
 
-export const checkEmailReducer = (state = initialState, action) => {
+export const checkEmailReducer = (
+  state = initialState,
+  action: TGetEmailActions
+): TEmailState => {
   switch (action.type) {
     case GET_EMAIL_REQUEST: {
       return {

@@ -8,7 +8,7 @@ import React, {
 } from 'react'
 import BurgerIngStyles from './burgering.module.css'
 import { useInView } from 'react-intersection-observer'
-import { useSelector } from 'react-redux'
+import { useSelector } from '../../services/types/hooks'
 import { useLocation } from 'react-router'
 import {
   Tab,
@@ -17,10 +17,9 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useDrag } from 'react-dnd'
 import { Link } from 'react-router-dom'
-import { IIngredient, IFilteredIngr } from '../../utils/types'
+import { IIngredient, IFilteredIngr } from '../../services/types/data'
 
 function BurgerIngredients() {
-  //@ts-ignore: Will be typed in the next sprint
   const initial_array = useSelector((state) => state.feed.feed)
   const [current, setCurrent] = useState('bun')
   const oneRef = useRef<HTMLDivElement>(null) //represents tab "one"
@@ -138,9 +137,7 @@ function BurgerIngredients() {
 }
 
 const GridElement: FC<IFilteredIngr> = ({ filteredIngr }) => {
-  //@ts-ignore: Will be typed in the next sprint
   const ingredients = useSelector((state) => state.selectedIng.ingredients)
-  //@ts-ignore: Will be typed in the next sprint
   const bun = useSelector((state) => state.selectedIng.bun)
   const location = useLocation()
 

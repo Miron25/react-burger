@@ -2,15 +2,25 @@ import {
   GET_TOKEN_REQUEST,
   GET_TOKEN_ERROR,
   GET_TOKEN_SUCCESS,
-} from './../actions/token'
+} from '../constants'
+import { TGetTokenActions } from '../actions/token'
 
-const initialState = {
+export type TTokenState = {
+  tokenRequest: boolean
+  tokenFailed: boolean
+  token: string
+}
+
+const initialState: TTokenState = {
   tokenRequest: false,
   tokenFailed: false,
   token: '',
 }
 
-export const tokenReducer = (state = initialState, action) => {
+export const tokenReducer = (
+  state = initialState,
+  action: TGetTokenActions
+): TTokenState => {
   switch (action.type) {
     case GET_TOKEN_REQUEST: {
       return {

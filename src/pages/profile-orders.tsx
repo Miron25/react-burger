@@ -1,5 +1,5 @@
 import styles from './profile.module.css'
-import { useDispatch } from 'react-redux'
+import { useDispatch } from '../services/types/hooks'
 import { NavLink } from 'react-router-dom'
 import { getLogout } from '../services/actions/logout'
 
@@ -10,7 +10,7 @@ export function ProfileOrdersPage() {
       ? 'text text_type_main-medium'
       : 'text text_type_main-medium text_color_inactive'
 
-  const options2 = {
+  const options2: RequestInit = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -39,7 +39,6 @@ export function ProfileOrdersPage() {
               to="/login"
               className={setActive}
               onClick={() => {
-                //@ts-ignore: Will be typed later
                 dispatch(getLogout({ options2 }))
               }}
             >

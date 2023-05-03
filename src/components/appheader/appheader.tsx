@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux'
+import { useSelector } from '../../services/types/hooks'
 import { NavLink, useLocation } from 'react-router-dom'
 import {
   Logo,
@@ -9,7 +9,6 @@ import {
 import AppheaderStyles from './appheader.module.css'
 
 const AccountLink = () => {
-  //@ts-ignore: Will be typed in the next sprint
   const userLoggedIn = useSelector((state) => state.loginReducer.isLoggedIn)
   const location = useLocation()
   const setActive = ({ isActive }: { isActive: boolean }): string =>

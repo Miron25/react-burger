@@ -18,7 +18,7 @@ import {
 } from './pages'
 import { ProtectedRouteElement } from './components/protected-route'
 import { ModalContent } from './components/ingredientdetails/ingredientdetails'
-import { GET_AUTH_SUCCESS } from './services/actions/authorization'
+import { getAuthSuccessAction } from './services/actions/authorization'
 
 function App() {
   const location = useLocation()
@@ -38,11 +38,7 @@ function App() {
     const loggedInUser = localStorage.getItem('user')
     if (loggedInUser) {
       const foundUser = JSON.parse(loggedInUser)
-      dispatch({
-        type: GET_AUTH_SUCCESS,
-        user: foundUser,
-        isLoggedIn: true,
-      })
+      dispatch(getAuthSuccessAction(foundUser, true))
     }
   }, [])
 

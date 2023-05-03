@@ -1,11 +1,11 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch } from '../services/types/hooks'
 import styles from './forgot-password.module.css'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, useNavigate } from 'react-router-dom'
 import { Input } from '../components/input'
 import { getPasswordReset } from '../services/actions/forgotpassword'
-import { IForm } from '.'
+import { IForm } from '../services/types/data'
 
 export function ForgotPasswordPage() {
   const navigate = useNavigate()
@@ -17,7 +17,7 @@ export function ForgotPasswordPage() {
     setValue({ ...form, [e.target.name]: e.target.value })
   }
 
-  const options = {
+  const options: RequestInit = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -28,7 +28,6 @@ export function ForgotPasswordPage() {
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
     localStorage.setItem('reset_key', 'true')
-    //@ts-ignore: Will be typed later
     dispatch(getPasswordReset({ options }))
     navigate('/reset-password')
   }
