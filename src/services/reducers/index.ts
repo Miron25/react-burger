@@ -13,6 +13,7 @@ import { logoutReducer } from './logout'
 import { tokenReducer } from './token'
 import { userInfoReducer } from './userinfo'
 import { resetPasswordReducer } from './resetpassword'
+import { wsReducer } from './wsreducer'
 import { IIngredient } from '../types/data'
 import { TGetFeedActions } from '../actions'
 
@@ -71,4 +72,5 @@ export const rootReducer = combineReducers({
   tokenReducer: tokenReducer,
   userInfoReducer: userInfoReducer,
   resetPasswordReducer: resetPasswordReducer,
+  wsReducer: wsReducer,
 })

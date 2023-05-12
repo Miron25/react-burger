@@ -10,8 +10,9 @@ import { TGetRegistrationActions } from '../actions/registration'
 import { TGetResetPasswordActions } from '../actions/resetpassword'
 import { TGetTokenActions } from '../actions/token'
 import { TGetUserActions } from '../actions/userinfo'
+import { TWSActions } from '../actions/wsactiontypes'
 
-type TApplicationActions =
+export type TApplicationActions =
   | TGetAuthActions
   | TConstructorActions
   | TGetEmailActions
@@ -23,6 +24,7 @@ type TApplicationActions =
   | TGetTokenActions
   | TGetTokenActions
   | TGetUserActions
+  | TWSActions
 
 export type RootState = ReturnType<typeof store.getState>
 

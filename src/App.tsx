@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from './services/types/hooks'
 import { getFeed } from './services/actions'
 import './App.css'
 import AppHeader from './components/appheader/appheader'
@@ -24,14 +24,14 @@ function App() {
   const location = useLocation()
   const navigate = useNavigate()
   const background = location.state && location.state.background
-  //@ts-ignore: Will be typed in the next sprint
   const { feed, feedRequest, feedFailed } = useSelector((state) => state.feed)
   const dispatch = useDispatch()
   const resetKey = localStorage.getItem('reset_key')
 
   useEffect(() => {
-    //@ts-ignore: Will be typed in the next sprint
-    if (!feed.length) dispatch(getFeed())
+    if (!feed.length) {
+      dispatch(getFeed())
+    }
   }, [feed.length, dispatch])
 
   useEffect(() => {
