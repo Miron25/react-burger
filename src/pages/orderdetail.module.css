@@ -1,0 +1,166 @@
+.detail_box {
+  position: absolute;
+  height: 620px;
+  left: 34%;
+  right: 34%;
+  top: 230px;
+}
+
+.order_number {
+  position: absolute;
+  width: 640px;
+  height: 24px;
+  left: 0px;
+  top: 0px;
+  text-align: center;
+}
+
+.order_name_status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 8px;
+
+  position: absolute;
+
+  left: 0px;
+  right: 0px;
+  top: 36px;
+}
+
+.order_name {
+  display: flex;
+  align-items: flex-start;
+  width: 640px;
+  height: 48px;
+  overflow: hidden;
+  line-height: 1;
+}
+
+.order_name_ext {
+  display: flex;
+  align-items: flex-start;
+  width: 640px;
+  height: 120px;
+  overflow: hidden;
+  line-height: 1;
+}
+
+.order_name2 {
+  width: 640px;
+  height: 30px;
+}
+
+.status {
+  width: 640px;
+  height: 24px;
+}
+
+.ingredients_block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-right: 24px;
+  gap: 24px;
+
+  position: absolute;
+  height: 366px;
+  left: 0px;
+  right: 0px;
+  top: 190px;
+}
+
+.scroll_area {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+
+  position: relative;
+  width: 640px;
+  height: 366px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.ingredient_item {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0px;
+  gap: 16px;
+
+  width: 608px;
+  height: 64px;
+}
+
+.ing_preview {
+  display: block;
+  position: absolute;
+  box-sizing: border-box;
+  width: 64px;
+  height: 64px;
+  left: 0px;
+  background: linear-gradient(#131316, #131316) padding-box,
+    linear-gradient(#801ab2, #4c4cff) border-box;
+  border: 3px solid transparent;
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.ing_preview img {
+  position: absolute;
+  display: inline-block;
+  width: 112px;
+  height: 64px;
+  left: -45.5%;
+  top: 3.25%;
+}
+
+.ing_name {
+  display: flex;
+  align-items: center;
+  width: 382px;
+  height: 64px;
+}
+
+.price {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0px;
+  gap: 8px;
+
+  width: 130px;
+  height: 24px;
+}
+
+.time_block {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0px;
+  gap: 8px;
+
+  position: absolute;
+  width: 640px;
+  height: 24px;
+  left: 0px;
+  top: 596px;
+}
+
+.time {
+  width: 524px;
+  height: 24px;
+}
+
+.total_price {
+  display: flex;
+  justify-content: flex-end;
+  width: 116px;
+  height: 24px;
+}

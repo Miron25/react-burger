@@ -18,10 +18,11 @@ import {
   saveStateAction,
 } from '../../services/actions/burgerconst'
 import { v4 as uuidv4 } from 'uuid'
-import { getOrder } from '../../services/actions/orderdetails'
 import { useNavigate } from 'react-router-dom'
 import { IIngredient, IDroppedIngr, IIngUUID } from '../../services/types/data'
 import { OrderDetailsContent } from '../orderdetails/orderdetails'
+import { NORMA_API } from '../../utils/api'
+import { getOrderCreated } from '../../services/actions/ordercreated'
 
 type TDragItem = {
   index: number
@@ -39,6 +40,7 @@ function BurgerConstructor() {
   const [show, setShow] = useState(false)
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const url = `${NORMA_API}/orders`
 
   const totalPrice = useMemo<number>(() => {
     if (bun)
@@ -169,7 +171,7 @@ function BurgerConstructor() {
                   userLoggedIn
                     ? (setShow(true),
                       dispatch(clearArrayAction()),
-                      dispatch(getOrder({ options })))
+                      dispatch(getOrderCreated({ url, options })))
                     : navigate('/login')
                 }
               }}

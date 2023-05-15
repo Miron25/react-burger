@@ -163,3 +163,19 @@
   background: var(--color-primary);
   border-radius: 100px;
 }
+
+.orders_feed {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-right: 16px;
+  gap: 24px;
+
+  position: absolute;
+  width: 844px;
+  height: 916px;
+  left: 760px;
+  top: 148px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}

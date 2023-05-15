@@ -19,6 +19,7 @@ import {
 import { ProtectedRouteElement } from './components/protected-route'
 import { ModalContent } from './components/ingredientdetails/ingredientdetails'
 import { getAuthSuccessAction } from './services/actions/authorization'
+import { OrderDetails } from './pages/orderdetail'
 
 function App() {
   const location = useLocation()
@@ -55,6 +56,12 @@ function App() {
       {!feedRequest && !feedFailed && feed.length && (
         <Routes location={background || location}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/feed" element={<OrdersFeedPage />} />
+          <Route path="/feed/:feedId" element={<OrderDetails />} />
+          <Route
+            path="/ingredients/:ingredientId"
+            element={<ModalContent directLink={true} />}
+          />
           <Route
             path="/login"
             element={
@@ -110,19 +117,6 @@ function App() {
                 element={<ProfileOrdersPage />}
               />
             }
-          />
-          <Route
-            path="/feed"
-            element={
-              <ProtectedRouteElement
-                onlyUnAuth={false}
-                element={<OrdersFeedPage />}
-              />
-            }
-          />
-          <Route
-            path="/ingredients/:ingredientId"
-            element={<ModalContent directLink={true} />}
           />
           <Route path="*" element={<NotFound404 />} />
         </Routes>

@@ -1,47 +1,50 @@
 import {
-  GET_ORDER_REQUEST,
-  GET_ORDER_ERROR,
-  GET_ORDER_SUCCESS,
+  GET_ORDER_CREATED_REQUEST,
+  GET_ORDER_CREATED_ERROR,
+  GET_ORDER_CREATED_SUCCESS,
 } from '../constants'
-import { TGetOrderActions } from '../actions/orderdetails'
-import { ISingleOrder } from '../types/data'
+import { TGetOrderCreatedActions } from '../actions/ordercreated'
 
 export type TOrderState = {
   orderRequest: boolean
   orderFailed: boolean
-  orders?: ReadonlyArray<ISingleOrder>
+  order?: number
+  name?: string
 }
 const initialState: TOrderState = {
   orderRequest: false,
   orderFailed: false,
-  orders: undefined,
+  order: undefined,
+  name: undefined,
 }
 
-export const orderDetailsReducer = (
+export const orderCreatedReducer = (
   state = initialState,
-  action: TGetOrderActions
+  action: TGetOrderCreatedActions
 ): TOrderState => {
   switch (action.type) {
-    case GET_ORDER_REQUEST: {
+    case GET_ORDER_CREATED_REQUEST: {
       return {
         ...state,
         orderRequest: true,
         orderFailed: false,
       }
     }
-    case GET_ORDER_SUCCESS: {
+    case GET_ORDER_CREATED_SUCCESS: {
       return {
         ...state,
-        orders: action.orders,
+        order: action.order,
+        name: action.name,
         orderRequest: false,
       }
     }
-    case GET_ORDER_ERROR: {
+    case GET_ORDER_CREATED_ERROR: {
       return {
         ...state,
         orderFailed: true,
         orderRequest: false,
-        orders: undefined,
+        order: undefined,
+        name: undefined,
       }
     }
     default: {

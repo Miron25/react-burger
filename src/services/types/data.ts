@@ -5,6 +5,11 @@ import {
   WS_CONNECTION_ERROR,
   WS_CONNECTION_CLOSED,
   WS_GET_MESSAGE,
+  WS_CONNECTION_AUTH_START,
+  WS_CONNECTION_AUTH_SUCCESS,
+  WS_CONNECTION_AUTH_ERROR,
+  WS_CONNECTION_AUTH_CLOSED,
+  WS_GET_AUTH_MESSAGE,
 } from '../constants'
 
 export type TWSStoreActions = {
@@ -13,6 +18,14 @@ export type TWSStoreActions = {
   onClose: typeof WS_CONNECTION_CLOSED
   onError: typeof WS_CONNECTION_ERROR
   onMessage: typeof WS_GET_MESSAGE
+}
+
+export type TWSStoreAuthActions = {
+  wsInitAuth: typeof WS_CONNECTION_AUTH_START
+  onOpenAuth: typeof WS_CONNECTION_AUTH_SUCCESS
+  onCloseAuth: typeof WS_CONNECTION_AUTH_CLOSED
+  onErrorAuth: typeof WS_CONNECTION_AUTH_ERROR
+  onMessageAuth: typeof WS_GET_AUTH_MESSAGE
 }
 
 export type TUser = {
@@ -34,6 +47,7 @@ export interface IIngredient {
   image_mobile?: string
   image_large?: string
   __v?: number
+  count?: number
 }
 
 export interface ISingleOrder {
@@ -44,6 +58,7 @@ export interface ISingleOrder {
   readonly number: number
   readonly createdAt: string
   readonly updatedAt: string
+  readonly owner?: string
 }
 
 export interface IOrdersAll {
@@ -87,6 +102,11 @@ export interface IOptArg3 {
 
 export interface IOptArg4 {
   patchOptions: RequestInit
+}
+
+export interface IOptArg5 {
+  url: string
+  options: RequestInit
 }
 
 export interface IModal {

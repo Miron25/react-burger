@@ -6,6 +6,7 @@ import {
 } from '../constants'
 import { selectedIngredientsReducer } from './burgerconst'
 import { orderDetailsReducer } from './orderdetails'
+import { orderCreatedReducer } from './ordercreated'
 import { checkEmailReducer } from './forgotpassword'
 import { loginReducer } from './authorization'
 import { registrationReducer } from './registration'
@@ -14,6 +15,7 @@ import { tokenReducer } from './token'
 import { userInfoReducer } from './userinfo'
 import { resetPasswordReducer } from './resetpassword'
 import { wsReducer } from './wsreducer'
+import { wsAuthReducer } from './wsauthreducer'
 import { IIngredient } from '../types/data'
 import { TGetFeedActions } from '../actions'
 
@@ -65,6 +67,7 @@ export const rootReducer = combineReducers({
   feed: feedReducer,
   selectedIng: selectedIngredientsReducer,
   orderDetails: orderDetailsReducer,
+  orderCreatedReducer: orderCreatedReducer,
   checkEmail: checkEmailReducer,
   loginReducer: loginReducer,
   registrationReducer: registrationReducer,
@@ -73,4 +76,5 @@ export const rootReducer = combineReducers({
   userInfoReducer: userInfoReducer,
   resetPasswordReducer: resetPasswordReducer,
   wsReducer: wsReducer,
+  wsAuthReducer: wsAuthReducer,
 })

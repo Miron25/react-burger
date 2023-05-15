@@ -10,8 +10,8 @@ type TOrderDet = {
 }
 
 export const OrderDetailsContent: FC<TOrderDet> = ({ setShow }) => {
-  const order = useSelector((state) => state.orderDetails.order)
-  const name = useSelector((state) => state.orderDetails.name)
+  const order = useSelector((state) => state.orderCreatedReducer.order)
+  const name = useSelector((state) => state.orderCreatedReducer.name)
 
   return (
     <>

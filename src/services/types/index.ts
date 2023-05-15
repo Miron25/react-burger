@@ -11,6 +11,8 @@ import { TGetResetPasswordActions } from '../actions/resetpassword'
 import { TGetTokenActions } from '../actions/token'
 import { TGetUserActions } from '../actions/userinfo'
 import { TWSActions } from '../actions/wsactiontypes'
+import { TWSAuthActions } from '../actions/wsactionauthtypes'
+import { TGetOrderCreatedActions } from '../actions/ordercreated'
 
 export type TApplicationActions =
   | TGetAuthActions
@@ -19,12 +21,14 @@ export type TApplicationActions =
   | TGetFeedActions
   | TGetLogoutActions
   | TGetOrderActions
+  | TGetOrderCreatedActions
   | TGetRegistrationActions
   | TGetResetPasswordActions
   | TGetTokenActions
   | TGetTokenActions
   | TGetUserActions
   | TWSActions
+  | TWSAuthActions
 
 export type RootState = ReturnType<typeof store.getState>
 

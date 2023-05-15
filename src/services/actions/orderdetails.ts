@@ -1,11 +1,11 @@
-import { NORMA_API, checkResponse } from '../../utils/api'
+import { checkResponse } from '../../utils/api'
 import {
   GET_ORDER_REQUEST,
   GET_ORDER_SUCCESS,
   GET_ORDER_ERROR,
 } from '../constants'
 import { AppDispatch, AppThunkAction } from '../types'
-import { IOptArg } from '../types/data'
+import { IOptArg5, ISingleOrder } from '../types/data'
 
 export interface IGetOrderAction {
   readonly type: typeof GET_ORDER_REQUEST
@@ -13,8 +13,7 @@ export interface IGetOrderAction {
 
 export interface IGetOrderSuccessAction {
   readonly type: typeof GET_ORDER_SUCCESS
-  readonly order: number
-  readonly name: string
+  readonly orders: ReadonlyArray<ISingleOrder>
 }
 
 export interface IGetOrderErrorAction {
@@ -31,26 +30,24 @@ export const getOrderAction = (): IGetOrderAction => ({
 })
 
 export const getOrderSuccessAction = (
-  order: number,
-  name: string
+  orders: ReadonlyArray<ISingleOrder>
 ): IGetOrderSuccessAction => ({
   type: GET_ORDER_SUCCESS,
-  order,
-  name,
+  orders,
 })
 
 export const getOrderErrorAction = (): IGetOrderErrorAction => ({
   type: GET_ORDER_ERROR,
 })
 
-export function getOrder({ options }: IOptArg): AppThunkAction {
+export function getOrder({ url, options }: IOptArg5): AppThunkAction {
   return function (dispatch: AppDispatch) {
     dispatch(getOrderAction())
-    fetch(`${NORMA_API}/orders`, options)
+    fetch(url, options)
       .then(checkResponse)
       .then((result) => {
         if (result && result.success) {
-          dispatch(getOrderSuccessAction(result.order.number, result.name))
+          dispatch(getOrderSuccessAction(result.orders))
         } else {
           dispatch(getOrderErrorAction())
         }
