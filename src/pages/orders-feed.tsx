@@ -6,7 +6,7 @@ import {
   CurrencyIcon,
   FormattedDate,
 } from '@ya.praktikum/react-developer-burger-ui-components'
-import { IIngredient, ISingleOrder } from '../services/types/data'
+import { IIngredient, ISingleOrderFull } from '../services/types/data'
 import { useMemo, useEffect } from 'react'
 import { wsInit } from '../services/actions/wsactiontypes'
 
@@ -15,15 +15,48 @@ export function OrdersFeedPage() {
   const orders = wsData.ordersAll?.orders
   const initial_array = useSelector((state) => state.feed.feed)
 
+  const count: Array<object> | undefined = orders?.map((item) =>
+    item.ingredients.reduce((accumulator, value) => {
+      return { ...accumulator, [value]: Number(accumulator[value] || 0) + 1 }
+    }, {})
+  )
+
+  const ingredientsFull = orders?.map((orderitem, index) => {
+    return {
+      ...orderitem,
+      ingredients: initial_array.filter(
+        (item: IIngredient) =>
+          count && Object.keys(count[index]).some((id) => id === item._id)
+      ),
+    }
+  })
+
+  const countArray = ingredientsFull?.map((item, index) => {
+    return {
+      ...item,
+      ingredients: item.ingredients.map((item2) => {
+        return {
+          ...item2,
+          count: Number(
+            count &&
+              Object.values(count[index])[
+                count &&
+                  Object.keys(count[index]).findIndex((element) => {
+                    return element === item2._id
+                  })
+              ]
+          ),
+        }
+      }),
+    }
+  })
+
   const ordersWithBuns = useMemo(() => {
-    return orders?.filter((orderitem: ISingleOrder) =>
-      initial_array
-        .filter((item: IIngredient) =>
-          orderitem.ingredients.some((id) => id === item._id)
-        )
-        .some((item2) => item2.type === 'bun')
+    return countArray?.filter((orderitem: ISingleOrderFull) =>
+      orderitem.ingredients.some((item) => item.type === 'bun')
     )
-  }, [orders, initial_array])
+  }, [countArray])
+
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -130,7 +163,7 @@ export function OrdersFeedPage() {
 
 type TFlag = {
   profileFlag: boolean
-  ordersArray?: ReadonlyArray<ISingleOrder>
+  ordersArray?: ReadonlyArray<ISingleOrderFull>
 }
 
 export const OrdersFeedComponent: FC<TFlag> = ({
@@ -216,59 +249,46 @@ export const OrdersFeedComponent: FC<TFlag> = ({
                     profileFlag ? styles.ingredients_pr : styles.ingredients
                   }
                 >
-                  {initial_array
-                    .filter((item: IIngredient) =>
-                      order_item.ingredients.some((id) => id === item._id)
-                    )
-                    .map((filteredIngr, index) => (
-                      <div
-                        key={filteredIngr._id}
-                        className={styles.ing_preview}
-                        style={
-                          index === 0
-                            ? { left: '0px', zIndex: `${index + 5}` }
-                            : index < 5
-                            ? {
-                                left: `${index * 48}px`,
-                                zIndex: `${5 - index}`,
-                              }
-                            : index === 5
-                            ? { left: `${index * 48}px`, zIndex: '0' }
-                            : {}
-                        }
-                      >
-                        <figure>
-                          <img
-                            src={filteredIngr.image_mobile}
-                            alt=""
-                            style={
-                              index === 5
-                                ? { opacity: '0.6' }
-                                : { opacity: '1' }
+                  {order_item.ingredients.map((filteredIngr, index) => (
+                    <div
+                      key={filteredIngr._id}
+                      className={styles.ing_preview}
+                      style={
+                        index === 0
+                          ? { left: '0px', zIndex: `${index + 5}` }
+                          : index < 5
+                          ? {
+                              left: `${index * 48}px`,
+                              zIndex: `${5 - index}`,
                             }
-                          ></img>
-                          {index === 5 && (
-                            <figcaption
-                              className={'text text_type_main-default'}
-                            >
-                              {`+${order_item.ingredients.length - 5}`}
-                            </figcaption>
-                          )}
-                        </figure>
-                      </div>
-                    ))}
+                          : index === 5
+                          ? { left: `${index * 48}px`, zIndex: '0' }
+                          : {}
+                      }
+                    >
+                      <figure>
+                        <img
+                          src={filteredIngr.image_mobile}
+                          alt=""
+                          style={
+                            index === 5 ? { opacity: '0.6' } : { opacity: '1' }
+                          }
+                        ></img>
+                        {index === 5 && (
+                          <figcaption className={'text text_type_main-default'}>
+                            {`+${order_item.ingredients.length - 5}`}
+                          </figcaption>
+                        )}
+                      </figure>
+                    </div>
+                  ))}
                 </div>
                 <div className={styles.price}>
                   <span className="text text_type_digits-default">
-                    {initial_array
-                      .filter((item: IIngredient) =>
-                        order_item.ingredients.some((id) => id === item._id)
-                      )
-                      .reduce(
-                        (sum: number, item: IIngredient): number =>
-                          sum + item.price,
-                        0
-                      )}
+                    {order_item.ingredients.reduce(
+                      (sum, item) => sum + (item.count || 0) * item.price,
+                      0
+                    )}
                   </span>
                   <CurrencyIcon type="primary" />
                 </div>

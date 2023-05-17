@@ -58,7 +58,7 @@ export function ProfilePage() {
     if (userLoggedIn && !userInProfile) {
       dispatch(getUserInfo({ options }))
     }
-  }, [dispatch, userLoggedIn, userInProfile])
+  }, [userInProfile])
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue({

@@ -5,7 +5,11 @@ import { NavLink } from 'react-router-dom'
 import { getLogout } from '../services/actions/logout'
 import { OrdersFeedComponent } from './orders-feed'
 import { wsInitAuth } from '../services/actions/wsactionauthtypes'
-import { IIngredient, ISingleOrder } from '../services/types/data'
+import {
+  IIngredient,
+  ISingleOrder,
+  ISingleOrderFull,
+} from '../services/types/data'
 
 export function ProfileOrdersPage() {
   const wsAuthData = useSelector((state) => state.wsAuthReducer)
@@ -17,15 +21,49 @@ export function ProfileOrdersPage() {
       ? 'text text_type_main-medium'
       : 'text text_type_main-medium text_color_inactive'
 
+  const count: Array<object> | undefined = orders?.map((item) =>
+    item.ingredients.reduce((accumulator, value) => {
+      return { ...accumulator, [value]: Number(accumulator[value] || 0) + 1 }
+    }, {})
+  )
+
+  const ingredientsFull = orders?.map((orderitem, index) => {
+    return {
+      ...orderitem,
+      ingredients: initial_array.filter(
+        (item: IIngredient) =>
+          count && Object.keys(count[index]).some((id) => id === item._id)
+      ),
+    }
+  })
+
+  const countArray = ingredientsFull?.map((item, index) => {
+    return {
+      ...item,
+      ingredients: item.ingredients.map((item2) => {
+        return {
+          ...item2,
+          count: Number(
+            count &&
+              Object.values(count[index])[
+                count &&
+                  Object.keys(count[index]).findIndex((element) => {
+                    return element === item2._id
+                  })
+              ]
+          ),
+        }
+      }),
+    }
+  })
+
   const ordersAuthWithBuns = useMemo(() => {
-    return orders?.filter((orderitem: ISingleOrder) =>
-      initial_array
-        .filter((item: IIngredient) =>
-          orderitem.ingredients.some((id) => id === item._id)
-        )
-        .some((item2) => item2.type === 'bun')
-    )
-  }, [orders, initial_array])
+    return countArray
+      ?.filter((orderitem: ISingleOrderFull) =>
+        orderitem.ingredients.some((item) => item.type === 'bun')
+      )
+      .sort((a, b) => b.number - a.number)
+  }, [countArray])
 
   const options2: RequestInit = {
     method: 'POST',
@@ -37,11 +75,6 @@ export function ProfileOrdersPage() {
     }),
   }
 
-  /*dispatch(
-    wsInitAuth(
-      `${'wss://norma.nomoreparties.space/orders'}?token=${accessToken}`
-    )
-  )*/
   useEffect(() => {
     if (!wsAuthData.wsConnected) {
       const accessToken = localStorage.getItem('a_token')?.slice(7)
@@ -51,7 +84,7 @@ export function ProfileOrdersPage() {
         )
       )
     }
-  }, [])
+  }, [dispatch, wsAuthData.wsConnected])
 
   return (
     <>
@@ -86,7 +119,10 @@ export function ProfileOrdersPage() {
         </div>
 
         <div className={styles.orders_feed}>
-          <OrdersFeedComponent profileFlag={true} ordersArray={orders} />
+          <OrdersFeedComponent
+            profileFlag={true}
+            ordersArray={ordersAuthWithBuns}
+          />
         </div>
       </div>
     </>

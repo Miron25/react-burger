@@ -10,13 +10,13 @@ import {
   FormattedDate,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
-export const OrderDetails = () => {
+export const OrderAuthDetails = () => {
   const orderDetails = useSelector((state) => state.orderDetails.orders)
   const navigate = useNavigate()
   const location = useLocation()
   const dispatch = useDispatch()
-  const { feedId } = useParams<{ feedId: string }>()
-  const url = `${NORMA_API}/orders/${feedId}`
+  const { orderId } = useParams<{ orderId: string }>()
+  const url = `${NORMA_API}/orders/${orderId}`
   const initial_array = useSelector((state) => state.feed.feed)
 
   const count =
@@ -27,7 +27,10 @@ export const OrderDetails = () => {
 
   const options: RequestInit = {
     method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: localStorage.getItem('a_token') || '',
+    },
   }
 
   useEffect(() => {
@@ -65,7 +68,7 @@ export const OrderDetails = () => {
         <div className={styles.order_name_status}>
           <div
             className={`${
-              orderDetails && orderDetails[0].name.length < 80
+              orderDetails && orderDetails[0].name.length < 180
                 ? styles.order_name
                 : styles.order_name_ext
             } ${'text text_type_main-medium'}`}

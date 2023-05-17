@@ -37,7 +37,7 @@ export const selectedIngredientsReducer = (
       return {
         ...state,
         bun: action.bunobj,
-        ing_ids: [...state.ing_ids, action._id],
+        ing_ids: [...state.ing_ids, action._id, action._id],
       }
     }
     case DELETE_ITEM: {

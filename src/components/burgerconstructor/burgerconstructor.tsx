@@ -64,19 +64,20 @@ function BurgerConstructor() {
   const addingItem_Bun = (item: IIngUUID | undefined): void => {
     const itemDropped = item
     if (itemDropped?.type === 'bun') {
-      //const bunobj = Object.assign({}, itemDropped, {UUID: uuidv4(), UUID2: uuidv4(),})
       const bunobj = { ...itemDropped, UUID: uuidv4(), UUID2: uuidv4() }
       dispatch(deleteBunAction()), dispatch(addBunAction(bunobj, bunobj._id))
     } else if (itemDropped?.type === 'main' || itemDropped?.type === 'sauce') {
-      //const ingobj = Object.assign({}, itemDropped, { UUID: uuidv4() })
       const ingobj = { ...itemDropped, UUID: uuidv4() }
       dispatch(addItemAction(ingobj, ingobj._id))
     }
   }
 
-  const options = {
+  const options: RequestInit = {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: localStorage.getItem('a_token') || '',
+    },
     body: JSON.stringify({
       ingredients: ing_ids,
     }),
@@ -169,9 +170,13 @@ function BurgerConstructor() {
               onClick={() => {
                 {
                   userLoggedIn
-                    ? (setShow(true),
-                      dispatch(clearArrayAction()),
-                      dispatch(getOrderCreated({ url, options })))
+                    ? ing_ids === undefined || ing_ids.length === 0
+                      ? null
+                      : bun
+                      ? (setShow(true),
+                        dispatch(clearArrayAction()),
+                        dispatch(getOrderCreated({ url, options })))
+                      : null
                     : navigate('/login')
                 }
               }}

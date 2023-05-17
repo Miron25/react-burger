@@ -20,6 +20,7 @@ import { ProtectedRouteElement } from './components/protected-route'
 import { ModalContent } from './components/ingredientdetails/ingredientdetails'
 import { getAuthSuccessAction } from './services/actions/authorization'
 import { OrderDetails } from './pages/orderdetail'
+import { OrderAuthDetails } from './pages/orderauthdetail'
 
 function App() {
   const location = useLocation()
@@ -115,6 +116,15 @@ function App() {
               <ProtectedRouteElement
                 onlyUnAuth={false}
                 element={<ProfileOrdersPage />}
+              />
+            }
+          />
+          <Route
+            path="/profile/orders/:orderId"
+            element={
+              <ProtectedRouteElement
+                onlyUnAuth={false}
+                element={<OrderAuthDetails />}
               />
             }
           />

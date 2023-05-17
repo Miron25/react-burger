@@ -61,6 +61,17 @@ export interface ISingleOrder {
   readonly owner?: string
 }
 
+export interface ISingleOrderFull {
+  readonly ingredients: ReadonlyArray<IIngredient>
+  readonly _id: string
+  readonly name: string
+  readonly status: string
+  readonly number: number
+  readonly createdAt: string
+  readonly updatedAt: string
+  readonly owner?: string
+}
+
 export interface IOrdersAll {
   readonly success: boolean
   readonly orders: ReadonlyArray<ISingleOrder>
