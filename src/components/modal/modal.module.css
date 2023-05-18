@@ -23,7 +23,7 @@
 
   background-color: #1c1c21;
   align-self: center;
-  text-align: center;
+  /*text-align: center;*/
   transform: translateY(-50%);
   padding: 2rem;
   border: 1px solid rgba(76, 76, 255, 0.2);
@@ -31,7 +31,7 @@
     0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04),
     0px 0px 1px rgba(0, 0, 0, 0.04);
   border-radius: 40px;
-  min-height: 539px;
+  height: 620px; /*539px;*/
   display: flex;
   justify-content: center;
   align-items: center;

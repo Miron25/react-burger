@@ -5,11 +5,7 @@ import { NavLink } from 'react-router-dom'
 import { getLogout } from '../services/actions/logout'
 import { OrdersFeedComponent } from './orders-feed'
 import { wsInitAuth } from '../services/actions/wsactionauthtypes'
-import {
-  IIngredient,
-  ISingleOrder,
-  ISingleOrderFull,
-} from '../services/types/data'
+import { IIngredient, ISingleOrderFull } from '../services/types/data'
 
 export function ProfileOrdersPage() {
   const wsAuthData = useSelector((state) => state.wsAuthReducer)

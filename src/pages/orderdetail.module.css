@@ -6,6 +6,13 @@
   top: 230px;
 }
 
+.detail_box_modal {
+  position: absolute;
+  height: 716px;
+  left: 10%;
+  top: 40px;
+}
+
 .order_number {
   position: absolute;
   width: 640px;
@@ -13,6 +20,19 @@
   left: 0px;
   top: 0px;
   text-align: center;
+}
+
+.order_number_modal {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px;
+  gap: 36px;
+
+  position: absolute;
+  width: 640px;
+  height: 64px;
 }
 
 .order_name_status {

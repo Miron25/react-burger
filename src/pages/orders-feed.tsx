@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useMemo, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import styles from './orders-feed.module.css'
 import { useSelector, useDispatch } from '../services/types/hooks'
@@ -7,8 +7,8 @@ import {
   FormattedDate,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { IIngredient, ISingleOrderFull } from '../services/types/data'
-import { useMemo, useEffect } from 'react'
 import { wsInit } from '../services/actions/wsactiontypes'
+import { useLocation } from 'react-router'
 
 export function OrdersFeedPage() {
   const wsData = useSelector((state) => state.wsReducer)
@@ -170,7 +170,7 @@ export const OrdersFeedComponent: FC<TFlag> = ({
   profileFlag,
   ordersArray,
 }) => {
-  const initial_array = useSelector((state) => state.feed.feed)
+  const location = useLocation()
 
   return (
     <>

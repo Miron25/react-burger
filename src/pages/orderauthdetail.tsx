@@ -4,13 +4,26 @@ import { useSelector, useDispatch } from '../services/types/hooks'
 import { NORMA_API } from '../utils/api'
 import { getOrder } from '../services/actions/orderdetails'
 import { IIngredient } from '../services/types/data'
-import React, { useEffect, useMemo } from 'react'
+import React, { ReactNode, ReactElement, FC, useEffect, useMemo } from 'react'
 import {
+  CloseIcon,
   CurrencyIcon,
   FormattedDate,
 } from '@ya.praktikum/react-developer-burger-ui-components'
 
-export const OrderAuthDetails = () => {
+type TModal = { directLink: boolean }
+
+type TCIng = TModal & { children: ReactNode }
+
+function CenterOrder({ children, directLink }: TCIng): ReactElement {
+  return directLink ? (
+    <div className={styles.detail_box}>{children}</div>
+  ) : (
+    <div className={styles.detail_box_modal}>{children}</div>
+  )
+}
+
+export const OrderAuthDetails: FC<TModal> = ({ directLink }) => {
   const orderDetails = useSelector((state) => state.orderDetails.orders)
   const navigate = useNavigate()
   const location = useLocation()
@@ -25,24 +38,23 @@ export const OrderAuthDetails = () => {
       return { ...accumulator, [value]: Number(accumulator[value] || 0) + 1 }
     }, {})
 
-  const options: RequestInit = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: localStorage.getItem('a_token') || '',
-    },
-  }
-
   useEffect(() => {
+    const options: RequestInit = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem('a_token') || '',
+      },
+    }
     dispatch(getOrder({ url, options }))
-  }, [])
+  }, [dispatch, url])
 
   const ingredientsFull = useMemo(() => {
     return initial_array.filter(
       (item: IIngredient) =>
         count && Object.keys(count).some((id) => id === item._id)
     )
-  }, [count])
+  }, [count, initial_array])
 
   const countArray = ingredientsFull.map((item) => {
     const ind = Object.keys(count || 0).findIndex((element) => {
@@ -57,21 +69,33 @@ export const OrderAuthDetails = () => {
 
   return (
     <>
-      <div className={styles.detail_box}>
+      <CenterOrder directLink={directLink}>
         <div
           className={`${
-            styles.order_number
+            directLink ? styles.order_number : styles.order_number_modal
           } ${'text text_type_digits-default'}`}
         >
           {orderDetails && `#${orderDetails[0].number}`}
+          {!directLink && (
+            <CloseIcon
+              type="primary"
+              onClick={() => {
+                location.state.background && navigate(-1)
+              }}
+            />
+          )}
         </div>
-        <div className={styles.order_name_status}>
+        <div
+          className={styles.order_name_status}
+          style={directLink ? { top: '36px' } : { top: '64px' }}
+        >
           <div
             className={`${
-              orderDetails && orderDetails[0].name.length < 180
+              orderDetails && orderDetails[0].name.length < 80
                 ? styles.order_name
                 : styles.order_name_ext
             } ${'text text_type_main-medium'}`}
+            style={directLink ? {} : { height: '70px' }}
           >
             {orderDetails && orderDetails[0].name}
           </div>
@@ -145,7 +169,7 @@ export const OrderAuthDetails = () => {
           </div>
           <CurrencyIcon type="primary" />
         </div>
-      </div>
+      </CenterOrder>
     </>
   )
 }

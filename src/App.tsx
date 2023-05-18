@@ -58,7 +58,10 @@ function App() {
         <Routes location={background || location}>
           <Route path="/" element={<HomePage />} />
           <Route path="/feed" element={<OrdersFeedPage />} />
-          <Route path="/feed/:feedId" element={<OrderDetails />} />
+          <Route
+            path="/feed/:feedId"
+            element={<OrderDetails directLink={true} />}
+          />
           <Route
             path="/ingredients/:ingredientId"
             element={<ModalContent directLink={true} />}
@@ -124,7 +127,7 @@ function App() {
             element={
               <ProtectedRouteElement
                 onlyUnAuth={false}
-                element={<OrderAuthDetails />}
+                element={<OrderAuthDetails directLink={true} />}
               />
             }
           />
@@ -137,8 +140,28 @@ function App() {
           <Route
             path="/ingredients/:ingredientId"
             element={
-              <Modal show={true} onClose={handleModalClose}>
+              <Modal
+                show={true}
+                onClose={handleModalClose}
+                modalStyle={{ height: '539px' }}
+              >
                 <ModalContent directLink={false} />
+              </Modal>
+            }
+          />
+          <Route
+            path="/feed/:feedId"
+            element={
+              <Modal show={true} onClose={handleModalClose}>
+                <OrderDetails directLink={false} />
+              </Modal>
+            }
+          />
+          <Route
+            path="/profile/orders/:orderId"
+            element={
+              <Modal show={true} onClose={handleModalClose}>
+                <OrderAuthDetails directLink={false} />
               </Modal>
             }
           />

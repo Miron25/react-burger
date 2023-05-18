@@ -19,7 +19,7 @@ import {
 } from '../../services/actions/burgerconst'
 import { v4 as uuidv4 } from 'uuid'
 import { useNavigate } from 'react-router-dom'
-import { IIngredient, IDroppedIngr, IIngUUID } from '../../services/types/data'
+import { IDroppedIngr, IIngUUID } from '../../services/types/data'
 import { OrderDetailsContent } from '../orderdetails/orderdetails'
 import { NORMA_API } from '../../utils/api'
 import { getOrderCreated } from '../../services/actions/ordercreated'
@@ -44,11 +44,9 @@ function BurgerConstructor() {
 
   const totalPrice = useMemo<number>(() => {
     if (bun)
-      return Number(
-        ingredients.reduce(
-          (sum: number, item: IIngredient): number => sum + Number(item.price),
-          0
-        ) + Number(bun.price * 2)
+      return (
+        ingredients.reduce((sum, item) => sum + item.price, 0) +
+        Number(bun.price * 2)
       )
     else return 0
   }, [ingredients, bun])
