@@ -14,6 +14,13 @@ export function OrdersFeedPage() {
   const wsData = useSelector((state) => state.wsReducer)
   const orders = wsData.ordersAll?.orders
   const initial_array = useSelector((state) => state.feed.feed)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (!wsData.wsConnected) {
+      dispatch(wsInit('wss://norma.nomoreparties.space/orders/all'))
+    }
+  }, [dispatch, wsData.wsConnected])
 
   const count: Array<object> | undefined = orders?.map((item) =>
     item.ingredients.reduce((accumulator, value) => {
@@ -56,14 +63,6 @@ export function OrdersFeedPage() {
       orderitem.ingredients.some((item) => item.type === 'bun')
     )
   }, [countArray])
-
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    if (!wsData.wsConnected) {
-      dispatch(wsInit('wss://norma.nomoreparties.space/orders/all'))
-    }
-  }, [dispatch, wsData.wsConnected])
 
   return (
     <>

@@ -1,9 +1,9 @@
 export const NORMA_API = 'https://norma.nomoreparties.space/api'
 
-export const checkResponse = (res: any) => {
+export const checkResponse = (res: Response) => {
   return res.ok
     ? res.json()
-    : res.json().then((err: any) => Promise.reject(err))
+    : res.json().then((err: string) => Promise.reject(err))
 }
 
 export const refreshToken = () => {

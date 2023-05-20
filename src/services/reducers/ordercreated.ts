@@ -26,6 +26,8 @@ export const orderCreatedReducer = (
     case GET_ORDER_CREATED_REQUEST: {
       return {
         ...state,
+        order: undefined,
+        name: undefined,
         orderRequest: true,
         orderFailed: false,
       }

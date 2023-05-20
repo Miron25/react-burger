@@ -77,6 +77,7 @@ export interface IOrdersAll {
   readonly orders: ReadonlyArray<ISingleOrder>
   readonly total: number
   readonly totalToday: number
+  readonly message?: string
 }
 
 export interface IIngUUID extends IIngredient {

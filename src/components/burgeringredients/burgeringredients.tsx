@@ -28,15 +28,15 @@ function BurgerIngredients() {
 
   //To filter initial data from API based on the type of the ingredients
   const bunArray = useMemo<ReadonlyArray<IIngredient>>(
-    () => initial_array.filter((ingr: any) => ingr.type === 'bun'),
+    () => initial_array.filter((ingr: IIngredient) => ingr.type === 'bun'),
     [initial_array]
   )
   const sauceArray = useMemo<ReadonlyArray<IIngredient>>(
-    () => initial_array.filter((ingr: any) => ingr.type === 'sauce'),
+    () => initial_array.filter((ingr: IIngredient) => ingr.type === 'sauce'),
     [initial_array]
   )
   const mainArray = useMemo<ReadonlyArray<IIngredient>>(
-    () => initial_array.filter((ingr: any) => ingr.type === 'main'),
+    () => initial_array.filter((ingr: IIngredient) => ingr.type === 'main'),
     [initial_array]
   )
 
@@ -152,7 +152,7 @@ const GridElement: FC<IFilteredIngr> = ({ filteredIngr }) => {
 
   function CountItems(): number {
     const count = ingredients.filter(
-      (elem: any) => elem._id === filteredIngr._id
+      (elem: IIngredient) => elem._id === filteredIngr._id
     ).length
     return count
   }
@@ -172,8 +172,9 @@ const GridElement: FC<IFilteredIngr> = ({ filteredIngr }) => {
             <Counter count={2} size="default" extraClass="m-1" />
           )}
           {ingredients &&
-            ingredients.filter((elem: any) => elem._id === filteredIngr._id)
-              .length > 0 && (
+            ingredients.filter(
+              (elem: IIngredient) => elem._id === filteredIngr._id
+            ).length > 0 && (
               <Counter count={CountItems()} size="default" extraClass="m-1" />
             )}
           <img src={filteredIngr.image} alt=""></img>

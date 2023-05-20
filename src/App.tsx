@@ -21,6 +21,8 @@ import { ModalContent } from './components/ingredientdetails/ingredientdetails'
 import { getAuthSuccessAction } from './services/actions/authorization'
 import { OrderDetails } from './pages/orderdetail'
 import { OrderAuthDetails } from './pages/orderauthdetail'
+import { onClose } from './services/actions/wsactiontypes'
+import { onCloseAuth } from './services/actions/wsactionauthtypes'
 
 function App() {
   const location = useLocation()
@@ -42,7 +44,19 @@ function App() {
       const foundUser = JSON.parse(loggedInUser)
       dispatch(getAuthSuccessAction(foundUser, true))
     }
-  }, [])
+  }, [dispatch])
+
+  useEffect(() => {
+    if (location.pathname !== '/feed') {
+      dispatch(onClose())
+    }
+  }, [dispatch, location])
+
+  useEffect(() => {
+    if (location.pathname !== '/profile/orders') {
+      dispatch(onCloseAuth())
+    }
+  }, [dispatch, location])
 
   const handleModalClose = (): void => {
     // Возвращаемся к предыдущему пути при закрытии модалки

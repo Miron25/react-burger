@@ -6,6 +6,7 @@ import { getLogout } from '../services/actions/logout'
 import { OrdersFeedComponent } from './orders-feed'
 import { wsInitAuth } from '../services/actions/wsactionauthtypes'
 import { IIngredient, ISingleOrderFull } from '../services/types/data'
+import { getUserInfo } from '../services/actions/userinfo'
 
 export function ProfileOrdersPage() {
   const wsAuthData = useSelector((state) => state.wsAuthReducer)
@@ -70,6 +71,20 @@ export function ProfileOrdersPage() {
       token: localStorage.getItem('r_token'),
     }),
   }
+
+  useEffect(() => {
+    const options: RequestInit = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem('a_token') || '',
+      },
+    }
+
+    if (wsAuthData.ordersAll?.message === 'Invalid or missing token') {
+      dispatch(getUserInfo({ options }))
+    }
+  }, [dispatch, wsAuthData.ordersAll?.message])
 
   useEffect(() => {
     if (!wsAuthData.wsConnected) {
