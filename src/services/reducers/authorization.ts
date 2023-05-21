@@ -3,16 +3,28 @@ import {
   GET_AUTH_ERROR,
   GET_AUTH_SUCCESS,
   GET_AUTH_OUT,
-} from './../actions/authorization'
+} from '../constants'
+import { TUser } from '../types/data'
+import { TGetAuthActions } from '../actions/authorization'
 
-const initialState = {
+export type TAuthState = {
+  loginRequest: boolean
+  loginFailed: boolean
+  isLoggedIn: boolean
+  user?: TUser
+}
+
+const initialState: TAuthState = {
   loginRequest: false,
   loginFailed: false,
   isLoggedIn: false,
-  user: null,
+  user: undefined,
 }
 
-export const loginReducer = (state = initialState, action) => {
+export const loginReducer = (
+  state = initialState,
+  action: TGetAuthActions
+): TAuthState => {
   switch (action.type) {
     case GET_AUTH_REQUEST: {
       return {
@@ -35,7 +47,7 @@ export const loginReducer = (state = initialState, action) => {
         loginFailed: true,
         isLoggedIn: false,
         loginRequest: false,
-        user: null,
+        user: undefined,
       }
     }
     case GET_AUTH_OUT: {

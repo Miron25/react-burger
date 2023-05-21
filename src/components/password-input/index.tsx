@@ -1,8 +1,7 @@
 import { Input, TInput, TIconProps } from '../input'
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import eyeOff from '../../images/eye-off.svg'
 import eye from '../../images/eye.svg'
-import { useState } from 'react'
 import styles from '../input/input.module.css'
 
 const EyeOff: TIconProps = ({ onClick }) => (

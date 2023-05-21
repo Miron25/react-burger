@@ -3,15 +3,26 @@ import {
   GET_USER_ERROR,
   GET_USER_SUCCESS,
   GET_USER_OUT,
-} from './../actions/userinfo'
+} from '../constants'
+import { TUser } from '../types/data'
+import { TGetUserActions } from '../actions/userinfo'
 
-const initialState = {
-  userInfoRequest: false,
-  userInfoFailed: false,
-  user: null,
+export type TUserInfoState = {
+  userInfoRequest: boolean
+  userInfoFailed: boolean
+  user?: TUser
 }
 
-export const userInfoReducer = (state = initialState, action) => {
+const initialState: TUserInfoState = {
+  userInfoRequest: false,
+  userInfoFailed: false,
+  user: undefined,
+}
+
+export const userInfoReducer = (
+  state = initialState,
+  action: TGetUserActions
+): TUserInfoState => {
   switch (action.type) {
     case GET_USER_REQUEST: {
       return {
@@ -32,8 +43,7 @@ export const userInfoReducer = (state = initialState, action) => {
         ...state,
         userInfoFailed: true,
         userInfoRequest: false,
-        user: null,
-        message: action.message,
+        user: undefined,
       }
     }
     case GET_USER_OUT: {

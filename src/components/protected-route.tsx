@@ -1,13 +1,12 @@
 import { Navigate, useLocation } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector } from '../services/types/hooks'
 import { FC } from 'react'
-import { IPrRootProps } from '../utils/types'
+import { IPrRootProps } from '../services/types/data'
 
 export const ProtectedRouteElement: FC<IPrRootProps> = ({
   onlyUnAuth = false,
   element,
 }) => {
-  //@ts-ignore: Will be typed in the next sprint
   const user = useSelector((state) => state.loginReducer.user)
   const location = useLocation()
 

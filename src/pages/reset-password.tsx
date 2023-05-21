@@ -1,16 +1,15 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from '../services/types/hooks'
 import styles from './reset-password.module.css'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, useNavigate } from 'react-router-dom'
 import { Input } from '../components/input'
 import { PasswordInput } from '../components/password-input'
 import { getPasswordResetConfirmed } from '../services/actions/resetpassword'
-import { IForm } from '.'
+import { IForm } from '../services/types/data'
 
 export function ResetPasswordPage() {
   const codeCorrect = useSelector(
-    //@ts-ignore: Will be typed in the next sprint
     (state) => state.resetPasswordReducer.isCodeCorrect
   )
   const [form, setValue] = useState<IForm>({ password: '', code: '' })
@@ -28,7 +27,7 @@ export function ResetPasswordPage() {
     setValue({ ...form, [e.target.name]: e.target.value })
   }
 
-  const options = {
+  const options: RequestInit = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -39,7 +38,6 @@ export function ResetPasswordPage() {
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
-    //@ts-ignore: Will be typed later
     dispatch(getPasswordResetConfirmed({ options }))
   }
 

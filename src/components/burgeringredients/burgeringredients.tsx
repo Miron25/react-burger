@@ -8,7 +8,7 @@ import React, {
 } from 'react'
 import BurgerIngStyles from './burgering.module.css'
 import { useInView } from 'react-intersection-observer'
-import { useSelector } from 'react-redux'
+import { useSelector } from '../../services/types/hooks'
 import { useLocation } from 'react-router'
 import {
   Tab,
@@ -17,10 +17,9 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useDrag } from 'react-dnd'
 import { Link } from 'react-router-dom'
-import { IIngredient, IFilteredIngr } from '../../utils/types'
+import { IIngredient, IFilteredIngr } from '../../services/types/data'
 
 function BurgerIngredients() {
-  //@ts-ignore: Will be typed in the next sprint
   const initial_array = useSelector((state) => state.feed.feed)
   const [current, setCurrent] = useState('bun')
   const oneRef = useRef<HTMLDivElement>(null) //represents tab "one"
@@ -29,15 +28,15 @@ function BurgerIngredients() {
 
   //To filter initial data from API based on the type of the ingredients
   const bunArray = useMemo<ReadonlyArray<IIngredient>>(
-    () => initial_array.filter((ingr: any) => ingr.type === 'bun'),
+    () => initial_array.filter((ingr: IIngredient) => ingr.type === 'bun'),
     [initial_array]
   )
   const sauceArray = useMemo<ReadonlyArray<IIngredient>>(
-    () => initial_array.filter((ingr: any) => ingr.type === 'sauce'),
+    () => initial_array.filter((ingr: IIngredient) => ingr.type === 'sauce'),
     [initial_array]
   )
   const mainArray = useMemo<ReadonlyArray<IIngredient>>(
-    () => initial_array.filter((ingr: any) => ingr.type === 'main'),
+    () => initial_array.filter((ingr: IIngredient) => ingr.type === 'main'),
     [initial_array]
   )
 
@@ -138,9 +137,7 @@ function BurgerIngredients() {
 }
 
 const GridElement: FC<IFilteredIngr> = ({ filteredIngr }) => {
-  //@ts-ignore: Will be typed in the next sprint
   const ingredients = useSelector((state) => state.selectedIng.ingredients)
-  //@ts-ignore: Will be typed in the next sprint
   const bun = useSelector((state) => state.selectedIng.bun)
   const location = useLocation()
 
@@ -155,7 +152,7 @@ const GridElement: FC<IFilteredIngr> = ({ filteredIngr }) => {
 
   function CountItems(): number {
     const count = ingredients.filter(
-      (elem: any) => elem._id === filteredIngr._id
+      (elem: IIngredient) => elem._id === filteredIngr._id
     ).length
     return count
   }
@@ -175,8 +172,9 @@ const GridElement: FC<IFilteredIngr> = ({ filteredIngr }) => {
             <Counter count={2} size="default" extraClass="m-1" />
           )}
           {ingredients &&
-            ingredients.filter((elem: any) => elem._id === filteredIngr._id)
-              .length > 0 && (
+            ingredients.filter(
+              (elem: IIngredient) => elem._id === filteredIngr._id
+            ).length > 0 && (
               <Counter count={CountItems()} size="default" extraClass="m-1" />
             )}
           <img src={filteredIngr.image} alt=""></img>

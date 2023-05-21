@@ -1,14 +1,8 @@
-import { CSSProperties, FC, useEffect, useRef, ReactNode } from 'react'
+import { FC, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 import ModalStyles from './modal.module.css'
-import ModalOverlay from '../modaloverlay/modaloverlay'
-
-interface IModal {
-  show: boolean
-  onClose: () => void
-  modalStyle?: CSSProperties
-  children: ReactNode
-}
+//import ModalOverlay from '../modaloverlay/modaloverlay'
+import { IModal } from '../../services/types/data'
 
 const Modal: FC<IModal> = ({ children, show, onClose, modalStyle }) => {
   const modalRef = useRef<HTMLDivElement>(null)
@@ -42,7 +36,8 @@ const Modal: FC<IModal> = ({ children, show, onClose, modalStyle }) => {
   return modalRoot
     ? ReactDOM.createPortal(
         <>
-          <ModalOverlay show={show}>
+          {/*<ModalOverlay show={show}>*/}
+          <div className={show ? ModalStyles.modal__wrap : ModalStyles.hide}>
             <div
               ref={modalRef}
               style={modalStyle}
@@ -50,7 +45,7 @@ const Modal: FC<IModal> = ({ children, show, onClose, modalStyle }) => {
             >
               {children}
             </div>
-          </ModalOverlay>
+          </div>
         </>,
         modalRoot
       )

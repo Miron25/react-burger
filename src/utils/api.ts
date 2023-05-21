@@ -1,27 +1,9 @@
 export const NORMA_API = 'https://norma.nomoreparties.space/api'
 
-export interface IOptions {
-  method: 'POST' | 'GET' | 'PATCH'
-  headers: {
-    'Content-Type': string
-    Authorization?: string
-  }
-  Body:
-    | {
-        token?: string
-        ingredients?: ReadonlyArray<string>
-        name?: string
-        email?: string
-        password?: string
-      }
-    | null
-    | undefined
-}
-
-export const checkResponse = (res: any) => {
+export const checkResponse = (res: Response) => {
   return res.ok
     ? res.json()
-    : res.json().then((err: any) => Promise.reject(err))
+    : res.json().then((err: string) => Promise.reject(err))
 }
 
 export const refreshToken = () => {
@@ -36,7 +18,10 @@ export const refreshToken = () => {
   }).then(checkResponse)
 }
 
-export const fetchWithRefresh = async (url: string, options: IOptions) => {
+export const fetchWithRefresh = async (url: string, options: RequestInit) => {
+  const headers = options?.headers
+    ? new Headers(options.headers)
+    : new Headers()
   try {
     const res = await fetch(url, options)
     return await checkResponse(res)
@@ -49,7 +34,10 @@ export const fetchWithRefresh = async (url: string, options: IOptions) => {
       }
       localStorage.setItem('r_token', String(refreshData.refreshToken))
       localStorage.setItem('a_token', String(refreshData.accessToken))
-      options.headers.Authorization = refreshData.accessToken
+      if (!headers.has('Authorization')) {
+        headers.set('Authorization', refreshData.accessToken)
+      }
+      //options.headers.Authorization = refreshData.accessToken
       const res = await fetch(url, options) //повторяем запрос
       return await checkResponse(res)
     } else {

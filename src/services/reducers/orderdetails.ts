@@ -2,15 +2,25 @@ import {
   GET_ORDER_REQUEST,
   GET_ORDER_ERROR,
   GET_ORDER_SUCCESS,
-} from './../actions/orderdetails'
+} from '../constants'
+import { TGetOrderActions } from '../actions/orderdetails'
+import { ISingleOrder } from '../types/data'
 
-const initialState = {
+export type TOrderState = {
+  orderRequest: boolean
+  orderFailed: boolean
+  orders?: ReadonlyArray<ISingleOrder>
+}
+const initialState: TOrderState = {
   orderRequest: false,
   orderFailed: false,
-  order: null,
+  orders: undefined,
 }
 
-export const orderDetailsReducer = (state = initialState, action) => {
+export const orderDetailsReducer = (
+  state = initialState,
+  action: TGetOrderActions
+): TOrderState => {
   switch (action.type) {
     case GET_ORDER_REQUEST: {
       return {
@@ -22,8 +32,7 @@ export const orderDetailsReducer = (state = initialState, action) => {
     case GET_ORDER_SUCCESS: {
       return {
         ...state,
-        order: action.order,
-        name: action.name,
+        orders: action.orders,
         orderRequest: false,
       }
     }
@@ -32,8 +41,7 @@ export const orderDetailsReducer = (state = initialState, action) => {
         ...state,
         orderFailed: true,
         orderRequest: false,
-        order: null,
-        name: null,
+        orders: undefined,
       }
     }
     default: {

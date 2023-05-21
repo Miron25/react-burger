@@ -1,17 +1,16 @@
 import { useEffect, useState, ChangeEvent, FormEvent } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from '../services/types/hooks'
 import { Link, useNavigate } from 'react-router-dom'
 import styles from './login.module.css'
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { getAuth } from '../services/actions/authorization'
 import { Input } from '../components/input'
 import { PasswordInput } from '../components/password-input'
-import { IForm } from '.'
+import { IForm } from '../services/types/data'
 
 export function LoginPage() {
   const navigate = useNavigate()
   const [form, setValue] = useState<IForm>({ email: '', password: '' })
-  //@ts-ignore: Will be typed in the next sprint
   const userLoggedIn = useSelector((state) => state.loginReducer.user)
   const dispatch = useDispatch()
 
@@ -19,11 +18,11 @@ export function LoginPage() {
     setValue({ ...form, [e.target.name]: e.target.value })
   }
 
-  const options = {
+  const options: RequestInit = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: localStorage.getItem('a_token'),
+      Authorization: localStorage.getItem('a_token') || '',
     },
     body: JSON.stringify({
       email: form.email,
@@ -39,7 +38,6 @@ export function LoginPage() {
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
-    //@ts-ignore: Will be typed later
     dispatch(getAuth({ options }))
   }
 

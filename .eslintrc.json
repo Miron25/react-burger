@@ -31,13 +31,14 @@
     "@typescript-eslint/no-unsafe-call": "off",
     "@typescript-eslint/no-unsafe-argument": "off",
     "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/ban-ts-comment": [
+    "@typescript-eslint/restrict-template-expressions": "off"
+    /*"@typescript-eslint/ban-ts-comment": [
       "error",
       {
         "ts-ignore": "allow-with-description",
         "minimumDescriptionLength": 4
       }
-    ]
+    ]*/
   },
   "settings": {
     "import/resolver": {

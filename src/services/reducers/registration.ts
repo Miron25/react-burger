@@ -2,15 +2,25 @@ import {
   GET_REGISTRATION_REQUEST,
   GET_REGISTRATION_ERROR,
   GET_REGISTRATION_SUCCESS,
-} from './../actions/registration'
+} from '../constants'
+import { TUser } from '../types/data'
+import { TGetRegistrationActions } from '../actions/registration'
 
-const initialState = {
+export type TRegistrationState = {
+  registrationRequest: boolean
+  registrationFailed: boolean
+  user?: TUser
+}
+const initialState: TRegistrationState = {
   registrationRequest: false,
   registrationFailed: false,
-  user: null,
+  user: undefined,
 }
 
-export const registrationReducer = (state = initialState, action) => {
+export const registrationReducer = (
+  state = initialState,
+  action: TGetRegistrationActions
+): TRegistrationState => {
   switch (action.type) {
     case GET_REGISTRATION_REQUEST: {
       return {
@@ -31,7 +41,7 @@ export const registrationReducer = (state = initialState, action) => {
         ...state,
         registrationFailed: true,
         registrationRequest: false,
-        user: null,
+        user: undefined,
       }
     }
     default: {

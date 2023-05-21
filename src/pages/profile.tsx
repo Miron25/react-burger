@@ -1,5 +1,5 @@
 import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from '../services/types/hooks'
 import styles from './profile.module.css'
 import {
   EditIcon,
@@ -9,12 +9,10 @@ import {
 import { getUserInfo, getUserUpdate } from '../services/actions/userinfo'
 import { getLogout } from '../services/actions/logout'
 import { NavLink } from 'react-router-dom'
-import { IForm } from '.'
+import { IForm } from '../services/types/data'
 
 export function ProfilePage() {
-  //@ts-ignore: Will be typed in the next sprint
   const userLoggedIn = useSelector((state) => state.loginReducer.isLoggedIn)
-  //@ts-ignore: Will be typed in the next sprint
   const userInProfile = useSelector((state) => state.userInfoReducer.user)
   const [editBox1, setEditBox1] = useState(false)
   const [editBox2, setEditBox2] = useState(false)
@@ -26,7 +24,7 @@ export function ProfilePage() {
       ? 'text text_type_main-medium'
       : 'text text_type_main-medium text_color_inactive'
 
-  const options2 = {
+  const options2: RequestInit = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -36,11 +34,11 @@ export function ProfilePage() {
     }),
   }
 
-  const patchOptions = {
+  const patchOptions: RequestInit = {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: localStorage.getItem('a_token'),
+      Authorization: localStorage.getItem('a_token') || '',
     },
     body: JSON.stringify({
       name: form.name,
@@ -50,15 +48,14 @@ export function ProfilePage() {
   }
 
   useEffect(() => {
-    const options = {
+    const options: RequestInit = {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: localStorage.getItem('a_token'),
+        Authorization: localStorage.getItem('a_token') || '',
       },
     }
     if (userLoggedIn && !userInProfile) {
-      //@ts-ignore: Will be typed later
       dispatch(getUserInfo({ options }))
     }
   }, [dispatch, userLoggedIn, userInProfile])
@@ -75,7 +72,6 @@ export function ProfilePage() {
     setEditBox1(false)
     setEditBox2(false)
     setEditBox3(false)
-    //@ts-ignore: Will be typed later
     dispatch(getUserUpdate({ patchOptions }))
     setValue({})
   }
@@ -108,7 +104,6 @@ export function ProfilePage() {
               to="/login"
               className={setActive}
               onClick={() => {
-                //@ts-ignore: Will be typed later
                 dispatch(getLogout({ options2 }))
                 localStorage.removeItem('user')
               }}

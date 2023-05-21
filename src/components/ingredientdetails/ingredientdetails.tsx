@@ -1,5 +1,5 @@
 import IngDetailsStyles from './ingredientdetails.module.css'
-import { useSelector } from 'react-redux'
+import { useSelector } from '../../services/types/hooks'
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { ReactNode, ReactElement, FC } from 'react'
@@ -19,9 +19,8 @@ function CenterIngredient({ children, directLink }: TCIng): ReactElement {
 export const ModalContent: FC<TModal> = ({ directLink }) => {
   const navigate = useNavigate()
   const location = useLocation()
-  const { ingredientId } = useParams<{ ingredientId?: string }>()
+  const { ingredientId } = useParams<{ ingredientId: string }>()
 
-  //@ts-ignore: Will be typed in the next sprint
   const ingredientsList = useSelector((state) => state.feed.feed)
   const ingDetails = ingredientsList.find((item) => item._id === ingredientId)
 
@@ -47,12 +46,12 @@ export const ModalContent: FC<TModal> = ({ directLink }) => {
         </div>
 
         <img
-          src={ingDetails.image}
+          src={ingDetails?.image}
           alt=""
           className={IngDetailsStyles.popup_img}
         ></img>
         <div className={IngDetailsStyles.popup_name}>
-          <h2 className="text text_type_main-medium">{ingDetails.name}</h2>
+          <h2 className="text text_type_main-medium">{ingDetails?.name}</h2>
         </div>
         <ul className={IngDetailsStyles.popup_nutrition}>
           <div className={IngDetailsStyles.popup_nutrition_value}>
@@ -60,7 +59,7 @@ export const ModalContent: FC<TModal> = ({ directLink }) => {
               Калории,ккал
             </span>
             <span className="text text_type_digits-default">
-              {ingDetails.calories}
+              {ingDetails?.calories}
             </span>
           </div>
           <div className={IngDetailsStyles.popup_nutrition_value}>
@@ -68,7 +67,7 @@ export const ModalContent: FC<TModal> = ({ directLink }) => {
               Белки, г
             </span>
             <span className="text text_type_digits-default">
-              {ingDetails.proteins}
+              {ingDetails?.proteins}
             </span>
           </div>
           <div className={IngDetailsStyles.popup_nutrition_value}>
@@ -76,7 +75,7 @@ export const ModalContent: FC<TModal> = ({ directLink }) => {
               Жиры, г
             </span>
             <span className="text text_type_digits-default">
-              {ingDetails.fat}
+              {ingDetails?.fat}
             </span>
           </div>
           <div className={IngDetailsStyles.popup_nutrition_value}>
@@ -84,7 +83,7 @@ export const ModalContent: FC<TModal> = ({ directLink }) => {
               Углеводы, г
             </span>
             <span className="text text_type_digits-default">
-              {ingDetails.carbohydrates}
+              {ingDetails?.carbohydrates}
             </span>
           </div>
         </ul>

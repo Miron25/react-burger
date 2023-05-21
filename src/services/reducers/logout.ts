@@ -2,15 +2,24 @@ import {
   GET_LOGOUT_REQUEST,
   GET_LOGOUT_ERROR,
   GET_LOGOUT_SUCCESS,
-} from './../actions/logout'
+} from '../constants'
+import { TGetLogoutActions } from '../actions/logout'
 
-const initialState = {
-  logoutRequest: false,
-  logoutFailed: false,
-  logout: null,
+export type TLogoutState = {
+  logoutRequest: boolean
+  logoutFailed: boolean
 }
 
-export const logoutReducer = (state = initialState, action) => {
+const initialState: TLogoutState = {
+  logoutRequest: false,
+  logoutFailed: false,
+  //logout: null,
+}
+
+export const logoutReducer = (
+  state = initialState,
+  action: TGetLogoutActions
+): TLogoutState => {
   switch (action.type) {
     case GET_LOGOUT_REQUEST: {
       return {
@@ -30,7 +39,7 @@ export const logoutReducer = (state = initialState, action) => {
         ...state,
         logoutFailed: true,
         logoutRequest: false,
-        logout: null,
+        //logout: null,
       }
     }
     default: {
