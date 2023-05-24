@@ -12,6 +12,7 @@
     "plugin:react-hooks/recommended",
     "plugin:jsx-a11y/recommended",
     "plugin:import/recommended",
+    "plugin:cypress/recommended",
     "prettier"
   ],
   "overrides": [],
@@ -21,7 +22,7 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "plugins": ["react", "jsx-a11y"],
+  "plugins": ["react", "jsx-a11y", "cypress"],
   "rules": {
     "react/jsx-filename-extension": "off",
     "react/prop-types": "off",
