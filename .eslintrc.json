@@ -15,12 +15,20 @@
     "plugin:cypress/recommended",
     "prettier"
   ],
-  "overrides": [],
+  "overrides": [
+    {
+      "files": ["cypress/**/*.ts"],
+      "parserOptions": {
+        "project": ["cypress/tsconfig.json"]
+      },
+      "extends": ["plugin:cypress/recommended"]
+    }
+  ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": "latest",
-    "sourceType": "module",
-    "project": "./tsconfig.json"
+    "sourceType": "module"
+    //"project": "./tsconfig.json"
   },
   "plugins": ["react", "jsx-a11y", "cypress"],
   "rules": {
