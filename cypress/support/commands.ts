@@ -35,3 +35,26 @@
 //     }
 //   }
 // }
+
+Cypress.Commands.add("feedMock", () => {
+  cy.intercept("GET", "https://norma.nomoreparties.space/api/ingredients", {
+    fixture: "ingredients",
+  });
+  cy.visit("/");
+});
+
+Cypress.Commands.add("userMock", () => {
+  cy.intercept("GET", "https://norma.nomoreparties.space/api/auth/user", {
+    fixture: "user",
+  });
+  window.localStorage.setItem(
+    "user",
+    JSON.stringify({ email: "test@mail.ru", name: "TestUser" })
+  );
+
+  Cypress.Commands.add("orderMock", () => {
+    cy.intercept("POST", "https://norma.nomoreparties.space/api/orders", {
+      fixture: "createdorder",
+    });
+  });
+});

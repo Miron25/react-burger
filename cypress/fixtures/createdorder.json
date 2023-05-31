@@ -1,0 +1,54 @@
+{
+  "success": true,
+  "name": "Супер вкусный бургер",
+  "order": {
+    "ingredients": [
+      {
+        "_id": "13052023",
+        "name": "Булка 1",
+        "type": "bun",
+        "proteins": 80,
+        "fat": 24,
+        "carbohydrates": 53,
+        "calories": 420,
+        "price": 1255,
+        "image": "https://code.s3.yandex.net/react/code/bun-02.png",
+        "image_mobile": "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
+        "image_large": "https://code.s3.yandex.net/react/code/bun-02-large.png",
+        "__v": 0
+      },
+      {
+        "_id": "13062023",
+        "name": "Начинка 1",
+        "type": "main",
+        "proteins": 800,
+        "fat": 800,
+        "carbohydrates": 300,
+        "calories": 2674,
+        "price": 3000,
+        "image": "https://code.s3.yandex.net/react/code/meat-04.png",
+        "image_mobile": "https://code.s3.yandex.net/react/code/meat-04-mobile.png",
+        "image_large": "https://code.s3.yandex.net/react/code/meat-04-large.png",
+        "__v": 0
+      },
+      {
+        "_id": "13082023",
+        "name": "Соус 1",
+        "type": "sauce",
+        "proteins": 30,
+        "fat": 20,
+        "carbohydrates": 40,
+        "calories": 30,
+        "price": 90,
+        "image": "https://code.s3.yandex.net/react/code/sauce-02.png",
+        "image_mobile": "https://code.s3.yandex.net/react/code/sauce-02-mobile.png",
+        "image_large": "https://code.s3.yandex.net/react/code/sauce-02-large.png",
+        "__v": 0
+      }
+    ],
+    "status": "done",
+    "createdAt": "2023-05-28T16:10:29.695Z",
+    "updatedAt": "2023-05-28T16:15:45.836Z",
+    "number": 5000
+  }
+}

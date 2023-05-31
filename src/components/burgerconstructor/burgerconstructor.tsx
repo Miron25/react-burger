@@ -109,7 +109,11 @@ function BurgerConstructor() {
 
   return (
     <div className={BurgerConsStyles.main}>
-      <div className={BurgerConsStyles.constr_block} ref={dropTarget}>
+      <div
+        className={BurgerConsStyles.constr_block}
+        ref={dropTarget}
+        data-test={'drop-area'}
+      >
         {
           <React.Fragment>
             {bun && (
@@ -117,6 +121,7 @@ function BurgerConstructor() {
                 key={bun.UUID}
                 className={BurgerConsStyles.elem}
                 style={{ paddingLeft: '24px' }}
+                data-test={'top-bun'}
               >
                 <ConstructorElement
                   type="top"
@@ -127,7 +132,10 @@ function BurgerConstructor() {
                 />
               </span>
             )}
-            <div className={BurgerConsStyles.scroll_block}>
+            <div
+              className={BurgerConsStyles.scroll_block}
+              data-test={'ingredients-area'}
+            >
               {ingredients.map((droppedIngr: IIngUUID, index: number) =>
                 renderList(droppedIngr, index)
               )}
@@ -137,6 +145,7 @@ function BurgerConstructor() {
                 key={bun.UUID2}
                 className={BurgerConsStyles.elem}
                 style={{ paddingLeft: '24px' }}
+                data-test={'bottom-bun'}
               >
                 <ConstructorElement
                   type="bottom"

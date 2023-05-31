@@ -27,21 +27,26 @@ export const ModalContent: FC<TModal> = ({ directLink }) => {
   return (
     <>
       <CenterIngredient directLink={directLink}>
-        <div className={IngDetailsStyles.popup_title}>
+        <div
+          className={IngDetailsStyles.popup_title}
+          data-test={'details-title'}
+        >
           <h1
             className={`${
               IngDetailsStyles.popup_header
             } ${'text text_type_main-large'}`}
           >
-            Детали игредиента
+            Детали ингредиента
           </h1>
           {!directLink && (
-            <CloseIcon
-              type="primary"
-              onClick={() => {
-                location.state.background && navigate(-1)
-              }}
-            />
+            <div data-test={'close-btn'}>
+              <CloseIcon
+                type="primary"
+                onClick={() => {
+                  location.state.background && navigate(-1)
+                }}
+              />
+            </div>
           )}
         </div>
 

@@ -18,7 +18,10 @@ export const OrderDetailsContent: FC<TOrderDet> = ({ setShow }) => {
       <div className={OrderDetailsStyles.popup_title}>
         <CloseIcon type="primary" onClick={() => setShow(false)} />
       </div>
-      <div className={OrderDetailsStyles.popup_order}>
+      <div
+        className={OrderDetailsStyles.popup_order}
+        data-test={'order-number'}
+      >
         <p className="text text_type_digits-large">{order}</p>
       </div>
       <div className={OrderDetailsStyles.popup_text1}>

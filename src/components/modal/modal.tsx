@@ -37,11 +37,15 @@ const Modal: FC<IModal> = ({ children, show, onClose, modalStyle }) => {
     ? ReactDOM.createPortal(
         <>
           {/*<ModalOverlay show={show}>*/}
-          <div className={show ? ModalStyles.modal__wrap : ModalStyles.hide}>
+          <div
+            className={show ? ModalStyles.modal__wrap : ModalStyles.hide}
+            data-test={'modal-overlay'}
+          >
             <div
               ref={modalRef}
               style={modalStyle}
               className={show ? ModalStyles.modal : ModalStyles.hide}
+              data-test={'modal-itself'}
             >
               {children}
             </div>
