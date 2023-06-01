@@ -13,7 +13,6 @@ export type TLogoutState = {
 const initialState: TLogoutState = {
   logoutRequest: false,
   logoutFailed: false,
-  //logout: null,
 }
 
 export const logoutReducer = (
@@ -39,7 +38,6 @@ export const logoutReducer = (
         ...state,
         logoutFailed: true,
         logoutRequest: false,
-        //logout: null,
       }
     }
     default: {

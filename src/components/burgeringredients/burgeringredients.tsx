@@ -167,6 +167,13 @@ const GridElement: FC<IFilteredIngr> = ({ filteredIngr }) => {
           className={BurgerIngStyles.column1}
           ref={dragRef}
           style={{ opacity: opacity }}
+          data-test={
+            filteredIngr.type === 'bun'
+              ? 'Булки'
+              : filteredIngr.type === 'sauce'
+              ? 'Соусы'
+              : 'Начинки'
+          }
         >
           {bun && bun._id === filteredIngr._id && (
             <Counter count={2} size="default" extraClass="m-1" />

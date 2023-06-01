@@ -1,3 +1,9 @@
+# Stellar Burger project
+
+Stellar Burger project was deployed on Yandex Cloud
+https://stellar-burger-app.nomoredomains.rocks/
+IP address: 51.250.72.67
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
