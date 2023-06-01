@@ -1,4 +1,5 @@
 import {
+  // eslint-disable-next-line import/named
   TypedUseSelectorHook,
   useDispatch as dispatchHook,
   useSelector as selectorHook,
